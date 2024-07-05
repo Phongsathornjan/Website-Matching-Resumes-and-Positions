@@ -1,13 +1,13 @@
 import React from 'react';
-import FormField from './FormField';
-import Navbar from './Navbar.jsx';
-import { FaFacebook, FaLinkedin, FaInstagram, FaYoutube } from 'react-icons/fa';
+import FormField from './components/FormField.jsx';
+import Navbar from './components/Navbar.jsx';
+import Bottombar from './components/Bottombar.jsx';
 
-
-<Navbar></Navbar>
-const CreatePostForm = () => {
+const CreatePostPage = () => {
   return (
-    <div style={{ margin: '40px' }}>
+    <>
+      <Navbar></Navbar>
+      <div style={{margin: '40px'}}>
       <h1 style={titleStyle}>Create Post</h1>
       <form style={formStyle}>
         <div style={formRowStyle}>
@@ -24,28 +24,9 @@ const CreatePostForm = () => {
         </div>
         <button type="submit" style={buttonStyle}>Create</button>
       </form>
-      <div style={contactHeadStyle}>
-        <p>Contact for Information:</p>
-        <div style={contactInfoStyle}>
-          <p>Phongsathornjamjamsai@gmail.com</p>
-          <p>Passakornvanachana@gmail.com</p>
-          <div style={socialLinksStyle}>
-            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
-                <FaFacebook />
-            </a>
-            <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer">
-                <FaLinkedin />
-            </a>
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
-                <FaInstagram />
-            </a>
-            <a href="https://youtube.com" target="_blank" rel="noopener noreferrer">
-                <FaYoutube />
-            </a>
-            </div>
-        </div>
       </div>
-    </div>
+      <Bottombar></Bottombar>
+    </>
   );
 };
 
@@ -112,4 +93,4 @@ const socialLinksStyle = {
   marginTop: '15px',
 };
 
-export default CreatePostForm;
+export default CreatePostPage;
