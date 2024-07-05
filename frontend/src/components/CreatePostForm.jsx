@@ -1,7 +1,10 @@
 import React from 'react';
 import FormField from './FormField';
+import Navbar from './Navbar.jsx';
 import { FaFacebook, FaLinkedin, FaInstagram, FaYoutube } from 'react-icons/fa';
 
+
+<Navbar></Navbar>
 const CreatePostForm = () => {
   return (
     <div style={{ margin: '40px' }}>
