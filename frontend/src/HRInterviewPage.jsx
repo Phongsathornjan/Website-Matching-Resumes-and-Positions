@@ -55,6 +55,7 @@ const separatorStyle = {
   height: '2px',
   backgroundColor: '#f1c40f',
   marginBottom: '20px',
+  margin: '40px'
 };
 
 export default HRInterviewPage;

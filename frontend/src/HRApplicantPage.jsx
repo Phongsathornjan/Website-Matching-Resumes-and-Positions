@@ -48,13 +48,11 @@ const statusContainerStyle = {
   marginLeft: '30px', // Add left margin to container
 };
 
-
-
-
 const separatorStyle = {
   height: '2px',
   backgroundColor: '#28a745',
   marginBottom: '20px',
+  margin: '40px'
 };
 
 export default HRApplicantPage;

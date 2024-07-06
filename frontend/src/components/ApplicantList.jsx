@@ -41,6 +41,7 @@ const ApplicantList = () => {
 
 const listStyle = {
   marginTop: '20px',
+  margin: '40px'
 };
 
 const itemStyle = {

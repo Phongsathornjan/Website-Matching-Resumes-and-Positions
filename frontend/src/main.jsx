@@ -1,6 +1,9 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './Mainpage.jsx'
+import HRApplicantPage from './HRApplicantPage.jsx';
+import HRInterviewPage from './HRInterviewPage.jsx';
+import IndexPage from './IndexPage.jsx';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
   createBrowserRouter,
@@ -9,8 +12,16 @@ import {
 
 const router = createBrowserRouter([
   {
+    path: "/HRApplicant",
+    element: <HRApplicantPage></HRApplicantPage>
+  },
+  {
+    path: "/HRInterviewPage",
+    element: <HRInterviewPage></HRInterviewPage>
+  },
+  {
     path: "/",
-    element: <App></App>
+    element:  <IndexPage></IndexPage>
   },
 ]);
 
