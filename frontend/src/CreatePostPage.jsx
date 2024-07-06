@@ -1,12 +1,13 @@
 import React from 'react';
 import FormField from './components/FormField.jsx';
-import Navbar from './components/Navbar.jsx';
+import HRNavbar from './components/HRNavbar.jsx';
 import Bottombar from './components/Bottombar.jsx';
+
 
 const CreatePostPage = () => {
   return (
     <>
-      <Navbar></Navbar>
+    <HRNavbar></HRNavbar>
       <div style={{margin: '40px'}}>
       <h1 style={titleStyle}>Create Post</h1>
       <form style={formStyle}>
