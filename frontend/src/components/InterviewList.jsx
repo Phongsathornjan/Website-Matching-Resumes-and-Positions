@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const appointments = [
   { id: 1, position: 'Programmer', date: '18 / 06 / 2567' },
@@ -9,6 +9,19 @@ const appointments = [
 ];
 
 const AppointmentList = () => {
+
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+
   return (
     <div style={listStyle}>
       {appointments.map((appointment) => (
@@ -41,6 +54,7 @@ const itemStyle = {
   borderRadius: '5px',
   marginBottom: '10px',
   fontFamily: 'Trirong',
+  animation: 'fadeInFromBottom 1s ease-in',
 };
 
 const buttonContainerStyle = {
@@ -65,5 +79,24 @@ const appointmentButtonStyle = {
   border: 'none',
   cursor: 'pointer',
 };
+
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
+`;
 
 export default AppointmentList;
