@@ -71,23 +71,6 @@ const buttonStyle = {
   cursor: 'pointer',
 };
 
-const contactHeadStyle = {
-  marginTop: '20px',
-  fontFamily: 'Trirong',
-  fontSize: '22px',
-};
 
-const contactInfoStyle = {
-  marginTop: '5px',
-  fontFamily: 'Trirong',
-  fontSize: '16px',
-  color: 'gray',
-};
-
-const socialLinksStyle = {
-  display: 'flex',
-  gap: '25px', 
-  marginTop: '15px',
-};
 
 export default SendEmailPage;

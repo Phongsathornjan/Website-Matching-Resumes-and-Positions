@@ -5,7 +5,7 @@ import { FaFacebook, FaLinkedin, FaInstagram, FaYoutube } from 'react-icons/fa';
 
 function Bottombar() {
   return (
-    <div style={{margin: '40px', marginTop: '100px'}}>
+    <div style={{margin: '40px', marginTop: '1px'}}>
       <hr/>
       <div style={{marginTop: "30px"}}>
       <div style={{fontSize: '24px'}}>Contact for information</div>

@@ -11,7 +11,7 @@ const FormField = ({ label, type, placeholder }) => {
 
 const formFieldStyle = {
   marginBottom: '20px',
-  width: 'calc(50% - 10px)',
+  width: 'calc(50% - 15px)',
 };
 
 const labelStyle = {
@@ -29,5 +29,6 @@ const inputStyle = {
   borderRadius: '5px',
   fontFamily: 'Trirong',
 };
+
 
 export default FormField;
