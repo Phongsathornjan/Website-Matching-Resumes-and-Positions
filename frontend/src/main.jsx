@@ -9,6 +9,7 @@ import SendEmailPage from './SendEmailPage.jsx';
 import SignUpPage from './SignUpPage.jsx';
 import SignInPage from './SignInPage.jsx';
 import JobApplicationPage from './JobApplicationPage.jsx';
+import UserIndexPage from './UserIndexPage.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -49,6 +50,9 @@ const router = createBrowserRouter([
   {
     path: "/JobApplication",
     element:  <JobApplicationPage></JobApplicationPage>
+  },  {
+    path: "/UserIndexPage",
+    element:  <UserIndexPage></UserIndexPage>
   },
 ]);
 
