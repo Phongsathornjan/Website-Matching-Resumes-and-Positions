@@ -1,5 +1,5 @@
 // src/components/SignUpPage.jsx
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from './components/Navbar.jsx';
 import Bottombar from './components/Bottombar.jsx';
 import Select from 'react-select';
@@ -7,10 +7,22 @@ import LocationOptions from './components/LocationOptions.jsx';
 
 const SignUpPage = () => {
 
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+
   return (
     <>
     <Navbar></Navbar>
-    <div style={{margin: '40px'}}>
+    <div style={SignUpStyle}>
         <h1 style={titleStyle}>Sign Up</h1>
         <p style={subheadingStyle}>Please fill in personal information.</p>
         <form style={formStyle}>
@@ -29,10 +41,17 @@ const SignUpPage = () => {
             <button type="submit" style={buttonStyle}>Register</button>
         </form>
       </div>
+      <div style={{height: '30px'}}></div>
     <Bottombar></Bottombar>
     </>
   );
 };
+
+const SignUpStyle = {
+  margin: '40px', 
+  width: '1000px',
+  animation: 'fadeInFromBottom 1s ease-in',
+}
 
 
 const subheadingStyle = {
@@ -82,6 +101,24 @@ const titleStyle = {
     fontWeight: 'bold',
     marginBottom: '30px',
   };
+
+  const globalStyle = `
+  @keyframes fadeInFromBottom {
+    0% {
+      opacity: 0;
+      transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+    }
+  }
+  
+  body {
+    margin: 0;
+    font-family: 'Trirong', sans-serif;
+  }
+  `;
 
 
 export default SignUpPage;

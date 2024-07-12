@@ -9,7 +9,7 @@ const HRNavbar = () => {
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >หางานที่เหมาะสมกับคุณ</Link>
+      <Link to={'#'} style={linkStyle} >หาผู้สมัคร</Link>
       </div>
       <div>
       <Link to={'#'} style={linkStyle} >จัดการโพสต์</Link>

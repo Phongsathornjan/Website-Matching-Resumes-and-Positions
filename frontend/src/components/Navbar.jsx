@@ -9,13 +9,13 @@ const Navbar = () => {
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle}>หางานที่เหมาะสมกับคุณ</Link>
+      <Link to={'/'} style={linkStyle}>หางานที่เหมาะสมกับคุณ</Link>
       </div>
       <div>
-      <Link to={'#'} style={linkStyle}>สมัครสมาชิก</Link>
+      <Link to={'/Signin'} style={linkStyle}>สมัครสมาชิก</Link>
       </div>
       <div>
-      <Link to={'#'} style={linkStyle}>เข้าสู่ระบบ</Link>
+      <Link to={'/Signup'} style={linkStyle}>เข้าสู่ระบบ</Link>
       </div>
       </div>
     </div>
