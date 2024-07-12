@@ -8,6 +8,7 @@ import CreatePostPage from './CreatePostPage';
 import SendEmailPage from './SendEmailPage.jsx';
 import SignUpPage from './SignUpPage.jsx';
 import SignInPage from './SignInPage.jsx';
+import JobApplicationPage from './JobApplicationPage.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
   {
     path: "/SignIn",
     element:  <SignInPage></SignInPage>
+  },
+  {
+    path: "/JobApplication",
+    element:  <JobApplicationPage></JobApplicationPage>
   },
 ]);
 

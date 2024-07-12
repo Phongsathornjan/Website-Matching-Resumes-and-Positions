@@ -1,5 +1,6 @@
 import React, { useEffect,useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom'
 
 const jobList = [
   {
@@ -60,7 +61,7 @@ const CompanyList = () => {
                 <Card.Text>{job.description}</Card.Text>
                 <Card.Text>{job.requirements}</Card.Text>
                 <Card.Text>{job.posted}</Card.Text>
-                <Button variant="primary">สมัครที่นี่</Button>
+                <Button variant="primary">รายละเอียด</Button>
               </Card.Body>
             </Card>
           ))}
@@ -76,7 +77,9 @@ const CompanyList = () => {
                 <div style={{height: '410px'}}></div>
                 <div style={{display: 'flex'}}>
                 <div style={{width: '500px'}}></div>
-                <Button variant="primary">สมัครที่นี่</Button>
+                <Link to={'/JobApplication'}>
+                <Button variant="success">สมัครที่นี่</Button>
+                </Link>
                 </div>
               </Card.Body>
             </Card>
