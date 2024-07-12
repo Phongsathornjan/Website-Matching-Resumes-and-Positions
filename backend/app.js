@@ -14,12 +14,23 @@ app.use(express.json());
 app.post("/register", async (req, res) =>{
     try{
 
-        const {first_name, last_name, email, password, token} = req.body;
+        let {first_name, last_name, email, password, token} = req.body;
+        email = email.toLowerCase();
 
         //validate user input
         if(!(email && password && first_name && last_name)){
-            res.status(400).send("All input is required");
+            return res.status(400).json({
+                message: 'All input is require'
+            })
         }
+
+        //Validate user in our database
+        const Validate = await User.findOne({email: email});
+            if(Validate){
+                return res.status(400).json({
+                    message: 'This email is already exits'
+                })
+            }
 
         //Encryption Password
         encryptedPassword = await bcrypt.hash(password,10);
@@ -48,10 +59,7 @@ app.post("/register", async (req, res) =>{
         res.status(201).json(user);
 
     } catch (err){
-        //Validate if user is exist in our database
-        if(err.errorResponse.code == 11000){
-            res.status(409).send("This email is already exist");
-        }
+        console.log(err);
     }
 })
 
@@ -66,13 +74,17 @@ app.post("/login", async (req, res) => {
 
         //Validate user input
         if(!(email && password)){
-            res.status(400).send('Please Enter your Email and Password');
+            return res.status(400).json({
+                message: 'Please enter your Email and Password'
+            })
         }
 
         //Validate user in our database
         const user = await User.findOne({email: email});
         if(!user){
-            res.status(400).send("Invalid user");
+            return res.status(400).json({
+                message: 'Invalid user'
+            })
         }
 
         if( user && (await bcrypt.compare(password,user.password))){
@@ -85,7 +97,7 @@ app.post("/login", async (req, res) => {
             )
 
             user.token = Token;
-            res.status(200).json(user);
+            return res.status(200).json(user);
         }
 
 
