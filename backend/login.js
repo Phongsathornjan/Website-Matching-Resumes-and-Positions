@@ -22,7 +22,7 @@ const verifyLogin = async (req , res) => {
         const user = await User.findOne({email: email});
         if(!user){
             return res.status(400).json({
-                message: 'Invalid user'
+                message: 'Invalid user or password'
             })
         }
 
@@ -36,7 +36,20 @@ const verifyLogin = async (req , res) => {
             )
 
             user.token = Token;
-            return res.status(200).json(user);
+            return res.status(200).json({
+                id: user.id,
+                email: user.email,
+                first_name: user.first_name,
+                last_name: user.last_name,
+                role: user.role,
+                phone: user.phone,
+                company_name: user.company_name,
+                token: user.token
+            });
+        }else{
+            return res.status(400).json({
+                message: 'Invalid user or password'
+            })
         }
 
 

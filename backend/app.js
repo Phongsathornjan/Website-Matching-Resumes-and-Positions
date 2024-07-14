@@ -4,6 +4,7 @@ require('./config/database').connect();
 const express = require('express');
 const verifyLogin = require('./login');
 const verifyRegister =require('./register');
+const auth = require('./middleware/auth');
 const cors = require('cors');
 
 const app = express();
@@ -24,6 +25,13 @@ app.post("/register", async (req, res) =>{
 //Login
 app.post("/login", async (req, res) => {
     return verifyLogin(req, res);
+})
+
+// Auth
+app.post("/auth", async (req, res) =>{
+    return auth(req, res, () => {
+        res.status(200).json({ message: "Authenticated!" });
+    });
 })
 
 module.exports = app;

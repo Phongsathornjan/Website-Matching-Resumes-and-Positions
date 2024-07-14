@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Navbar from '../components/navbar/Navbar.jsx';
 import Bottombar from '../components/navbar/Bottombar.jsx';
 
 const SignInPage = () => {
+  const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +33,9 @@ const SignInPage = () => {
       });
 
       if(response.status == 200){
-        console.log(response.data);
+        localStorage.setItem('token',response.data.token);
+        localStorage.setItem('id',response.data.id);
+        navigate('/UserIndexPage');
       }
 
     }catch(err){
