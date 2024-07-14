@@ -1,7 +1,7 @@
 import React from 'react';
-import FormField from './components/FormField.jsx';
-import HRNavbar from './components/HRNavbar.jsx';
-import Bottombar from './components/Bottombar.jsx';
+import FormField from '../components/FormField.jsx';
+import HRNavbar from '../components/navbar/HRNavbar.jsx';
+import Bottombar from '../components/navbar/Bottombar.jsx';
 
 
 const SendEmailPage = () => {

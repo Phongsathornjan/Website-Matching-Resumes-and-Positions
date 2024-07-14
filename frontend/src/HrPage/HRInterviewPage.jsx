@@ -1,7 +1,7 @@
 import React from 'react';
-import HRNavbar from './components/HRNavbar';
-import StatusCard from './components/StatusCard';
-import InterviewList from './components/InterviewList';
+import HRNavbar from '../components/navbar/HRNavbar';
+import StatusCard from '../components/StatusCard';
+import InterviewList from '../components/InterviewList';
 import { FaBriefcase, FaCalendarCheck, FaUsers } from 'react-icons/fa';
 
 const HRInterviewPage = () => {

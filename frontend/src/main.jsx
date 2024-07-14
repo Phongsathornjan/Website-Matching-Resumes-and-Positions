@@ -1,15 +1,15 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import HRApplicantPage from './HRApplicantPage.jsx';
-import HRInterviewPage from './HRInterviewPage.jsx';
-import IndexPage from './IndexPage.jsx';
-import CreatePostPage from './CreatePostPage';
-import SendEmailPage from './SendEmailPage.jsx';
-import SignUpPage from './SignUpPage.jsx';
-import SignInPage from './SignInPage.jsx';
-import JobApplicationPage from './JobApplicationPage.jsx';
-import UserIndexPage from './UserIndexPage.jsx';
+import HRApplicantPage from './HrPage/HRApplicantPage.jsx';
+import HRInterviewPage from './HrPage/HRInterviewPage.jsx';
+import IndexPage from './nonUserPage/IndexPage.jsx';
+import CreatePostPage from './HrPage/CreatePostPage';
+import SendEmailPage from './HrPage/SendEmailPage.jsx';
+import SignUpPage from './nonUserPage/SignUpPage.jsx';
+import SignInPage from './nonUserPage/SignInPage.jsx';
+import JobApplicationPage from './nonUserPage/JobApplicationPage.jsx';
+import UserIndexPage from './UserPage/UserIndexPage.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 

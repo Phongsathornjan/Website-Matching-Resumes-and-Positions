@@ -1,6 +1,6 @@
 import React from 'react'
-import Navbar from './components/Navbar'
-import CompanyList from './components/CompanyList';
+import Navbar from '../components/navbar/Navbar'
+import CompanyList from '../components/CompanyList';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';

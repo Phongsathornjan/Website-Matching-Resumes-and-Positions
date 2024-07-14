@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
-import Navbar from './components/Navbar.jsx';
-import Bottombar from './components/Bottombar.jsx';
-import Select from 'react-select';
-import LocationOptions from './components/LocationOptions.jsx';
+import Navbar from '../components/navbar/Navbar.jsx';
+import Bottombar from '../components/navbar/Bottombar.jsx';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { Link } from 'react-router-dom'
 
-const SignUpPage = () => {
+const SignInPage = () => {
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -17,41 +17,51 @@ const SignUpPage = () => {
       document.head.removeChild(styleSheet);
     };
   }, []);
-
+   
   return (
     <>
-    <Navbar></Navbar>
-    <div style={SignUpStyle}>
-        <h1 style={titleStyle}>Sign Up</h1>
-        <p style={subheadingStyle}>Please fill in personal information.</p>
+      <Navbar></Navbar>
+      <div style={SignInStyle}>
+        <h1 style={titleStyle}>Sign In</h1>
+        <p style={subheadingStyle}>Welcome back ! Please sign in to your account.</p>
         <form style={formStyle}>
-            <div style={formRowStyle}>
-                <input type="text" placeholder="Firstname" style={inputStyle} />
-                <input type="text" placeholder="Lastname" style={inputStyle} />
-            </div>
+          <div style={inputGroupStyle}>
+            <span style={iconStyle}>
+              <FaEnvelope />
+            </span>
             <input type="email" placeholder="Email" style={fullWidthInputStyle} />
+          </div>
+          <div style={inputGroupStyle}>
+            <span style={iconStyle}>
+              <FaLock />
+            </span>
             <input type="password" placeholder="Password" style={fullWidthInputStyle} />
-            <Select
-                options={LocationOptions}
-                defaultValue={LocationOptions[0]} 
-                placeholder="Select Location"
-                styles={{ width: '100%' }} 
-            />
-            <button type="submit" style={buttonStyle}>Register</button>
+          </div>
+          <Link to={'#'}>
+          <button type="submit" style={buttonStyle}>Sign In</button>
+          </Link>
         </form>
       </div>
-      <div style={{height: '30px'}}></div>
-    <Bottombar></Bottombar>
+      <div style={{height: '114px'}}></div>
+      <Bottombar></Bottombar>
     </>
   );
 };
 
-const SignUpStyle = {
+const SignInStyle = {
   margin: '40px', 
-  width: '1000px',
+  width: '1000px' ,
   animation: 'fadeInFromBottom 1s ease-in',
 }
 
+const inputGroupStyle = {
+  display: 'flex', 
+  margin: '10px',
+};
+
+const iconStyle = {
+  margin: '10px', 
+};
 
 const subheadingStyle = {
     fontSize: '1.2rem',
@@ -102,22 +112,21 @@ const titleStyle = {
   };
 
   const globalStyle = `
-  @keyframes fadeInFromBottom {
-    0% {
-      opacity: 0;
-      transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
-    }
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
   }
-  
-  body {
-    margin: 0;
-    font-family: 'Trirong', sans-serif;
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
   }
-  `;
+}
 
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
+`;
 
-export default SignUpPage;
+export default SignInPage;

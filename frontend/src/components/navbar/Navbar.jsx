@@ -12,10 +12,10 @@ const Navbar = () => {
       <Link to={'/'} style={linkStyle}>หางานที่เหมาะสมกับคุณ</Link>
       </div>
       <div>
-      <Link to={'/Signin'} style={linkStyle}>สมัครสมาชิก</Link>
+      <Link to={'/Signup'} style={linkStyle}>สมัครสมาชิก</Link>
       </div>
       <div>
-      <Link to={'/Signup'} style={linkStyle}>เข้าสู่ระบบ</Link>
+      <Link to={'/Signin'} style={linkStyle}>เข้าสู่ระบบ</Link>
       </div>
       </div>
     </div>
