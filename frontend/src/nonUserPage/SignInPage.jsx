@@ -1,10 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { FaEnvelope, FaLock } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import axios from 'axios';
+
 import Navbar from '../components/navbar/Navbar.jsx';
 import Bottombar from '../components/navbar/Bottombar.jsx';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
-import { Link } from 'react-router-dom'
 
 const SignInPage = () => {
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -17,6 +23,24 @@ const SignInPage = () => {
       document.head.removeChild(styleSheet);
     };
   }, []);
+
+  const submit = async () => {
+    try{
+      const response = await axios.post('http://localhost:4001/login',{
+        email,
+        password,
+      });
+
+      if(response.status == 200){
+        console.log(response.data);
+      }
+
+    }catch(err){
+      if(err.response.status == 400){
+        setError(err.response.data.message);
+      }
+    }
+  }
    
   return (
     <>
@@ -24,21 +48,22 @@ const SignInPage = () => {
       <div style={SignInStyle}>
         <h1 style={titleStyle}>Sign In</h1>
         <p style={subheadingStyle}>Welcome back ! Please sign in to your account.</p>
+        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <form style={formStyle}>
           <div style={inputGroupStyle}>
             <span style={iconStyle}>
               <FaEnvelope />
             </span>
-            <input type="email" placeholder="Email" style={fullWidthInputStyle} />
+            <input type="email" placeholder="Email" style={fullWidthInputStyle} onChange={(e) => setEmail(e.target.value)}/>
           </div>
           <div style={inputGroupStyle}>
             <span style={iconStyle}>
               <FaLock />
             </span>
-            <input type="password" placeholder="Password" style={fullWidthInputStyle} />
+            <input type="password" placeholder="Password" style={fullWidthInputStyle} onChange={(e) => setPassword(e.target.value)} />
           </div>
           <Link to={'#'}>
-          <button type="submit" style={buttonStyle}>Sign In</button>
+          <button type="submit" style={buttonStyle} onClick={submit}>Sign In</button>
           </Link>
         </form>
       </div>

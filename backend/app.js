@@ -4,10 +4,16 @@ require('./config/database').connect();
 const express = require('express');
 const verifyLogin = require('./login');
 const verifyRegister =require('./register');
+const cors = require('cors');
 
 const app = express();
-app.use(express.json());
 
+const corsOptions = {
+    origin: 'http://localhost:5173', 
+    optionsSuccessStatus: 200
+  };
+
+app.use(cors(corsOptions));
 app.use(express.json());
 
 //Register
