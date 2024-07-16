@@ -10,6 +10,7 @@ import SignUpPage from './nonUserPage/SignUpPage.jsx';
 import SignInPage from './nonUserPage/SignInPage.jsx';
 import JobApplicationPage from './nonUserPage/JobApplicationPage.jsx';
 import UserIndexPage from './UserPage/UserIndexPage.jsx';
+import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -50,9 +51,14 @@ const router = createBrowserRouter([
   {
     path: "/JobApplication",
     element:  <JobApplicationPage></JobApplicationPage>
-  },  {
+  },  
+  {
     path: "/UserIndexPage",
     element:  <UserIndexPage></UserIndexPage>
+  },
+  {
+    path: "/userJobApplication",
+    element:  <UserJobApplicationPage></UserJobApplicationPage>
   },
 ]);
 

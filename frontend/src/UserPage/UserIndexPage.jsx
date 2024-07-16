@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import UserNavbar from '../components/navbar/UserNavbar.jsx';
-import CompanyList from '../components/CompanyList.jsx';
+import CompanyList from '../components/userComponents/userCompanyList.jsx';
 import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
