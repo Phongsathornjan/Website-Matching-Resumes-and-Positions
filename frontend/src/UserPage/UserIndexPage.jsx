@@ -1,11 +1,37 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import UserNavbar from '../components/navbar/UserNavbar.jsx';
 import CompanyList from '../components/CompanyList.jsx';
+import axios from 'axios';
 
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 const Userindexpage = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+        if(response.status == 200){
+          setIsLoggedIn(true);
+        }
+      } catch(err){
+        setIsLoggedIn(false);
+        navigate('/SignIn');
+        console.log(err.response);
+      }
+    }
+   
+    authentication();
+  }, []);
 
   return (
     <>

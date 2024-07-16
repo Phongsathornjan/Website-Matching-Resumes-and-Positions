@@ -30,7 +30,7 @@ app.post("/login", async (req, res) => {
 // Auth
 app.post("/auth", async (req, res) =>{
     return auth(req, res, () => {
-        res.status(200).json({ message: "Authenticated!" });
+        res.status(200).json({ message: "Authenticated" });
     });
 })
 
