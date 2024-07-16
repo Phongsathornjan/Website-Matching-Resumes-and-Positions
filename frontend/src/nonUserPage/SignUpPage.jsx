@@ -50,7 +50,8 @@ const SignUpPage = () => {
 };
 
 const SignUpStyle = {
-  margin: '40px', 
+  margin: '40px',
+  marginTop: '100px',
   width: '1000px',
   animation: 'fadeInFromBottom 1s ease-in',
 }

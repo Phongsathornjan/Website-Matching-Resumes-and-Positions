@@ -37,6 +37,7 @@ const HRInterviewPage = () => {
 };
 
 const dashboardStyle = {
+  marginTop: '100px',
   padding: '10px',
 };
 

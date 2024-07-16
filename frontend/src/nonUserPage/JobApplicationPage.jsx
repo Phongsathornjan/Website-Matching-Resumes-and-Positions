@@ -7,7 +7,9 @@ const JobApplicationPage = () => {
   return (
     <>
       <Navbar></Navbar>
+      <div style={{marginTop: '100px'}}>
       <JobApplicationList></JobApplicationList>
+      </div>
     </>
   );
 };

@@ -30,6 +30,7 @@ function IndexPage() {
   const formStyle = {
     display: 'flex',
     margin: '40px',
+    marginTop: '100px',
     justifyContent: 'center'
   };
 

@@ -8,7 +8,7 @@ const CreatePostPage = () => {
   return (
     <>
     <HRNavbar></HRNavbar>
-      <div style={{margin: '40px'}}>
+      <div style={{margin: '40px',marginTop: '100px'}}>
       <h1 style={titleStyle}>Create Post</h1>
       <form style={formStyle}>
         <div style={formRowStyle}>

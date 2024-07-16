@@ -31,7 +31,8 @@ const inputStyle = {
 const formStyle = {
     display: 'flex',
     margin: '40px',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginTop: '100px',
   };
 
 export default Userindexpage;

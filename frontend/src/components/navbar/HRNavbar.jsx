@@ -25,11 +25,16 @@ const HRNavbar = () => {
 const navbarStyle = {
   display: "flex",
   justifyContent: "space-between",
-  marginTop: "50px",
-  margin: "40px",
   fontSize: "20px",
   color: "#3769B4",
-  fontFamily: "Trirong"
+  fontFamily: "Trirong",
+  position: "fixed",
+  top: 0,
+  width: "100%",
+  backgroundColor: "white",
+  zIndex: 1000,
+  padding: "10px 40px",
+  boxShadow: "0 1px 4px -2px gray"
 }
 
 const linkStyle = {
