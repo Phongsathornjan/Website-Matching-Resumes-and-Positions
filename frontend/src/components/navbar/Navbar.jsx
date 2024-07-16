@@ -6,17 +6,17 @@ const Navbar = () => {
   return (
     <div style={navbarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle}>Resume Union</Link>
+      <Link to={'/'} style={linkStyle}>Resume Union</Link>
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'/'} style={linkStyle}>หางานที่เหมาะสมกับคุณ</Link>
+      <Link to={'/'} style={linkStyle}>find a job for you</Link>
       </div>
       <div>
-      <Link to={'/Signup'} style={linkStyle}>สมัครสมาชิก</Link>
+      <Link to={'/Signup'} style={linkStyle}>Register</Link>
       </div>
       <div>
-      <Link to={'/Signin'} style={linkStyle}>เข้าสู่ระบบ</Link>
+      <Link to={'/Signin'} style={linkStyle}>Login</Link>
       </div>
       </div>
     </div>
@@ -44,7 +44,7 @@ const Navbar = () => {
   };
 
   const rightBarStyle = {
-    width: "500px",
+    width: "400px",
     justifyContent: "space-between",
     display: "flex"
   };

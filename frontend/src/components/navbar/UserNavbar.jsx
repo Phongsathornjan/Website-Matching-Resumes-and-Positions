@@ -1,25 +1,44 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UserNavbar = () => {
+
+  const SignOut = () =>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('id_user');
+    window.location.reload();
+  }
+
   return (
     <div style={navbarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >Resume Union</Link>
+      <Link to={'/UserIndexPage'} style={linkStyle} >Resume Union</Link>
       </div>
       <div style={rightBarStyle}>
-      <div>
-      <Link to={'#'} style={linkStyle} >แนะนำงานที่เหมาะสมกับคุณ</Link>
-      </div>
-      <div>
-      <Link to={'#'} style={linkStyle} >หางาน</Link>
-      </div>
-      <div>
-      <Link to={'#'} style={linkStyle} >แจ้งเตือน</Link>
-      </div>
-      <div>
-      <Link to={'#'} style={linkStyle} >ข้อมูลส่วนตัว</Link>
-      </div>
+        <div>
+        <Link to={'#'} style={linkStyle} >Job Recommend Feature</Link>
+        </div>
+        <div>
+        <Link to={'#'} style={linkStyle} >find a job</Link>
+        </div>
+        <div>
+        <Link to={'#'} style={linkStyle} >Notification</Link>
+        </div>
+        <div class="dropdown">
+          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+            My Account
+          </button>
+          <ul class="dropdown-menu">
+            <Link to={'/MyInformation'} style={linkStyle}>
+              <li><a class="dropdown-item">ข้อมูลส่วนตัว</a></li>
+            </Link>
+            <Link to={'/MyResume'} style={linkStyle}>
+              <li><a class="dropdown-item">My Resume</a></li>
+            </Link>
+              <li><a class="dropdown-item" onClick={SignOut}>Sign out</a></li>
+          </ul>
+        </div>
       </div>
     </div>
   )
@@ -46,7 +65,7 @@ const linkStyle = {
 };
 
 const rightBarStyle = {
-  width: "600px",
+  width: "650px",
   justifyContent: "space-between",
   display: "flex"
 };

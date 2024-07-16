@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/navbar/UserNavbar.jsx';
+import axios from 'axios';
 import UserJobApplicationList from '../components/userComponents/userJobApplicationForm.jsx'
 
 const userJobApplicationPage = () => {
