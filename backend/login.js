@@ -28,7 +28,14 @@ const verifyLogin = async (req , res) => {
 
         if( user && (await bcrypt.compare(password,user.password))){
             const Token = jwt.sign(
-                { user_id: user._id, email },
+                {   user_id: user._id, 
+                    email: user.email, 
+                    first_name: user.first_name,
+                    last_name: user.last_name,
+                    role: user.role,
+                    phone: user.phone,
+                    company_name: user.company_name,
+                 },
                 process.env.TOKEN_KEY,
                 {
                     expiresIn: "2h"

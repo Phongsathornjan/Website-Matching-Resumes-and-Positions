@@ -5,6 +5,7 @@ const express = require('express');
 const verifyLogin = require('./login');
 const verifyRegister =require('./register');
 const auth = require('./middleware/auth');
+const tokenDecoder = require('./tokenDecoder');
 const cors = require('cors');
 
 const app = express();
@@ -32,6 +33,11 @@ app.post("/auth", async (req, res) =>{
     return auth(req, res, () => {
         res.status(200).json({ message: "Authenticated" });
     });
+})
+
+//Decoder token
+app.post("/tokenDecoder", async (req, res) => {
+    return tokenDecoder(req, res);
 })
 
 module.exports = app;
