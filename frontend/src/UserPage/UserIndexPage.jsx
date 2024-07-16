@@ -22,11 +22,13 @@ const Userindexpage = () => {
         })
         if(response.status == 200){
           setIsLoggedIn(true);
+        }else{
+          setIsLoggedIn(false);
+          navigate('/SignIn');
         }
       } catch(err){
         setIsLoggedIn(false);
         navigate('/SignIn');
-        console.log(err.response);
       }
     }
    
