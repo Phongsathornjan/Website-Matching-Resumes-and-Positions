@@ -33,6 +33,7 @@ const verifyLogin = async (req , res) => {
                     first_name: user.first_name,
                     last_name: user.last_name,
                     role: user.role,
+                    location: user.location,
                     phone: user.phone,
                     company_name: user.company_name,
                  },
@@ -49,6 +50,7 @@ const verifyLogin = async (req , res) => {
                 first_name: user.first_name,
                 last_name: user.last_name,
                 role: user.role,
+                location: user.location,
                 phone: user.phone,
                 company_name: user.company_name,
                 token: user.token

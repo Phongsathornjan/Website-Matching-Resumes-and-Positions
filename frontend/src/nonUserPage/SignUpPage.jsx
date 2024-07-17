@@ -1,11 +1,43 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/navbar/Navbar.jsx';
 import Bottombar from '../components/navbar/Bottombar.jsx';
 import Select from 'react-select';
+import axios from 'axios';
 import LocationOptions from '../components/LocationOptions.jsx';
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const SignUpPage = () => {
+  const navigate = useNavigate();
+
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [location, setLocation] = useState('Bangkok');
+  const [error, setError] = useState('');
+
+  const submit = async () => {
+    try{
+      const response = await axios.post('http://localhost:4001/register',{
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+        password: password,
+        location: location,
+      })
+      if(response.status == 200){
+        localStorage.setItem('token',response.data.token);
+        localStorage.setItem('id_user',response.data.id);
+        navigate('/UserIndexPage');
+      }
+
+
+    }catch(err){
+      if(err.response.status == 400){
+        setError(err.response.data.message);
+      }
+    }
+  }
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -25,21 +57,23 @@ const SignUpPage = () => {
     <div style={SignUpStyle}>
         <h1 style={titleStyle}>Sign Up</h1>
         <p style={subheadingStyle}>Please fill in personal information.</p>
+        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <form style={formStyle}>
             <div style={formRowStyle}>
-                <input type="text" placeholder="Firstname" style={inputStyle} />
-                <input type="text" placeholder="Lastname" style={inputStyle} />
+                <input type="text" placeholder="Firstname" style={inputStyle} onChange={(e) => setFirstName(e.target.value)}/>
+                <input type="text" placeholder="Lastname" style={inputStyle}  onChange={(e) => setLastName(e.target.value)}/>
             </div>
-            <input type="email" placeholder="Email" style={fullWidthInputStyle} />
-            <input type="password" placeholder="Password" style={fullWidthInputStyle} />
+            <input type="email" placeholder="Email" style={fullWidthInputStyle} onChange={(e) => setEmail(e.target.value)}/>
+            <input type="password" placeholder="Password" style={fullWidthInputStyle} onChange={(e) => setPassword(e.target.value)}/>
             <Select
                 options={LocationOptions}
                 defaultValue={LocationOptions[0]} 
                 placeholder="Select Location"
-                styles={{ width: '100%' }} 
+                styles={{ width: '100%' }}
+                onChange={(e) => setLocation(e.value)}
             />
             <Link to={'#'}>
-            <button type="submit" style={buttonStyle}>Register</button>
+            <button type="submit" style={buttonStyle} onClick={submit}>Register</button>
             </Link>
         </form>
       </div>

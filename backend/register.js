@@ -5,11 +5,11 @@ const jwt = require('jsonwebtoken');
 const verifyRegister = async (req , res) => {
     try{
 
-        let {first_name, last_name, email, password, phone, token} = req.body;
+        let {first_name, last_name, email, password, location, token} = req.body;
         email = email.toLowerCase();
 
         //validate user input
-        if(!(email && password && first_name && last_name && phone)){
+        if(!(email && password && first_name && last_name && location)){
             return res.status(400).json({
                 message: 'All input is require'
             })
@@ -33,8 +33,9 @@ const verifyRegister = async (req , res) => {
             email: email.toLowerCase(),
             password: encryptedPassword,
             role: 'member',
+            location: location,
             company_name: '-',
-            phone: phone,
+            phone: '-',
         })
 
         //Create token
@@ -50,7 +51,7 @@ const verifyRegister = async (req , res) => {
         user.token = Token;
 
         //return new user
-        res.status(201).json(user);
+        res.status(200).json(user);
 
     } catch (err){
         console.log(err);

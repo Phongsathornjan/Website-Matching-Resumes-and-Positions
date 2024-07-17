@@ -7,6 +7,7 @@ const userSchema = new moongoose.Schema({
     password: { type: String},
     role: { type: String},
     phone: { type: String},
+    location: { type: String},
     company_name: { type: String},
     token: { type: String},
 })

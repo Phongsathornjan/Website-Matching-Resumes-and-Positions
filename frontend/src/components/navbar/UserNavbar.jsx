@@ -25,18 +25,18 @@ const UserNavbar = () => {
         <div>
         <Link to={'#'} style={linkStyle} >Notification</Link>
         </div>
-        <div class="dropdown">
-          <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+        <div className="dropdown">
+          <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
             My Account
           </button>
-          <ul class="dropdown-menu">
+          <ul className="dropdown-menu">
             <Link to={'/MyInformation'} style={linkStyle}>
-              <li><a class="dropdown-item">ข้อมูลส่วนตัว</a></li>
+              <li><p className="dropdown-item">ข้อมูลส่วนตัว</p></li>
             </Link>
             <Link to={'/MyResume'} style={linkStyle}>
-              <li><a class="dropdown-item">My Resume</a></li>
+              <li><p className="dropdown-item">My Resume</p></li>
             </Link>
-              <li><a class="dropdown-item" onClick={SignOut}>Sign out</a></li>
+              <li><p className="dropdown-item" onClick={SignOut}>Sign out</p></li>
           </ul>
         </div>
       </div>
