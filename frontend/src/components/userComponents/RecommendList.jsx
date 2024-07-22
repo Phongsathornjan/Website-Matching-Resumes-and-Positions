@@ -46,25 +46,12 @@ const RecommendList = () => {
     };
   }, []);
 
+  const [Click , setClick] = useState(false);
+
   return (
     <Container>
       <Row>
-        <Col md={6}>
-          {jobList.map(job => (
-            <Card key={job.id} className="mb-3" style={cardStyle} >
-              <Card.Body>
-                <Card.Title>{job.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
-                <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
-                <Card.Text>{job.description}</Card.Text>
-                <Card.Text>{job.requirements}</Card.Text>
-                <Card.Text>{job.posted}</Card.Text>
-                <Button variant="success" style={{ float: 'right' }}>สมัครที่นี่</Button>
-              </Card.Body>
-            </Card>
-          ))}
-        </Col>
-        <Col md={6}>
+      <Col md={6}>
             {
                 <Card style={{ ...borderStyle, height: '600px' }}>
                     <Card.Body>
@@ -76,8 +63,30 @@ const RecommendList = () => {
                 <p style={TextStyle}>Recommend the job that suits you best
                 </p>
             </div>
-            <button style={recommendationButtonStyle}>Recommend</button>
+            <button style={recommendationButtonStyle} onClick={() => { setClick(true);}}>Recommend</button>
         </Col>
+    
+        {Click ? (
+        <Col md={6}>
+          {jobList.map(job => (
+            <Card key={job.id} className="mb-3" style={cardStyle} >
+              <Card.Body>
+                <Card.Title>{job.title}</Card.Title>
+                <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
+                <Card.Text>{job.description}</Card.Text>
+                <Card.Text>{job.requirements}</Card.Text>
+                <Card.Text>{job.posted}</Card.Text>
+                <Link to={'/JobApplication'}>
+                <Button variant="success" style={{ float: 'right' }}>สมัครที่นี่</Button>
+                </Link>
+              </Card.Body>
+            </Card>
+          ))}
+        </Col>
+        ) : (
+          <div></div>
+        )}
 
       </Row>
     </Container>
@@ -86,7 +95,7 @@ const RecommendList = () => {
 
  const cardStyle = {
     borderRadius: '20px',
-
+    animation: 'fadeInFromBottom 0.6s ease-in',
  };
 
  const globalStyle = `
@@ -112,6 +121,7 @@ const recommendationButtonStyle = {
     cursor: 'pointer',
     display: 'block',
     margin: '20px auto',
+    animation: 'fadeInFromBottom 0.6s ease-in',
 };
 
 const TextStyle = {
@@ -120,11 +130,12 @@ const TextStyle = {
     fontSize: '18px', 
     fontWeight: 'bold',
     margin: '40px auto',
+    animation: 'fadeInFromBottom 0.6s ease-in',
 };
 
 const borderStyle = {
     borderRadius: '20px',
-
+    animation: 'fadeInFromBottom 0.6s ease-in',
  };
 
 export default RecommendList;

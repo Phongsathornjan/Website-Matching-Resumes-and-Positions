@@ -19,6 +19,7 @@ const cardStyle = {
   padding: '15px',
   color: '#fff',
   fontFamily: 'Trirong',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
 };
 
 const iconStyle = {

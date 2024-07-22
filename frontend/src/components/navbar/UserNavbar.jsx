@@ -17,10 +17,10 @@ const UserNavbar = () => {
       </div>
       <div style={rightBarStyle}>
         <div>
-        <Link to={'#'} style={linkStyle} >Job Recommend Feature</Link>
+        <Link to={'/RecommendJobPage'} style={linkStyle} >Job Recommend Feature</Link>
         </div>
         <div>
-        <Link to={'#'} style={linkStyle} >find a job</Link>
+        <Link to={'/UserIndexPage'} style={linkStyle} >find a job</Link>
         </div>
         <div>
         <Link to={'#'} style={linkStyle} >Notification</Link>
@@ -33,7 +33,7 @@ const UserNavbar = () => {
             <Link to={'/MyInformation'} style={linkStyle}>
               <li><p className="dropdown-item">ข้อมูลส่วนตัว</p></li>
             </Link>
-            <Link to={'/MyResume'} style={linkStyle}>
+            <Link to={'/uploadResumePage'} style={linkStyle}>
               <li><p className="dropdown-item">My Resume</p></li>
             </Link>
               <li><p className="dropdown-item" onClick={SignOut}>Sign out</p></li>

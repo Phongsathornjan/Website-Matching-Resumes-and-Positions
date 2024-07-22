@@ -1,22 +1,24 @@
-import React, { useEffect,useState } from 'react';
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
+import React, { useEffect} from 'react';
+import { Card , Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 import { FaBriefcase, FaUsers } from 'react-icons/fa';
+import StatusCard from '../StatusCard';
 
 
 
 const Resume = () => {
-  const StatusCard = ({ title, count, color, icon }) => {
-    return (
-      <div style={{ ...cardStyle, backgroundColor: color, display: 'flex', alignItems: 'center' }}>
-        <div style={iconStyle}>{icon}</div>
-        <div style={{ ...contentStyle, flexDirection: 'column', marginLeft: '15px' }}>
-          <h4 style={titleStyle}>{title}</h4>
-          <p style={countStyle}>{count}</p>
-        </div>
-      </div>
-    );
-  };
+
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
   
   return (
     <Container>
@@ -48,7 +50,7 @@ const Resume = () => {
         </Col>
         <Col md={8}>
           {
-            <Card style={{ ...borderStyle, height: '550px' }}>
+            <Card style={{ ...borderStyle, height: '700px' }}>
               <Card.Body>
 
               </Card.Body>
@@ -63,18 +65,19 @@ const Resume = () => {
 
  const borderStyle = {
     borderRadius: '20px',
-
+    animation: 'fadeInFromBottom 0.6s ease-in',
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
  };
 
  const globalStyle = `
 @keyframes fadeInFromBottom {
   0% {
     opacity: 0;
-    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+    transform: translateY(20px); 
   }
   100% {
     opacity: 1;
-    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+    transform: translateY(0); 
   }
 }
 
@@ -90,7 +93,8 @@ const recommendationButtonStyle = {
     display: 'block',
     margin: '20px auto',
     marginBottom: '60px',
-    alignItems: 'center', 
+    alignItems: 'center',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
   };
 
 const TextStyle = {
@@ -103,8 +107,8 @@ const TextStyle = {
 
 const statusContainerStyle = {
   display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', // Adjust the min-width as needed
-  gap: '30px', // Adjust the gap as needed
+  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+  gap: '30px', 
   alignItems: 'center',
   marginBottom: '30px',
 };
