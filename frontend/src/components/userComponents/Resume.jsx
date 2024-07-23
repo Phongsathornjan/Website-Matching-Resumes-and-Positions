@@ -1,14 +1,19 @@
-import React, { useEffect} from 'react';
-import { Card , Container, Row, Col } from 'react-bootstrap';
+import React, { useEffect, useState} from 'react';
+import { Container, Row, Col } from 'react-bootstrap';
+import axios from 'axios';
 import { Link } from 'react-router-dom'
-import { FaBriefcase, FaUsers } from 'react-icons/fa';
+import {FaBriefcase, FaUsers } from 'react-icons/fa';
 import StatusCard from '../StatusCard';
-
-
 
 const Resume = () => {
 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [image, setImage] = useState(null);
+  const [userId, setUserId] = useState(null);
+  const [error, setError] = useState(null);
+  
   useEffect(() => {
+    setUserId(localStorage.getItem('id_user'));
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;
@@ -19,16 +24,54 @@ const Resume = () => {
       document.head.removeChild(styleSheet);
     };
   }, []);
+
+  useEffect(() => {
+
+  }, [image]);
+
+  const handleFileChange = (event) => {
+    setSelectedFile(event.target.files[0]);
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('id', userId);
+    if(!selectedFile){
+      setError('กรุณาเลือก Resume ของคุณ')
+      return
+    };
+    try{
+      const response = await axios.post('http://localhost:4001/uploadPDF', formData, {
+          headers: {
+              'Content-Type': 'multipart/form-data'
+          }
+      });
+      if(response.status == 200){
+        setTimeout(() => {
+          setImage(true);
+        }, 1200); // 1.5s
+      }
+      console.log(response);
+  } catch(err){
+        console.error(err);
+      }
+  }
   
   return (
     <Container>
       <Row>
         <Col md={3}>
           <div className="text-center">
-              <p style={TextStyle}> Upload Your Resume
-              </p>
+              <p style={TextStyle}> Upload Your Resume</p>
+              {error && <div className="alert alert-danger" role="alert">{error}</div>}
           </div>
-            <button style={recommendationButtonStyle}>Upload</button>
+            <div style={inputStyle}>
+            <input type="file" className="form-control" onChange={handleFileChange} />
+            <div style={{width: '20px'}}></div>
+            <button style={recommendationButtonStyle} type='submit' onClick={handleSubmit} >Upload</button>
+            </div>
               <div style={statusContainerStyle}>
                 <StatusCard
                   title="My Job"
@@ -50,11 +93,13 @@ const Resume = () => {
         </Col>
         <Col md={8}>
           {
-            <Card style={{ ...borderStyle, height: '700px' }}>
-              <Card.Body>
-
-              </Card.Body>
-            </Card>
+            <div style={{ ...borderStyle, height: '700px' }}>
+              {image ? (
+                <img src={`../../../public/Resume/${userId}-1.jpg`} width={600} height={700}/>
+              ):(
+                <div></div>
+              )}
+            </div>
           }
         </Col>
 
@@ -84,18 +129,21 @@ const Resume = () => {
 `;
 
 const recommendationButtonStyle = {
+    height: '40px',
     backgroundColor: '#D27062',
     color: 'white',
-    padding: '20px 60px',
     border: 'none',
     borderRadius: '15px',
     cursor: 'pointer',
     display: 'block',
-    margin: '20px auto',
-    marginBottom: '60px',
     alignItems: 'center',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)'
   };
+
+const inputStyle = {
+  display: 'flex',
+  marginBottom: '50px'
+};
 
 const TextStyle = {
     color: '#828282',
@@ -112,62 +160,5 @@ const statusContainerStyle = {
   alignItems: 'center',
   marginBottom: '30px',
 };
-
-
-const cardStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  borderRadius: '10px',
-  padding: '15px',
-  color: '#fff',
-  fontFamily: 'Trirong',
-};
-
-const iconStyle = {
-  fontSize: '24px',
-  marginRight: '15px',
-};
-
-const contentStyle = {
-  display: 'flex',
-  flexDirection: 'column',
-};
-
-const titleStyle = {
-  margin: 0,
-  fontSize: '18px',
-  fontWeight: 'normal',
-};
-
-const countStyle = {
-  margin: 0,
-  fontSize: '24px',
-  fontWeight: 'bold',
-};
-
-const purpleBoxStyle = {
-  width: '200px', // Set the desired width for the purple box
-  backgroundColor: '#9d8ee1',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: '10px',
-  padding: '15px',
-  color: '#fff',
-  fontFamily: 'Trirong',
-};
-
-const greenBoxStyle = {
-  width: '200px', // Set the desired width for the green box
-  backgroundColor: '#2ecc71',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  borderRadius: '10px',
-  padding: '15px',
-  color: '#fff',
-  fontFamily: 'Trirong',
-};
-
 
 export default Resume;

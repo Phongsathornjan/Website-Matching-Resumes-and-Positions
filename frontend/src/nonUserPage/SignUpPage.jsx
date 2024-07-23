@@ -28,7 +28,7 @@ const SignUpPage = () => {
       if(response.status == 200){
         localStorage.setItem('token',response.data.token);
         localStorage.setItem('id_user',response.data.id);
-        navigate('/UserIndexPage');
+        navigate('/SignIn');
       }
 
 

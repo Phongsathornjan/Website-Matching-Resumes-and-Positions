@@ -7,7 +7,9 @@ const verifyRegister =require('./register');
 const auth = require('./middleware/auth');
 const tokenDecoder = require('./tokenDecoder');
 const cors = require('cors');
-
+const upload = require('./uploadPDF');
+const main = require('./uploadPDF2mongo');
+const path = require('path');
 const app = express();
 
 const corsOptions = {
@@ -17,6 +19,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 app.use(express.json());
+app.use('/images', express.static(path.join(__dirname, 'Resume')));
 
 //Register
 app.post("/register", async (req, res) =>{
@@ -38,6 +41,16 @@ app.post("/auth", async (req, res) =>{
 //Decoder token
 app.post("/tokenDecoder", async (req, res) => {
     return tokenDecoder(req, res);
+})
+//uploadPDF
+app.post("/uploadPDF", upload.single('file'),(req, res) => {
+    try {
+        const userId = req.body.id;
+        main(userId);
+        res.status(200).json({ message: 'File uploaded successfully!', file: req.file,userId});
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to upload file.', error: error.message });
+    }
 })
 
 module.exports = app;
