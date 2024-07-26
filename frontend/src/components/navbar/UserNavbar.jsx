@@ -1,13 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const UserNavbar = () => {
+  const navigate = useNavigate();
 
   const SignOut = () =>{
     localStorage.removeItem('token');
     localStorage.removeItem('id_user');
-    window.location.reload();
+    navigate('/SignIn');
   }
 
   return (

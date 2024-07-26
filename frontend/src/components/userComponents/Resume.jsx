@@ -11,7 +11,8 @@ const Resume = () => {
   const [image, setImage] = useState(null);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
-  
+  const [Alert,setAlert] = useState(null);
+
   useEffect(() => {
     setUserId(localStorage.getItem('id_user'));
     const styleSheet = document.createElement("style");
@@ -26,12 +27,23 @@ const Resume = () => {
   }, []);
 
   useEffect(() => {
-
-  }, [image]);
+    if (userId) {
+        checkResume();
+    }
+}, [userId]);
 
   const handleFileChange = (event) => {
     setSelectedFile(event.target.files[0]);
   };
+
+  const checkResume = async () =>{
+    const response = await axios.post('http://localhost:4001/checkValidResume',{
+      id_user: userId
+    });
+    if(response.status == 200){
+      setImage(true);
+    }
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -39,7 +51,8 @@ const Resume = () => {
     formData.append('file', selectedFile);
     formData.append('id', userId);
     if(!selectedFile){
-      setError('กรุณาเลือก Resume ของคุณ')
+      setError('กรุณาเลือก Resume ของคุณ');
+      setAlert(null); 
       return
     };
     try{
@@ -49,11 +62,12 @@ const Resume = () => {
           }
       });
       if(response.status == 200){
+        setError(null);
+        setAlert('Upload Done');
         setTimeout(() => {
-          setImage(true);
-        }, 1200); // 1.5s
+          window.location.reload();
+      }, 1000);
       }
-      console.log(response);
   } catch(err){
         console.error(err);
       }
@@ -66,6 +80,7 @@ const Resume = () => {
           <div className="text-center">
               <p style={TextStyle}> Upload Your Resume</p>
               {error && <div className="alert alert-danger" role="alert">{error}</div>}
+              {Alert && <div className="alert alert-success" role="alert">{Alert}</div>}
           </div>
             <div style={inputStyle}>
             <input type="file" className="form-control" onChange={handleFileChange} />
@@ -93,9 +108,11 @@ const Resume = () => {
         </Col>
         <Col md={8}>
           {
-            <div style={{ ...borderStyle, height: '700px' }}>
+            <div style={{ ...borderStyle}}>
               {image ? (
-                <img src={`../../../public/Resume/${userId}-1.jpg`} width={600} height={700}/>
+                <center style={PDFStyle}>
+                <img src={`../../../public/Resume/${userId}-1.jpg`} width={556} height={787}/>
+                </center>
               ):(
                 <div></div>
               )}
@@ -109,9 +126,15 @@ const Resume = () => {
 };
 
  const borderStyle = {
+    height: '800px', 
     borderRadius: '20px',
     animation: 'fadeInFromBottom 0.6s ease-in',
     boxShadow: '0 2px 4px rgba(0, 0, 0, 0.3)'
+ };
+
+ const PDFStyle = {
+  padding: '10px',
+  animation: 'fadeInFromBottom 0.6s ease-in',
  };
 
  const globalStyle = `

@@ -6,6 +6,7 @@ const verifyLogin = require('./login');
 const verifyRegister =require('./register');
 const auth = require('./middleware/auth');
 const tokenDecoder = require('./tokenDecoder');
+const checkValidResume = require('./checkValidResume');
 const cors = require('cors');
 const upload = require('./uploadPDF');
 const main = require('./uploadPDF2mongo');
@@ -42,6 +43,7 @@ app.post("/auth", async (req, res) =>{
 app.post("/tokenDecoder", async (req, res) => {
     return tokenDecoder(req, res);
 })
+
 //uploadPDF
 app.post("/uploadPDF", upload.single('file'),(req, res) => {
     try {
@@ -51,6 +53,11 @@ app.post("/uploadPDF", upload.single('file'),(req, res) => {
     } catch (error) {
         res.status(500).json({ message: 'Failed to upload file.', error: error.message });
     }
+})
+
+//checkValidResume
+app.post("/checkValidResume", async (req, res) => {
+    return checkValidResume(req, res);
 })
 
 module.exports = app;
