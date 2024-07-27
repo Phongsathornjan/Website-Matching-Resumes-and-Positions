@@ -9,7 +9,7 @@ const tokenDecoder = require('./tokenDecoder');
 const checkValidResume = require('./checkValidResume');
 const cors = require('cors');
 const upload = require('./uploadPDF');
-const main = require('./uploadPDF2mongo');
+const uploadPDF2mongo = require('./uploadPDF2mongo');
 const path = require('path');
 const app = express();
 
@@ -48,7 +48,7 @@ app.post("/tokenDecoder", async (req, res) => {
 app.post("/uploadPDF", upload.single('file'),(req, res) => {
     try {
         const userId = req.body.id;
-        main(userId);
+        uploadPDF2mongo(userId);
         res.status(200).json({ message: 'File uploaded successfully!', file: req.file,userId});
     } catch (error) {
         res.status(500).json({ message: 'Failed to upload file.', error: error.message });

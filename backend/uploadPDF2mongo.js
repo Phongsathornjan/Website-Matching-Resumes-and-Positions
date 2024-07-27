@@ -1,5 +1,6 @@
 const poppler = require('pdf-poppler');
 const path = require('path');
+const ChatGPTapi = require('./ChatGPTapi');
 
 
 const convertPDF2jpg = async (userId) => {
@@ -26,8 +27,11 @@ const convertPDF2jpg = async (userId) => {
     }
 }
 
-const main = (userId) => {
-    convertPDF2jpg(userId)
+
+const main = async (userId) => {
+    await convertPDF2jpg(userId);
+    const Data = await ChatGPTapi();
+    console.log(Data);
 }
 
 module.exports = main;

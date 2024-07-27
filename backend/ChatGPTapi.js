@@ -8,6 +8,7 @@ const readPdf = async (filePath) => {
     try {
         const dataBuffer = fs.readFileSync(filePath);
         const data = await pdfParse(dataBuffer);
+        console.log(data);
         return data.text;
     } catch (err) {
         console.error('Error reading PDF:', err);
@@ -73,7 +74,6 @@ const ChatGPTapi = async () => {
         if (text) {
             const analysis = await analyzeTextWithChatGPT(text);
             const output = await JSON.parse(analysis);
-            console.log(output);
             return output;
         } else {
             console.log('can not read PDF');
@@ -85,4 +85,4 @@ const ChatGPTapi = async () => {
     }
 };
 
-ChatGPTapi();
+module.exports = ChatGPTapi;
