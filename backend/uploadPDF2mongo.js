@@ -1,7 +1,7 @@
 const poppler = require('pdf-poppler');
 const path = require('path');
 const ChatGPTapi = require('./ChatGPTapi');
-
+const fs = require('fs');
 
 const convertPDF2jpg = async (userId) => {
 
@@ -17,7 +17,16 @@ const convertPDF2jpg = async (userId) => {
 
     poppler.convert(file, opts)
         .then(res => {
+
             console.log('Successfully converted');
+
+            fs.unlink('../frontend/public/Resume/Resume.pdf', (err) => {
+                if (err) {
+                  console.error('Error occurred while trying to remove file:', err);
+                } else {
+                  console.log('File removed successfully!');
+                }
+              });
         })
         .catch(error => {
             console.error(error);
@@ -30,7 +39,8 @@ const convertPDF2jpg = async (userId) => {
 
 const main = async (userId) => {
     await convertPDF2jpg(userId);
-    const Data = await ChatGPTapi();
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    const Data = await ChatGPTapi(userId);
     console.log(Data);
 }
 

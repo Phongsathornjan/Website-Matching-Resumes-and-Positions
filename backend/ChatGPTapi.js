@@ -1,88 +1,86 @@
 require('dotenv').config();
-const fs = require('fs');
-const pdfParse = require('pdf-parse');
 const axios = require('axios');
+const fs = require('fs');
 
-// ฟังก์ชันสำหรับการอ่านไฟล์ PDF และแปลงเป็นข้อความ
-const readPdf = async (filePath) => {
+const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
     try {
-        const dataBuffer = fs.readFileSync(filePath);
-        const data = await pdfParse(dataBuffer);
-        console.log(data);
-        return data.text;
-    } catch (err) {
-        console.error('Error reading PDF:', err);
-        return null;
-    }
-};
 
-async function analyzeTextWithChatGPT(text) {
-    const { CHATGPT_KEY } = process.env;
-    const Key = process.env.CHATGPT_KEY || CHATGPT_KEY;
-    const endpoint = 'https://api.openai.com/v1/chat/completions';
+        const imageBuffer = fs.readFileSync(imagePath);
+        const imageBase64 = imageBuffer.toString('base64');
 
-    try {
-        const response = await axios.post(
-            endpoint,
-            {
-                model: "gpt-4",
-                messages: [
-                    { role: "system", content: "You are a helpful assistant." },
-                    { role: "user", content: `
-                            ***Context***
-                            You are my assistant. I will send a Text to you.
-                            Text that i will send to you is come from Resume(PDF file). I use fs and pdfParse library to read a Resume so my text has a strange structure and seems disjointed.
-                            You work is to compose and extract data from Text follow as my instruction.
-                            ***Key information**
-                            The text is " ${text} ".
-                            Then You have to response in JSON follow as this structure.
-                            {
-                            "Output":[
-                                {
-                                "Firstname": "",
-                                "Lastname": "",
-                                "university": "",
-                                "Experience": "",
-                                "skill": "",
-                                "summary": "",
-                                }
-                            ]
-                            }
-                            ***Role of you***
-                            1. If data cannot be found as my instruction then you can response null for that field.
-                            2. your message response have to be a JSON structure Only!. Do not push any Word in your response because I have to use JSON.parse with your message response.
-                            `}
+        const data = {
+            model: 'gpt-4o-mini',
+            messages: [
+                { role: "system", content: "You are a helpful assistant." },
+                { role: "user", content: [
+                    {
+                     type: "text",
+                     text:                     `***Context***
+                     You are my assistant. I will send a Text to you.
+                     Text that i will send to you is come from Resume(JPG file).
+                     You work is to compose and extract data from Text follow as my instruction.
+                     ***Key information**
+                     Then You have to response in JSON follow as this structure.
+                     {
+                         "Output":[
+                             {
+                                 "Firstname": "",
+                                 "Lastname": "",
+                                 "university": "",
+                                 "Experience": "",
+                                 "skill": "",
+                                 "summary": "this field is summary of Resume Do not empty or null"
+                             }
+                         ]
+                     }
+                     ***Role of you***
+                     1. If data cannot be found as my instruction then you can response null for that field.
+                    `
+                    },{
+                        type: "image_url",
+                        image_url: {
+                            url: `data:image/jpeg;base64,${imageBase64}`
+                        }
+                    }
                 ]
-            },
-            {
-                headers: {
-                    'Authorization': `Bearer ${Key}`,
-                    'Content-Type': 'application/json'
                 }
+            ]
+        };
+
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${apiKey}`,
+                'Content-Type': 'application/json'
             }
-        );
+        };
+
+        const response = await axios.post(apiEndpoint, data, config);
+
         return response.data.choices[0].message.content;
-    } catch (err) {
-        console.error('Error calling ChatGPT API:', err);
+    } catch (error) {
+        console.error('Error:', error.response ? error.response.data : error.message);
     }
 }
 
-const ChatGPTapi = async () => {
-    const text = await readPdf('../frontend/public/Resume/Resume.pdf');
 
-    try{
-        if (text) {
-            const analysis = await analyzeTextWithChatGPT(text);
-            const output = await JSON.parse(analysis);
-            return output;
-        } else {
-            console.log('can not read PDF');
-            return null;
-        }
-    }catch(err){
-        console.log('Internal server error',err);
-        return 'NOT_JSON';
-    }
-};
+const extractJSON = (input) => {
+    const startIndex = input.indexOf('{');
+    const endIndex = input.lastIndexOf('}') + 1;
+    const jsonString = input.slice(startIndex, endIndex);
+    return JSON.parse(jsonString);
+}
+
+const ChatGPTapi = async (userId) =>{
+
+    const imagePath = `../frontend/public/Resume/${userId}-1.jpg`;
+    const apiEndpoint = 'https://api.openai.com/v1/chat/completions';
+    const { CHATGPT_KEY } = process.env;
+    const apiKey = process.env.CHATGPT_KEY || CHATGPT_KEY;
+
+    const StringData = await sendImageToChatGPT(imagePath, apiEndpoint, apiKey);
+    const JsonData = await extractJSON(StringData);
+    return JsonData;
+}
 
 module.exports = ChatGPTapi;
+
