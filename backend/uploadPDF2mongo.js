@@ -2,6 +2,8 @@ const poppler = require('pdf-poppler');
 const path = require('path');
 const ChatGPTapi = require('./ChatGPTapi');
 const fs = require('fs');
+const Resume = require('./model/resume');
+const { validate } = require('./model/user');
 
 const convertPDF2jpg = async (userId) => {
 
@@ -36,12 +38,30 @@ const convertPDF2jpg = async (userId) => {
     }
 }
 
+const uploadData2Mongo = async (userId,data) =>{
+    try{
+        const Validate = await Resume.findOneAndUpdate(
+            { userId: userId },
+            { $set: {
+                university:  data.Output[0].university,
+                Experience:  data.Output[0].Experience,
+                skill:       data.Output[0].skill,
+                summary:     data.Output[0].summary,
+                userId:      userId,
+            } },
+            { new: true, upsert: true }
+          );
+    }catch(err){
+        console.log(err);
+    }
+}
+
 
 const main = async (userId) => {
     await convertPDF2jpg(userId);
     await new Promise(resolve => setTimeout(resolve, 2000));
     const Data = await ChatGPTapi(userId);
-    console.log(Data);
+    uploadData2Mongo(userId,Data);
 }
 
 module.exports = main;

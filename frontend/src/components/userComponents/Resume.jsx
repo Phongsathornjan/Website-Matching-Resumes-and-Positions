@@ -8,7 +8,7 @@ import StatusCard from '../StatusCard';
 const Resume = () => {
 
   const [selectedFile, setSelectedFile] = useState(null);
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState(false);
   const [userId, setUserId] = useState(null);
   const [error, setError] = useState(null);
   const [Alert,setAlert] = useState(null);
@@ -55,6 +55,7 @@ const Resume = () => {
       setAlert(null); 
       return
     };
+    setAlert('Uploading...');
     try{
       const response = await axios.post('http://localhost:4001/uploadPDF', formData, {
           headers: {
@@ -63,7 +64,7 @@ const Resume = () => {
       });
       if(response.status == 200){
         setError(null);
-        setAlert('Upload Done');
+        setAlert('Upload Done Refreshing...');
         setTimeout(() => {
           window.location.reload();
       }, 1000);

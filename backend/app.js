@@ -45,13 +45,13 @@ app.post("/tokenDecoder", async (req, res) => {
 })
 
 //uploadPDF
-app.post("/uploadPDF", upload.single('file'),(req, res) => {
+app.post("/uploadPDF", upload.single('file'),async (req, res) => {
     try {
         const userId = req.body.id;
-        uploadPDF2mongo(userId);
-        res.status(200).json({ message: 'File uploaded successfully!', file: req.file,userId});
+        await uploadPDF2mongo(userId);
+        return res.status(200).json({ message: 'File uploaded successfully!', file: req.file,userId});
     } catch (error) {
-        res.status(500).json({ message: 'Failed to upload file.', error: error.message });
+        return res.status(500).json({ message: 'Failed to upload file.', error: error.message });
     }
 })
 

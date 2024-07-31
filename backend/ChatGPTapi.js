@@ -24,8 +24,6 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                      {
                          "Output":[
                              {
-                                 "Firstname": "",
-                                 "Lastname": "",
                                  "university": "",
                                  "Experience": "",
                                  "skill": "",
@@ -34,7 +32,7 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                          ]
                      }
                      ***Role of you***
-                     1. If data cannot be found as my instruction then you can response null for that field.
+                     1. If data cannot be found as my instruction then you can response empty string for that field.
                     `
                     },{
                         type: "image_url",
