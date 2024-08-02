@@ -1,7 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import { Link } from 'react-router-dom'
 import {FaBriefcase, FaUsers } from 'react-icons/fa';
 import StatusCard from '../StatusCard';
 
@@ -37,24 +36,37 @@ const Resume = () => {
   };
 
   const checkResume = async () =>{
+    try{
     const response = await axios.post('http://localhost:4001/checkValidResume',{
       id_user: userId
     });
     if(response.status == 200){
       setImage(true);
     }
+    }catch(err){
+      console.log(err);
+    }
   }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
     const formData = new FormData();
     formData.append('file', selectedFile);
     formData.append('id', userId);
+
     if(!selectedFile){
-      setError('กรุณาเลือก Resume ของคุณ');
       setAlert(null); 
+      setError('กรุณาเลือก Resume ของคุณ');
       return
     };
+
+    if(selectedFile.type != 'application/pdf'){
+      setAlert(null); 
+      setError('กรุณาเลือกไฟล์ PDF');
+      return
+    }
+
     setAlert('Uploading...');
     try{
       const response = await axios.post('http://localhost:4001/uploadPDF', formData, {

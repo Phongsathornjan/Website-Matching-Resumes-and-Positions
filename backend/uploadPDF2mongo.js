@@ -3,7 +3,6 @@ const path = require('path');
 const ChatGPTapi = require('./ChatGPTapi');
 const fs = require('fs');
 const Resume = require('./model/resume');
-const { validate } = require('./model/user');
 
 const convertPDF2jpg = async (userId) => {
 
