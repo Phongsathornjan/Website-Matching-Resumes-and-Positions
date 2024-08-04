@@ -2,14 +2,17 @@ require('dotenv').config();
 require('./config/database').connect();
 
 const express = require('express');
-const verifyLogin = require('./login');
-const verifyRegister =require('./register');
+
+const verifyLogin = require('./Authentication/login');
+const verifyRegister =require('./Authentication/register');
 const auth = require('./middleware/auth');
-const tokenDecoder = require('./tokenDecoder');
+const tokenDecoder = require('./Authentication/tokenDecoder');
 const checkValidResume = require('./checkValidResume');
 const cors = require('cors');
 const upload = require('./uploadPDF');
 const uploadPDF2mongo = require('./uploadPDF2mongo');
+const createPost = require('./services/post/createpost');
+
 const path = require('path');
 const app = express();
 
@@ -58,6 +61,11 @@ app.post("/uploadPDF", upload.single('file'),async (req, res) => {
 //checkValidResume
 app.post("/checkValidResume", async (req, res) => {
     return checkValidResume(req, res);
+})
+
+//createPost
+app.post("/createPost", async (req, res) => {
+    return createPost(req,res);
 })
 
 module.exports = app;
