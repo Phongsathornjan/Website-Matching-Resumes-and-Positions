@@ -12,6 +12,7 @@ const cors = require('cors');
 const upload = require('./uploadPDF');
 const uploadPDF2mongo = require('./uploadPDF2mongo');
 const createPost = require('./services/post/createpost');
+const deletePost = require('./services/post/deletepost');
 
 const path = require('path');
 const app = express();
@@ -67,5 +68,11 @@ app.post("/checkValidResume", async (req, res) => {
 app.post("/createPost", async (req, res) => {
     return createPost(req,res);
 })
+
+//deletePost
+app.post("/deletePost", async (req, res) => {
+    return deletePost(req,res);
+})
+
 
 module.exports = app;

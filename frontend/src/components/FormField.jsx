@@ -1,10 +1,10 @@
 import React from 'react';
 
-const FormField = ({ label, type, placeholder }) => {
+const FormField = ({ label, type, placeholder, onChange }) => {
   return (
     <div style={formFieldStyle}>
       <label style={labelStyle}>{label}</label>
-      <input type={type} placeholder={placeholder} style={inputStyle} />
+      <input type={type} placeholder={placeholder} style={inputStyle} onChange={onChange}/>
     </div>
   );
 };

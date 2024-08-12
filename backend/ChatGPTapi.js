@@ -77,6 +77,7 @@ const ChatGPTapi = async (userId) =>{
 
     const StringData = await sendImageToChatGPT(imagePath, apiEndpoint, apiKey);
     const JsonData = await extractJSON(StringData);
+    console.log(JsonData);
     return JsonData;
 }
 
