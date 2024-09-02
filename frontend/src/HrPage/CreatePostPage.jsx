@@ -41,7 +41,7 @@ const CreatePostPage = () => {
         location: location,
         description: description,
       });
-      setSuccess('Create Post Success. Refreshing...')
+      setSuccess('Create Post Success. Refreshing...');
     }catch(err){
       if(err.response.status == 400){
         setError(err.response.data.message);

@@ -26,12 +26,11 @@ const navbarStyle = {
   display: "flex",
   justifyContent: "space-between",
   fontSize: "20px",
-  color: "#3769B4",
   fontFamily: "Trirong",
   position: "fixed",
   top: 0,
   width: "100%",
-  backgroundColor: "white",
+  backgroundColor: "#639CF2",
   zIndex: 1000,
   padding: "10px 40px",
   boxShadow: "0 1px 4px -2px gray"
@@ -39,7 +38,7 @@ const navbarStyle = {
 
 const linkStyle = {
   textDecoration: 'none',
-  color: '#3769B4'
+  color: '#fff'
 };
 
 const rightBarStyle = {
