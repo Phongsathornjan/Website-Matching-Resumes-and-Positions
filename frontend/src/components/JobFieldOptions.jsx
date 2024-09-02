@@ -1,0 +1,33 @@
+
+const FieldOptions = [
+    { value: 'Law', label: 'Law' },
+    { value: 'International Trade', label: 'International Trade' },
+    { value: 'Education / Training', label: 'Education / Training' },
+    { value: 'Finance', label: 'Finance' },
+    { value: 'IT / Computer', label: 'IT / Computer' },
+    { value: 'Communications', label: 'Communications' },
+    { value: 'Marketing', label: 'Marketing' },
+    { value: 'Agriculture and Natural Resources', label: 'Agriculture and Natural Resources' },
+    { value: 'Sales Work', label: 'Sales Work' },
+    { value: 'Travel, Hotel Work, Food and Beverage Work', label: 'Travel, Hotel Work, Food and Beverage Work' },
+    { value: 'Purchasing Department', label: 'Purchasing Department' },
+    { value: 'Human Resources', label: 'Resources' },
+    { value: 'Advertising / Public Relations / Communication Arts', label: 'Advertising / Public Relations / Communication Arts' },
+    { value: 'Senior Executives', label: 'Senior Executives' },
+    { value: 'Production / Product Department', label: 'Production / Product Department' },
+    { value: 'Technician', label: 'Technician' },
+    { value: 'Administrative', label: 'Administrative' },
+    { value: 'Customer Service', label: 'Customer Service' },
+    { value: 'Accountant', label: 'Accountant' },
+    { value: 'Research and Development / Science', label: 'Research and Development / Science' },
+    { value: 'Humanities', label: 'Humanities' },
+    { value: 'Fine Arts', label: 'Fine Arts' },
+    { value: 'Social Work', label: 'Social Work' },
+    { value: 'Secretary', label: 'Secretary' },
+    { value: 'Engineer', label: 'Engineer' },
+    { value: 'Designer / Architect', label: 'Designer / Architect' },
+    { value: 'Pharmacist / Doctor / Public Health', label: 'Pharmacist / Doctor / Public Health' },
+    { value: 'Economics', label: 'Economics' },
+  ];
+
+export default FieldOptions;

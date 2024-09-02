@@ -2,6 +2,7 @@ import React, { useState} from 'react'
 import Navbar from '../components/navbar/Navbar'
 import CompanyList from '../components/CompanyList';
 import LocationOptions from '../components/LocationOptions';
+import JobFieldOptions from '../components/JobFieldOptions';
 import Select from 'react-select';
 import { Form, Button} from 'react-bootstrap';
 import SlidePage from '../components/SlidePage';
@@ -10,7 +11,7 @@ import Bottombar from './../components/navbar/Bottombar';
 function IndexPage() {
   const [prompt, setPrompt] = useState('');
   const [location, setLocation] = useState('Bangkok');
-  const [selectedField, setSelectedJob] = useState('IT');
+  const [jobfield, setJobField] = useState('IT');
 
   return (
     <div style={{
@@ -35,10 +36,10 @@ function IndexPage() {
         </div>
         <div style={{width: '240px'}}>
         <Select
-                options={{}}
+                options={JobFieldOptions}
                 placeholder="สายอาชีพ"
                 styles={{ width: '100%' }}
-                onChange={{}}
+                onChange={(e) => setJobField(e.value)}
         />
         </div>
 
@@ -46,7 +47,7 @@ function IndexPage() {
           หางาน
         </Button>
     </div>
-    {selectedField ? (
+    {jobfield ? (
         <>
         <SlidePage></SlidePage>
         <center>
@@ -72,7 +73,8 @@ function IndexPage() {
     margin: '40px',
     marginLeft: '200px',
     marginRight: '200px',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    gap: '20px' 
   };
 
 export default IndexPage
