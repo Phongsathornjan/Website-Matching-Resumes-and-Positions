@@ -1,38 +1,78 @@
-import React from 'react'
+import React, { useState} from 'react'
 import Navbar from '../components/navbar/Navbar'
 import CompanyList from '../components/CompanyList';
-
-import Button from 'react-bootstrap/Button';
-import Form from 'react-bootstrap/Form';
+import LocationOptions from '../components/LocationOptions';
+import Select from 'react-select';
+import { Form, Button} from 'react-bootstrap';
+import SlidePage from '../components/SlidePage';
+import Bottombar from './../components/navbar/Bottombar';
 
 function IndexPage() {
+  const [prompt, setPrompt] = useState('');
+  const [location, setLocation] = useState('Bangkok');
+  const [selectedField, setSelectedJob] = useState('IT');
+
   return (
-    <>
+    <div style={{
+      backgroundColor: '#EBF2EE',
+    }}>
     <Navbar></Navbar>
+    <div style={{height: '60px'}}></div>
     <div style={formStyle}>
+
         <Form.Control
           placeholder="อธิบายงานที่เหมาะกับคุณให้เราฟังสิ   ?"
           style={inputStyle}
+          onChange={(e) => setPrompt(e.value)}
         />
-        <Button variant="outline-primary" id="button-addon2">
+        <div style={{width: '240px'}}>
+        <Select
+                options={LocationOptions}
+                placeholder="พื้นที่ทำงาน"
+                styles={{ width: '100%' }}
+                onChange={(e) => setLocation(e.value)}
+        />
+        </div>
+        <div style={{width: '240px'}}>
+        <Select
+                options={{}}
+                placeholder="สายอาชีพ"
+                styles={{ width: '100%' }}
+                onChange={{}}
+        />
+        </div>
+
+        <Button variant="btn" id="button-addon2" style={{width: '150px', backgroundColor: '#3769B4', color: '#fff'}}>
           หางาน
         </Button>
     </div>
-    <CompanyList></CompanyList>
-    </>
+    {selectedField ? (
+        <>
+        <SlidePage></SlidePage>
+        <center>
+        <div><img src="../../public/PleaseSelectFiled.png" style={{marginTop: '60px'}}/></div>
+        <div style={{marginTop: '20px'}}><span style={{color: '#828282',fontSize: '48px'}}>&nbsp;&nbsp;&nbsp;&nbsp;กรุณาเลือกสายอาชีพ</span></div>
+        </center>
+        </>
+    ):(
+      <CompanyList></CompanyList>
+    )}
+    <div style={{height: '200px'}}></div>
+    <Bottombar></Bottombar>
+    </div>
   )
 }
 
   const inputStyle = {
-    width: '600px' 
+    width: '700px' 
   };
 
   const formStyle = {
     display: 'flex',
     margin: '40px',
-    marginTop: '100px',
-    justifyContent: 'center'
+    marginLeft: '200px',
+    marginRight: '200px',
+    justifyContent: 'space-between'
   };
-
 
 export default IndexPage

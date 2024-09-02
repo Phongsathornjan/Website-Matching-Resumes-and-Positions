@@ -84,9 +84,21 @@ const CompanyList = () => {
               </Card.Body>
             </Card>
           ) : (
-            <div style={{ textAlign: 'center', paddingTop: '50%' }}>
-              <span style={{ color: '#6c757d', fontSize: '24px' }}>กรุณาเลือกงาน...</span>
-            </div>
+            <Card style={cardStyle} className='h-75' >
+              <Card.Body>
+                <Card.Title>{jobList[0].title}</Card.Title>
+                <Card.Text>{jobList[0].description}</Card.Text>
+                <Card.Text>{jobList[0].requirements}</Card.Text>
+                <Card.Text>{jobList[0].posted}</Card.Text>
+                <div style={{height: '410px'}}></div>
+                <div style={{display: 'flex'}}>
+                <div style={{width: '500px'}}></div>
+                <Link to={'/JobApplication'}>
+                <Button variant="success">สมัครที่นี่</Button>
+                </Link>
+                </div>
+              </Card.Body>
+            </Card>
           )}
         </Col>
       </Row>
