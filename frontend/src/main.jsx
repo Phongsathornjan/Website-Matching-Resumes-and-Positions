@@ -13,6 +13,7 @@ import UserIndexPage from './UserPage/UserIndexPage.jsx';
 import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
 import RecommendJobPage from './UserPage/RecommendJobPage.jsx';
 import UploadResumePage from './UserPage/UploadResumePage.jsx';
+import ResetPasswordPage from './nonUserPage/ResetPasswordPage.jsx';
 
 
 
@@ -71,6 +72,10 @@ const router = createBrowserRouter([
   {
     path: "/UploadResumePage",
     element:  <UploadResumePage></UploadResumePage>
+  },
+  {
+    path: "/ResetPasswordPage",
+    element:  <ResetPasswordPage></ResetPasswordPage>
   },
 ]);
 
