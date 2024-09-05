@@ -12,12 +12,12 @@ const SlidePage = () => {
     { text: "ไอที / คอมพิวเตอร์", image: "/assets/IconIndex/job-field-6.svg" },
     { text: "คมนาคม", image: "/assets/IconIndex/job-field-28.svg" },
     { text: "การตลาด", image: "/assets/IconIndex/job-field-1.svg" },
-    { text: "การเกษตรกรรมและทรัพยากรธรรมชาติ", image: "/assets/IconIndex/job-field-35.svg" },
+    { text: "การเกษตรกรรม / ทรัพยากร", image: "/assets/IconIndex/job-field-35.svg" },
     { text: "งานขาย", image: "/assets/IconIndex/job-field-22.svg" },
-    { text: "ท่องเที่ยว งานโรงเเรม งานอาหารและเครื่องดื่ม", image: "/assets/IconIndex/job-field-46.svg" },
+    { text: "ท่องเที่ยว งานโรงเเรม ", image: "/assets/IconIndex/job-field-46.svg" },
     { text: "จัดซื้อ", image: "/assets/IconIndex/job-field-45.svg" },
     { text: "ทรัพยากรบุคคล", image: "/assets/IconIndex/job-field-5.svg" },
-    { text: "โฆษณา / ประชาสัมพันธ์ / นิเทศศาสตร์", image: "/assets/IconIndex/job-field-19.svg" },
+    { text: "โฆษณา / ประชาสัมพันธ์ ", image: "/assets/IconIndex/job-field-19.svg" },
     { text: "ผู้บริหารระดับสูง", image: "/assets/IconIndex/job-field-14.svg" },
     { text: "ฝ่ายผลิต / ผลิตภัณฑ์", image: "/assets/IconIndex/job-field-16.svg"},
     { text: "ช่างเทคนิค", image: "/assets/IconIndex/job-field-47.svg" },
@@ -31,7 +31,7 @@ const SlidePage = () => {
     { text: "เลขานุการ", image:"/assets/IconIndex/job-field-12.svg" },
     { text: "วิศวกร", image: "/assets/IconIndex/job-field-8.svg" },
     { text: "ออกแบบ / สถาปนิก", image: "/assets/IconIndex/job-field-9.svg" },
-    { text: "เภสัชกร / แพทย์ / สาธารณสุข", image: "/assets/IconIndex/job-field-40.svg" },
+    { text: "เภสัชกร / แพทย์ ", image: "/assets/IconIndex/job-field-40.svg" },
     { text: "เศรษฐศาสตร์", image: "/assets/IconIndex/job-field-37.svg" },
   ];
 
@@ -149,7 +149,6 @@ const SlideText = styled.div`
   color: #000;
 `;
 
-// ปุ่มเลื่อน ซ้าย/ขวา ปรับขนาดเพื่อให้อยู่ตรงกลาง
 const NavigationButton = styled.button`
   background-color: #fff;
   width: 40px;

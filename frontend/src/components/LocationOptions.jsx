@@ -8,7 +8,7 @@ const LocationOptions = [
     { value: 'Nakhon Sawan', label: 'Nakhon Sawan' },
     { value: 'Nonthaburi', label: 'Nonthaburi' },
     { value: 'Pathum Thani ', label: 'Pathum Thani ' },
-    { value: 'Phra Nakhon Si Ayutthaya', label: 'Phra Nakhon Si Ayutthaya' },
+    { value: 'Ayutthaya', label: 'Ayutthaya' },
     { value: 'Phichit ', label: 'Phichit ' },
     { value: 'Phitsanulok ', label: 'Phitsanulok ' },
     { value: 'Phetchabun ', label: 'Phetchabun ' },
