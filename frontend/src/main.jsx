@@ -14,7 +14,7 @@ import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
 import RecommendJobPage from './UserPage/RecommendJobPage.jsx';
 import UploadResumePage from './UserPage/UploadResumePage.jsx';
 import ResetPasswordPage from './nonUserPage/ResetPasswordPage.jsx';
-
+import VerifyEmailPage from './nonUserPage/VerifyEmailPage.jsx';
 
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -76,6 +76,10 @@ const router = createBrowserRouter([
   {
     path: "/ResetPasswordPage",
     element:  <ResetPasswordPage></ResetPasswordPage>
+  },
+  {
+    path: "/VerifyEmailPage",
+    element:  <VerifyEmailPage></VerifyEmailPage>
   },
 ]);
 
