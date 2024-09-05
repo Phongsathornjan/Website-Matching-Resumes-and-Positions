@@ -2,16 +2,17 @@ import React, { useState} from 'react'
 import Navbar from '../components/navbar/Navbar'
 import CompanyList from '../components/CompanyList';
 import LocationOptions from '../components/LocationOptions';
-import JobFieldOptions from '../components/JobFieldOptions';
+import JobFieldOptions from '../components/Data/jobField';
 import Select from 'react-select';
 import { Form, Button} from 'react-bootstrap';
 import SlidePage from '../components/SlidePage';
 import Bottombar from './../components/navbar/Bottombar';
+import { careerFileContext } from '../context/careerFileContext'
 
 function IndexPage() {
-  const [prompt, setPrompt] = useState('');
+  const [prompt, setPrompt] = useState(null);
   const [location, setLocation] = useState('Bangkok');
-  const [jobfield, setJobField] = useState('IT');
+  const [jobfield, setJobField] = useState(null); //5 is IT
 
   return (
     <div style={{
@@ -24,7 +25,7 @@ function IndexPage() {
         <Form.Control
           placeholder="อธิบายงานที่เหมาะกับคุณให้เราฟังสิ   ?"
           style={inputStyle}
-          onChange={(e) => setPrompt(e.value)}
+          onChange={(e) => setPrompt(e.target.value)}
         />
         <div style={{width: '240px'}}>
         <Select
@@ -35,28 +36,39 @@ function IndexPage() {
         />
         </div>
         <div style={{width: '240px'}}>
-        <Select
-                options={JobFieldOptions}
-                placeholder="สายอาชีพ"
-                styles={{ width: '100%' }}
-                onChange={(e) => setJobField(e.value)}
-        />
+        {!jobfield ? (
+          <Select
+          options={JobFieldOptions}
+          placeholder="สายอาชีพ"
+          styles={{ width: '100%' }}
+          onChange={(e) => setJobField(e.value)}
+          />
+        ):(
+          <Select
+          options={JobFieldOptions}
+          placeholder={jobfield.value}
+          styles={{ width: '100%' }}
+          onChange={(e) => setJobField(e.value)}
+          />
+        )}
         </div>
 
         <Button variant="btn" id="button-addon2" style={{width: '150px', backgroundColor: '#3769B4', color: '#fff'}}>
           หางาน
         </Button>
     </div>
-    {jobfield ? (
+    {!jobfield ? (
         <>
-        <SlidePage></SlidePage>
+        <careerFileContext.Provider value={[jobfield,setJobField]}>
+          <SlidePage></SlidePage>
+        </careerFileContext.Provider>
         <center>
         <div><img src="../../public/PleaseSelectFiled.png" style={{marginTop: '60px'}}/></div>
         <div style={{marginTop: '20px'}}><span style={{color: '#828282',fontSize: '48px'}}>&nbsp;&nbsp;&nbsp;&nbsp;กรุณาเลือกสายอาชีพ</span></div>
         </center>
         </>
     ):(
-      <CompanyList></CompanyList>
+      <CompanyList></CompanyList>  //รอสร้าง prev ส่งค่า prompt location jobfield ให้
     )}
     <div style={{height: '200px'}}></div>
     <Bottombar></Bottombar>
