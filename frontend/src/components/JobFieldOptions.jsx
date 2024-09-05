@@ -1,0 +1,33 @@
+
+const FieldOptions = [
+    { value: 'Law', label: 'Law' },
+    { value: 'International Trade', label: 'International Trade' },
+    { value: 'Education / Training', label: 'Education / Training' },
+    { value: 'Finance', label: 'Finance' },
+    { value: 'IT / Computer', label: 'IT / Computer' },
+    { value: 'Communications', label: 'Communications' },
+    { value: 'Marketing', label: 'Marketing' },
+    { value: 'Agriculture / Resources', label: 'Agriculture /Resources' },
+    { value: 'Sales Work', label: 'Sales Work' },
+    { value: 'Travel / Hotel Work', label: 'Travel / Hotel Work' },
+    { value: 'Purchasing Department', label: 'Purchasing Department' },
+    { value: 'Human Resources', label: 'Resources' },
+    { value: 'Public Relations ', label: 'Public Relations ' },
+    { value: 'Senior Executives', label: 'Senior Executives' },
+    { value: 'Product Department', label: 'Product Department' },
+    { value: 'Technician', label: 'Technician' },
+    { value: 'Administrative', label: 'Administrative' },
+    { value: 'Customer Service', label: 'Customer Service' },
+    { value: 'Accountant', label: 'Accountant' },
+    { value: 'R&D / Science', label: 'R&D / Science' },
+    { value: 'Humanities', label: 'Humanities' },
+    { value: 'Fine Arts', label: 'Fine Arts' },
+    { value: 'Social Work', label: 'Social Work' },
+    { value: 'Secretary', label: 'Secretary' },
+    { value: 'Engineer', label: 'Engineer' },
+    { value: 'Designer / Architect', label: 'Designer / Architect' },
+    { value: 'Pharmacist / Doctor', label: 'Pharmacist / Doctor' },
+    { value: 'Economics', label: 'Economics' },
+  ];
+
+export default FieldOptions;
