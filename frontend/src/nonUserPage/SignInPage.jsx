@@ -123,8 +123,9 @@ const styles = {
     backgroundColor: '#fff',
   },
   box: {
-    backgroundColor: '#E5EFFF',
+    backgroundColor: '#fff',
     padding: '30px',
+    border: '1px solid #D9D9D9',
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',

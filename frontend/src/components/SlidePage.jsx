@@ -85,6 +85,7 @@ const SlideContainer = styled.div`
   margin: auto; 
   max-width: 80%; 
   padding: 40px; 
+  border: 1px solid #D9D9D9;
   border-radius: 50px; 
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
   position: relative;
