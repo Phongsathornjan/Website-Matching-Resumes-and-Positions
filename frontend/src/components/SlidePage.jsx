@@ -1,39 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import styled from 'styled-components';
+import { careerFileContext } from '../context/careerFileContext'
+import jobFileData from './Data/jobField';
 
 const SlidePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [jobfield, setJobField] = React.useContext(careerFileContext);
 
-  const slideData = [
-    { text: "กฏหมาย", image: "/assets/IconIndex/job-field-13.svg" },
-    { text: "การค้าระหว่างประเทศ", image: "/assets/IconIndex/job-field-23.svg" },
-    { text: "การศึกษา / การฝึกอบรม", image: "assets/IconIndex/job-field-17.svg" },
-    { text: "การเงิน", image: "/assets/IconIndex/job-field-3.svg" },
-    { text: "ไอที / คอมพิวเตอร์", image: "/assets/IconIndex/job-field-6.svg" },
-    { text: "คมนาคม", image: "/assets/IconIndex/job-field-28.svg" },
-    { text: "การตลาด", image: "/assets/IconIndex/job-field-1.svg" },
-    { text: "การเกษตรกรรม / ทรัพยากร", image: "/assets/IconIndex/job-field-35.svg" },
-    { text: "งานขาย", image: "/assets/IconIndex/job-field-22.svg" },
-    { text: "ท่องเที่ยว งานโรงเเรม ", image: "/assets/IconIndex/job-field-46.svg" },
-    { text: "จัดซื้อ", image: "/assets/IconIndex/job-field-45.svg" },
-    { text: "ทรัพยากรบุคคล", image: "/assets/IconIndex/job-field-5.svg" },
-    { text: "โฆษณา / ประชาสัมพันธ์ ", image: "/assets/IconIndex/job-field-19.svg" },
-    { text: "ผู้บริหารระดับสูง", image: "/assets/IconIndex/job-field-14.svg" },
-    { text: "ฝ่ายผลิต / ผลิตภัณฑ์", image: "/assets/IconIndex/job-field-16.svg"},
-    { text: "ช่างเทคนิค", image: "/assets/IconIndex/job-field-47.svg" },
-    { text: "ธุรการ", image: "/assets/IconIndex/job-field-20.svg" },
-    { text: "บริการลูกค้า", image: "/assets/IconIndex/job-field-2.svg" },
-    { text: "บัญชี", image: "/assets/IconIndex/job-field-4.svg" },
-    { text: "วิจัยและพัฒนา / วิทยาศาสตร์", image: "/assets/IconIndex/job-field-21.svg" },
-    { text: "มนุษยศาสตร์", image: "/assets/IconIndex/job-field-26.svg" },
-    { text: "ศิลปกรรมศาสตร์", image: "/assets/IconIndex/job-field-27.svg" },
-    { text: "สังคมสงเคราะห์", image: "/assets/IconIndex/job-field-44.svg" },
-    { text: "เลขานุการ", image:"/assets/IconIndex/job-field-12.svg" },
-    { text: "วิศวกร", image: "/assets/IconIndex/job-field-8.svg" },
-    { text: "ออกแบบ / สถาปนิก", image: "/assets/IconIndex/job-field-9.svg" },
-    { text: "เภสัชกร / แพทย์ ", image: "/assets/IconIndex/job-field-40.svg" },
-    { text: "เศรษฐศาสตร์", image: "/assets/IconIndex/job-field-37.svg" },
-  ];
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+  
+  const slideData = jobFileData;
+  
 
   const itemsPerSlide = 10; 
   const slideCount = Math.ceil(slideData.length / itemsPerSlide);
@@ -50,19 +37,23 @@ const SlidePage = () => {
     }
   };
 
+  const onClick = (value) => {
+    setJobField(value)
+  }
+
   const renderSlides = () => {
     const startIndex = currentSlide * itemsPerSlide;
     const endIndex = startIndex + itemsPerSlide;
     const currentItems = slideData.slice(startIndex, endIndex);
 
     return (
-      <SlideGrid>
+      <SlideGrid key={currentSlide}>
         {currentItems.map((item, index) => (
-          <SlideItem key={index}>
+          <SlideItem key={index} onClick={ () => onClick(item)}>
             <IconContainer>
-              <IconImage src={item.image} alt={item.text} />
+              <IconImage src={item.image} alt={item.value} />
             </IconContainer>
-            <SlideText>{item.text}</SlideText>
+            <SlideText>{item.value}</SlideText>
           </SlideItem>
         ))}
       </SlideGrid>
@@ -92,8 +83,8 @@ const SlidePage = () => {
 const SlideContainer = styled.div`
   background-color: #fff;
   margin: auto; 
-  max-width: 80%; /* ลดขนาดคอนเทนเนอร์ลงเพื่อเพิ่มพื้นที่สีขาวด้านข้าง */
-  padding: 40px; /* เพิ่ม padding ให้กับด้านในของคอนเทนเนอร์ */
+  max-width: 80%; 
+  padding: 40px; 
   border-radius: 50px; 
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
   position: relative;
@@ -105,9 +96,10 @@ const SlideGrid = styled.div`
   grid-template-rows: repeat(2, auto);
   gap: 10px;
   justify-items: center;
+  animation: fadeInFromBottom 0.5s ease-in;
 `;
 
-const SlideItem = styled.div`
+let SlideItem = styled.div`
   text-align: center;
   margin-top: 10px;
   margin-left: 2px;
@@ -123,8 +115,12 @@ const SlideItem = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box; /* ให้รวม padding ในขนาด */
+  box-sizing: border-box;
   border-radius: 25px;
+
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  }
 `;
 
 const IconContainer = styled.div`
@@ -167,6 +163,9 @@ const NavigationButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  }
 `;
 
 const SlideNavigation = styled.div`
@@ -175,6 +174,25 @@ const SlideNavigation = styled.div`
   justify-content: center;
   margin-top: 20px;
   position: relative;
+`;
+
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
 `;
 
 export default SlidePage;
