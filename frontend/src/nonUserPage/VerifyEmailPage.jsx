@@ -23,14 +23,14 @@ const VerifyEmailPage = () => {
           <div style={styles.formGroup}>
             <input
               type="int"
-              id="otp"
-              name="top"
               placeholder="OTP"
               required
               style={styles.input}
             />
           </div>
-          <button type="submit" style={styles.button}>Send</button>
+          <Link to={'#'}>
+          <button type="submit" style={styles.button} onClick={submit} >Send</button>
+          </Link>
         </form>
       </div>
     </div>

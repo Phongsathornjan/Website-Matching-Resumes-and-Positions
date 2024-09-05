@@ -23,14 +23,14 @@ const ResetPasswordPage = () => {
           <div style={styles.formGroup}>
             <input
               type="email"
-              id="email"
-              name="email"
               placeholder="Email"
-              required
               style={styles.input}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
-          <button type="submit" style={styles.button}>Send</button>
+          <Link to={'#'}>
+          <button type="submit" style={styles.button} onClick={submit}>Send</button>
+          </Link>
         </form>
       </div>
     </div>

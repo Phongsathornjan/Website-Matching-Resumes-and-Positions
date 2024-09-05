@@ -72,9 +72,11 @@ const SignUpPage = () => {
                 styles={{ width: '100%' }}
                 onChange={(e) => setLocation(e.value)}
             />
+            <center>
             <Link to={'#'}>
             <button type="submit" style={buttonStyle} onClick={submit}>Register</button>
             </Link>
+            </center>
         </form>
       </div>
       <div style={{height: '30px'}}></div>
@@ -86,7 +88,7 @@ const SignUpPage = () => {
 const SignUpStyle = {
   margin: '40px',
   marginTop: '100px',
-  width: '1000px',
+  width: '1440px',
   animation: 'fadeInFromBottom 1s ease-in',
 }
 
