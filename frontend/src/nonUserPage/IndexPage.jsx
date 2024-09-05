@@ -15,7 +15,7 @@ function IndexPage() {
 
   return (
     <div style={{
-      backgroundColor: '#EBF2EE',
+      backgroundColor: '#fff',
     }}>
     <Navbar></Navbar>
     <div style={{height: '60px'}}></div>

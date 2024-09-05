@@ -1,9 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect} from 'react';
 import styled from 'styled-components';
 
 const SlidePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+  
   const slideData = [
     { text: "กฏหมาย", image: "/assets/IconIndex/job-field-13.svg" },
     { text: "การค้าระหว่างประเทศ", image: "/assets/IconIndex/job-field-23.svg" },
@@ -56,7 +68,7 @@ const SlidePage = () => {
     const currentItems = slideData.slice(startIndex, endIndex);
 
     return (
-      <SlideGrid>
+      <SlideGrid key={currentSlide}>
         {currentItems.map((item, index) => (
           <SlideItem key={index}>
             <IconContainer>
@@ -92,8 +104,8 @@ const SlidePage = () => {
 const SlideContainer = styled.div`
   background-color: #fff;
   margin: auto; 
-  max-width: 80%; /* ลดขนาดคอนเทนเนอร์ลงเพื่อเพิ่มพื้นที่สีขาวด้านข้าง */
-  padding: 40px; /* เพิ่ม padding ให้กับด้านในของคอนเทนเนอร์ */
+  max-width: 80%; 
+  padding: 40px; 
   border-radius: 50px; 
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); 
   position: relative;
@@ -105,9 +117,10 @@ const SlideGrid = styled.div`
   grid-template-rows: repeat(2, auto);
   gap: 10px;
   justify-items: center;
+  animation: fadeInFromBottom 0.5s ease-in;
 `;
 
-const SlideItem = styled.div`
+let SlideItem = styled.div`
   text-align: center;
   margin-top: 10px;
   margin-left: 2px;
@@ -123,8 +136,12 @@ const SlideItem = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  box-sizing: border-box; /* ให้รวม padding ในขนาด */
+  box-sizing: border-box;
   border-radius: 25px;
+
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  }
 `;
 
 const IconContainer = styled.div`
@@ -149,7 +166,6 @@ const SlideText = styled.div`
   color: #000;
 `;
 
-// ปุ่มเลื่อน ซ้าย/ขวา ปรับขนาดเพื่อให้อยู่ตรงกลาง
 const NavigationButton = styled.button`
   background-color: #fff;
   width: 40px;
@@ -168,6 +184,9 @@ const NavigationButton = styled.button`
     opacity: 0.5;
     cursor: not-allowed;
   }
+  &:hover {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); 
+  }
 `;
 
 const SlideNavigation = styled.div`
@@ -176,6 +195,25 @@ const SlideNavigation = styled.div`
   justify-content: center;
   margin-top: 20px;
   position: relative;
+`;
+
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
 `;
 
 export default SlidePage;
