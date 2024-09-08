@@ -1,13 +1,30 @@
-import React, { useEffect, useState } from 'react';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
+import React, { useEffect} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Navbar from '../components/navbar/Navbar.jsx';
 import Bottombar from '../components/navbar/Bottombar.jsx';
 
 
 const ResetPasswordPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+
+  const onButtonClick = () => {
+    // สร้าง otp ส่งผ่านเมลและเก็บไว้ใน local storage 
+    // ส่ง otp
+    navigate('/VerifyEmailPage');
+  }
 
   return (
     <>
@@ -29,7 +46,7 @@ const ResetPasswordPage = () => {
             />
           </div>
           <Link to={'#'}>
-          <button type="submit" style={styles.button} onClick={submit}>Send</button>
+          <button type="submit" style={styles.button} onClick={onButtonClick}>Send</button>
           </Link>
         </form>
       </div>
@@ -38,6 +55,24 @@ const ResetPasswordPage = () => {
     </>
   );
 };
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
+`;
 
 const styles = {
   body: {
@@ -50,11 +85,13 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#fff',
+    animation: 'fadeInFromBottom 0.5s ease-in',
   },
   box: {
-    backgroundColor: '#E5EFFF',
+    backgroundColor: '#fff',
     padding: '30px',
     borderRadius: '10px',
+    border: '1px solid #D9D9D9',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',
   },

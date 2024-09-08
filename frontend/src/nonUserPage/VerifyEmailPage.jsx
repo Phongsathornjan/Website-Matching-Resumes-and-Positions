@@ -1,13 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
+import React, {useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 
 import Navbar from '../components/navbar/Navbar.jsx';
 import Bottombar from '../components/navbar/Bottombar.jsx';
 
 
 const VerifyEmailPage = () => {
+  const [status, setStatus] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+
+  const onClickButton = () => {
+    // ตรวจสอบ otp กับ local storage
+
+    // ถ้าตรง 
+    setStatus(true)
+  }
+
+  const setNewPassword = () => {
+    //back end api
+
+    navigate('/Signin');
+  }
 
   return (
     <>
@@ -19,6 +44,25 @@ const VerifyEmailPage = () => {
         </div>
         <h5 style={styles.VerifyText}>Verify Email</h5>
         <p style={styles.Text}> We will send you a OTP to email. Please Enter OTP.</p>
+        {status ? (
+          <>
+          <div className="alert alert-success" style={animation} role="alert">Success Please Enter new Password</div>
+          <form style={styles.form}>
+          <div style={styles.formGroup}>
+            <input
+              type="int"
+              placeholder="New Password"
+              required
+              style={styles.input}
+            />
+          </div>
+          <Link to={'#'}>
+          <button type="submit" style={styles.button} onClick={setNewPassword} >Confirm</button>
+          </Link>
+        </form>
+          </>        
+        ) : (
+          <>
         <form style={styles.form}>
           <div style={styles.formGroup}>
             <input
@@ -29,15 +73,40 @@ const VerifyEmailPage = () => {
             />
           </div>
           <Link to={'#'}>
-          <button type="submit" style={styles.button} onClick={submit} >Send</button>
+          <button type="submit" style={styles.button} onClick={onClickButton} >Confirm</button>
           </Link>
         </form>
+          </>
+        )
+        }
       </div>
     </div>
     <Bottombar></Bottombar>
     </>
   );
 };
+
+const animation = {
+  animation: 'fadeInFromBottom 0.5s ease-in',
+}
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(10px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
+`;
 
 const styles = {
   body: {
@@ -50,10 +119,12 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#fff',
+    animation: 'fadeInFromBottom 0.5s ease-in',
   },
   box: {
-    backgroundColor: '#E5EFFF',
+    backgroundColor: '#fff',
     padding: '30px',
+    border: '1px solid #D9D9D9',
     borderRadius: '10px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     textAlign: 'center',

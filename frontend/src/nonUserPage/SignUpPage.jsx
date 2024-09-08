@@ -89,7 +89,7 @@ const SignUpStyle = {
   margin: '40px',
   marginTop: '100px',
   width: '1440px',
-  animation: 'fadeInFromBottom 1s ease-in',
+  animation: 'fadeInFromBottom 0.5s ease-in',
 }
 
 

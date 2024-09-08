@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { FaEnvelope, FaLock } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import Navbar from '../components/navbar/Navbar.jsx';
-import Bottombar from '../components/navbar/Bottombar.jsx';
 
 const SignInPage = () => {
   const navigate = useNavigate();
@@ -81,13 +79,15 @@ const SignInPage = () => {
               />
             </div>
             <div style={styles.forgotPassword}>
-              <a href="#" style={styles.forgotPasswordLink}>Forget Password ?</a>
+            <Link to={'/ResetPasswordPage'}>
+              <p style={styles.forgotPasswordLink}>Forget Password ?</p>
+            </Link>
+
             </div>
             <button type="submit" style={styles.button}>Sign In</button>
           </form>
         </div>
       </div>
-      <Bottombar />
     </>
   );
 };
@@ -121,6 +121,7 @@ const styles = {
     alignItems: 'center',
     height: '100vh',
     backgroundColor: '#fff',
+    animation: 'fadeInFromBottom 0.5s ease-in',
   },
   box: {
     backgroundColor: '#fff',
