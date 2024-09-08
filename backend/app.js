@@ -2,17 +2,25 @@ require('dotenv').config();
 require('./config/database').connect();
 
 const express = require('express');
+const cors = require('cors');
 
+//Authentication
 const verifyLogin = require('./Authentication/login');
 const verifyRegister =require('./Authentication/register');
 const auth = require('./middleware/auth');
 const tokenDecoder = require('./Authentication/tokenDecoder');
+
+//Resume
 const checkValidResume = require('./checkValidResume');
-const cors = require('cors');
 const upload = require('./uploadPDF');
 const uploadPDF2mongo = require('./uploadPDF2mongo');
+
+//Post
 const createPost = require('./services/post/createpost');
 const deletePost = require('./services/post/deletepost');
+
+//email
+const sendOTP = require('./services/email/sendOTP');
 
 const path = require('path');
 const app = express();
@@ -72,6 +80,13 @@ app.post("/createPost", async (req, res) => {
 //deletePost
 app.post("/deletePost", async (req, res) => {
     return deletePost(req,res);
+})
+
+//Email
+//sendOTP
+//deletePost
+app.post("/sendOTP", async (req, res) => {
+    return sendOTP(req,res)
 })
 
 
