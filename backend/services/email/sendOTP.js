@@ -1,13 +1,29 @@
 const nodemailer = require('nodemailer');
+const User = require('../../model/user');
 
 const sendOTP = async (req, res) => {
     try {
         const { email, otp } = req.body;
 
-        if (!email || !otp) {
+        if (!email) {
             return res.status(400).json({
-                message: 'Not found both Parameter'
+                message: 'Not found email'
             });
+        }
+
+        const LowerCaseEmail = email.toLowerCase();
+
+        if (!otp) {
+            return res.status(400).json({
+                message: 'internal sever error'
+            });
+        }
+
+        const user = await User.findOne({email: LowerCaseEmail});
+        if(!user){
+            return res.status(400).json({
+                message: 'Not found user'
+            })
         }
 
         // สร้าง transporter ที่จะใช้งานกับบริการส่งอีเมล (ใช้ App Password)
@@ -23,7 +39,7 @@ const sendOTP = async (req, res) => {
         let mailOptions = {
             from: 'test.resume@gmail.com', // ผู้ส่ง
             to: email, // ผู้รับ
-            subject: 'Resume Union',
+            subject: 'Resume Union Reset your password',
             text: 'Hello! This is a OTP for ResumeUnion.com',
             html: `<b>Your OTP is</b> ${otp}`
         };

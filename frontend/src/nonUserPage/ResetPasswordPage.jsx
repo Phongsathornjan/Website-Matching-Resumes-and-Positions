@@ -1,12 +1,15 @@
-import React, { useEffect} from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 import Navbar from '../components/navbar/Navbar.jsx';
-import Bottombar from '../components/navbar/Bottombar.jsx';
-
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
+
+  const [email, setEmail] = useState(null);
+  const [otp, setOtp] = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -20,11 +23,41 @@ const ResetPasswordPage = () => {
     };
   }, []);
 
-  const onButtonClick = () => {
-    // สร้าง otp ส่งผ่านเมลและเก็บไว้ใน local storage 
-    // ส่ง otp
-    navigate('/VerifyEmailPage');
+  useEffect( () => {
+    if(otp){
+      sendOTP()
+    }
+  },[otp])
+
+  const sendOTP = async () => {
+    if(!email){
+      setError('Please Enter your Email')
+      return;
+    }
+    try{
+    const response = await axios.post('http://localhost:4001/sendOTP', {
+      email,
+      otp,
+    });
+    if(response.status == 200){
+      navigate('/VerifyEmailPage', { state: { otp: otp } });
+    }
+    }catch(err){
+      console.log(err.response.data.message);
+      setError(err.response.data.message)
+    }
   }
+
+  const onButtonClick = () => {
+    const newOtp = getRandomOTP(1000,9999)
+    setOtp(newOtp)
+  }
+
+  const getRandomOTP = (min, max) => {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  };
 
   return (
     <>
@@ -32,10 +65,17 @@ const ResetPasswordPage = () => {
     <div style={styles.container}>
       <div style={styles.box}>
         <div style={styles.header}>
+          <div style={{height: '25px'}}></div>
           <h2>Resume Union</h2>
         </div>
         <h5 style={styles.ResetText}>RESET YOU PASSWORD</h5>
+        <div style={{height: '25px'}}></div>
         <p style={styles.Text}> Enter your user account's verified email address <br />and we will send you a password reset link to email.</p>
+        {error ? (
+          <><div className="alert alert-danger" style={alertStyle} role="alert">{error}</div></>
+        ):(
+          <><div style={{height: '58px'}}></div></>
+        )}
         <form style={styles.form}>
           <div style={styles.formGroup}>
             <input
@@ -51,10 +91,13 @@ const ResetPasswordPage = () => {
         </form>
       </div>
     </div>
-    <Bottombar></Bottombar>
     </>
   );
 };
+
+const alertStyle = {
+  animation: 'fadeInFromBottom 0.5s ease-in',
+}
 
 const globalStyle = `
 @keyframes fadeInFromBottom {

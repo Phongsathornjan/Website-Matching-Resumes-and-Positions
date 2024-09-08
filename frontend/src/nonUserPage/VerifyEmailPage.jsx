@@ -1,13 +1,14 @@
 import React, {useEffect, useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import Navbar from '../components/navbar/Navbar.jsx';
-import Bottombar from '../components/navbar/Bottombar.jsx';
-
 
 const VerifyEmailPage = () => {
   const [status, setStatus] = useState(false);
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const otp = location.state?.otp;  //รับมาจากหน้า ResetPasswordPage
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -22,7 +23,7 @@ const VerifyEmailPage = () => {
   }, []);
 
   const onClickButton = () => {
-    // ตรวจสอบ otp กับ local storage
+    // ตรวจสอบ otp 
 
     // ถ้าตรง 
     setStatus(true)
@@ -81,7 +82,6 @@ const VerifyEmailPage = () => {
         }
       </div>
     </div>
-    <Bottombar></Bottombar>
     </>
   );
 };
