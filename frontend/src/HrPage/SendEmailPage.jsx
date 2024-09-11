@@ -6,6 +6,33 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 const SendEmailPage = () => {
+
+  useEffect(() => {
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+
+        if(response.status == 200){
+          if(!response.data.userData.role == "member"){
+            navigate('/SignIn');
+          }
+        }else{
+          navigate('/SignIn');
+        }
+
+      } catch(err){
+        navigate('/SignIn');
+      }
+    }
+   
+    authentication();
+  }, []);
+
   const [selectedDate1, setSelectedDate1] = React.useState(null);
   const [selectedDate2, setSelectedDate2] = React.useState(null);
   const [selectedDate3, setSelectedDate3] = React.useState(null);

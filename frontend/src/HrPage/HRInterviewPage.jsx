@@ -5,6 +5,33 @@ import InterviewList from '../components/InterviewList';
 import { FaBriefcase, FaCalendarCheck, FaUsers } from 'react-icons/fa';
 
 const HRInterviewPage = () => {
+
+  useEffect(() => {
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+
+        if(response.status == 200){
+          if(!response.data.userData.role == "member"){
+            navigate('/SignIn');
+          }
+        }else{
+          navigate('/SignIn');
+        }
+
+      } catch(err){
+        navigate('/SignIn');
+      }
+    }
+   
+    authentication();
+  }, []);
+
   return (
   <>
     <HRNavbar></HRNavbar>

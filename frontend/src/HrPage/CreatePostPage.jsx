@@ -6,6 +6,32 @@ import HRNavbar from '../components/navbar/HRNavbar.jsx';
 const CreatePostPage = () => {
 
   useEffect(() => {
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+
+        if(response.status == 200){
+          if(!response.data.userData.role == "admin"){
+            navigate('/SignIn');
+          }
+        }else{
+          navigate('/SignIn');
+        }
+
+      } catch(err){
+        navigate('/SignIn');
+      }
+    }
+   
+    authentication();
+  }, []);
+
+  useEffect(() => {
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;
