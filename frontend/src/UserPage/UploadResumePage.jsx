@@ -6,7 +6,6 @@ import Resume from '../components/userComponents/Resume';
 
 
 function UploadResumePage() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {

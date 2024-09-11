@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import HRNavbar from '../components/navbar/HRNavbar';
 import StatusCard from '../components/StatusCard';
 import ApplicantList from '../components/ApplicantList';

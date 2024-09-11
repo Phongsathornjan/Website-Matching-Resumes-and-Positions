@@ -12,6 +12,33 @@ const SignInPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+
+        if(response.status == 200){
+          if(response.data.userData.role == "member"){
+            navigate('/UserIndexPage');
+          }else if(response.data.userData.role == "admin"){
+            //navigate('/');
+          }
+        }else{
+          navigate('/SignIn');
+        }
+
+      } catch(err){
+        navigate('/SignIn');
+      }
+    }
+   
+    authentication();
+
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;
