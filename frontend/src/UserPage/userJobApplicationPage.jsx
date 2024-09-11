@@ -18,7 +18,7 @@ const userJobApplicationPage = () => {
         })
 
         if(response.status == 200){
-          if(!response.data.userData.role == "member"){
+          if(response.data.userData.role != "member"){
             navigate('/SignIn');
           }
         }else{

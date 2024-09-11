@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import FormField from '../components/FormField.jsx';
 import HRNavbar from '../components/navbar/HRNavbar.jsx';
 
 const CreatePostPage = () => {
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function authentication() {
@@ -16,7 +18,7 @@ const CreatePostPage = () => {
         })
 
         if(response.status == 200){
-          if(!response.data.userData.role == "admin"){
+          if(response.data.userData.role != "admin"){
             navigate('/SignIn');
           }
         }else{
@@ -29,9 +31,7 @@ const CreatePostPage = () => {
     }
    
     authentication();
-  }, []);
 
-  useEffect(() => {
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;
@@ -43,12 +43,13 @@ const CreatePostPage = () => {
     };
   }, []);
 
-  const [topic, setTopic] = useState('');
-  const [salary, setSalary] = useState('');
-  const [position, setPosition] = useState('');
-  const [company, setCompany] = useState('');
-  const [location, setLocation] = useState('');
-  const [description, setDescription] = useState('');
+  const [Position, setPosition] = useState(null);
+  const [Salary, setSalary] = useState(null);
+  const [WorkField, setWorkField] = useState(null);
+  const [Location, setLocation] = useState(null);
+  const [Requirements, setRequirements] = useState(null);
+  const [Qualifications, setQualifications] = useState(null);
+  const [Experience, setExperience] = useState(null);
 
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -60,12 +61,13 @@ const CreatePostPage = () => {
     try{
       const response = await axios.post('http://localhost:4001/createPost',{
         userId: userId,
-        topic: topic,
-        company: company,
-        position: position,
-        salary: salary,
-        location: location,
-        description: description,
+        Position: Position,
+        Salary: Salary,
+        WorkField: WorkField,
+        Location: Location,
+        Requirements: Requirements,
+        Qualifications: Qualifications,
+        Experience: Experience,
       });
       setSuccess('Create Post Success. Refreshing...');
     }catch(err){
@@ -150,25 +152,6 @@ const buttonStyle = {
   border: 'none',
   fontFamily: 'Trirong',
   cursor: 'pointer',
-};
-
-const contactHeadStyle = {
-  marginTop: '20px',
-  fontFamily: 'Trirong',
-  fontSize: '22px',
-};
-
-const contactInfoStyle = {
-  marginTop: '5px',
-  fontFamily: 'Trirong',
-  fontSize: '16px',
-  color: 'gray',
-};
-
-const socialLinksStyle = {
-  display: 'flex',
-  gap: '25px', 
-  marginTop: '15px',
 };
 
 const globalStyle = `

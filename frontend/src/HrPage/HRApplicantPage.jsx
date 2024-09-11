@@ -3,8 +3,10 @@ import HRNavbar from '../components/navbar/HRNavbar';
 import StatusCard from '../components/StatusCard';
 import ApplicantList from '../components/ApplicantList';
 import { FaBriefcase, FaCalendarCheck, FaUsers } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const HRApplicantPage = () => {
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function authentication() {
@@ -17,7 +19,7 @@ const HRApplicantPage = () => {
         })
 
         if(response.status == 200){
-          if(!response.data.userData.role == "member"){
+          if(response.data.userData.role != "admin"){
             navigate('/SignIn');
           }
         }else{
@@ -30,6 +32,7 @@ const HRApplicantPage = () => {
     }
    
     authentication();
+
   }, []);
 
   return (

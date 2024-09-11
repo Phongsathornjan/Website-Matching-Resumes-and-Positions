@@ -1,11 +1,12 @@
 import React from 'react';
-import FormField from '../components/FormField';
 import HRNavbar from '../components/navbar/HRNavbar';
 import Bottombar from './../components/navbar/Bottombar';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { useNavigate } from 'react-router-dom';
 
 const SendEmailPage = () => {
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function authentication() {
@@ -18,7 +19,7 @@ const SendEmailPage = () => {
         })
 
         if(response.status == 200){
-          if(!response.data.userData.role == "member"){
+          if(response.data.userData.role != "admin"){
             navigate('/SignIn');
           }
         }else{
@@ -31,7 +32,9 @@ const SendEmailPage = () => {
     }
    
     authentication();
+
   }, []);
+
 
   const [selectedDate1, setSelectedDate1] = React.useState(null);
   const [selectedDate2, setSelectedDate2] = React.useState(null);
