@@ -3,9 +3,9 @@ const Post = require('../../model/post');
 const createPost = async (req, res) => {
     
     try{
-        const {userId,topic,company,position,salary,location,description} = req.body;
+        const {userId, Position, Salary, WorkField, Location, Requirements, Qualifications, Experience} = req.body;
 
-        if(!(userId && topic && company && position && salary && location && description)){
+        if(!(userId && Position && Salary && WorkField && Location && Requirements && Qualifications && Experience)){
             return res.status(400).json({
                 message: 'All input is require'
             })
@@ -13,12 +13,13 @@ const createPost = async (req, res) => {
 
         const post = await Post.create({
             userId: userId,
-            topic: topic,
-            company: company,
-            position: position,
-            salary: salary,
-            location: location,
-            description: description,
+            Position: Position,
+            Salary: Salary,
+            WorkField: WorkField,
+            Location: Location,
+            Requirements: Requirements,
+            Qualifications: Qualifications,
+            Experience: Experience,
             time_stamp: Date.now(),
         })
         return res.status(200).json({
