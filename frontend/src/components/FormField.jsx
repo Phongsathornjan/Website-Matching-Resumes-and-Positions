@@ -2,16 +2,17 @@ import React from 'react';
 
 const FormField = ({ label, type, placeholder, onChange }) => {
   return (
-    <div style={formFieldStyle}>
+    <form style={formFieldStyle}>
       <label style={labelStyle}>{label}</label>
       <input type={type} placeholder={placeholder} style={inputStyle} onChange={onChange}/>
-    </div>
+    </form>
   );
 };
 
 const formFieldStyle = {
-  marginBottom: '20px',
-  width: 'calc(50% - 15px)',
+  display: 'flex',
+  flexDirection: 'column',
+  marginTop: '20px',
 };
 
 const labelStyle = {
@@ -23,11 +24,11 @@ const labelStyle = {
 };
 
 const inputStyle = {
+  padding: '12px',
+  fontSize: '16px',
   width: '100%',
-  padding: '10px',
   border: '1px solid #ccc',
   borderRadius: '5px',
-  fontFamily: 'Trirong',
 };
 
 

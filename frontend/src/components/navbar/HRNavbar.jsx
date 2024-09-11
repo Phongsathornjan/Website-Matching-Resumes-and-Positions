@@ -5,17 +5,17 @@ const HRNavbar = () => {
   return (
     <div style={navbarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >Resume Union</Link>
+      <Link to={'/HrIndexPage'} style={linkStyle} >Resume Union</Link>
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >หาผู้สมัคร</Link>
+      <Link to={'#'} style={linkStyle} >Manage Post</Link>
       </div>
       <div>
-      <Link to={'#'} style={linkStyle} >จัดการโพสต์</Link>
+      <Link to={'#'} style={linkStyle} >Interview Appointment</Link>
       </div>
       <div>
-      <Link to={'#'} style={linkStyle} >ข้อมูลส่วนตัว</Link>
+      <Link to={'#'} style={linkStyle} >My Profile</Link>
       </div>
       </div>
     </div>

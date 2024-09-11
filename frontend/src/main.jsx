@@ -3,18 +3,20 @@ import ReactDOM from 'react-dom/client'
 
 import HRApplicantPage from './HrPage/HRApplicantPage.jsx';
 import HRInterviewPage from './HrPage/HRInterviewPage.jsx';
-import IndexPage from './nonUserPage/IndexPage.jsx';
 import CreatePostPage from './HrPage/CreatePostPage';
 import SendEmailPage from './HrPage/SendEmailPage.jsx';
+import HrIndexPage from './HrPage/HrIndexPage';
+
+import IndexPage from './nonUserPage/IndexPage.jsx';
 import SignUpPage from './nonUserPage/SignUpPage.jsx';
 import SignInPage from './nonUserPage/SignInPage.jsx';
 import JobApplicationPage from './nonUserPage/JobApplicationPage.jsx';
-import UserIndexPage from './UserPage/UserIndexPage.jsx';
-import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
-import UploadResumePage from './UserPage/UploadResumePage.jsx';
 import ResetPasswordPage from './nonUserPage/ResetPasswordPage.jsx';
 import VerifyEmailPage from './nonUserPage/VerifyEmailPage.jsx';
 
+import UserIndexPage from './UserPage/UserIndexPage.jsx';
+import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
+import UploadResumePage from './UserPage/UploadResumePage.jsx';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -39,6 +41,10 @@ const router = createBrowserRouter([
   {
     path: "/SendEmail",
     element: <SendEmailPage></SendEmailPage>
+  },
+  {
+    path: "/HrIndexPage",
+    element: <HrIndexPage></HrIndexPage>
   },
   {
     path: "/",

@@ -25,8 +25,8 @@ const SignInPage = () => {
         if(response.status == 200){
           if(response.data.userData.role == "member"){
             navigate('/UserIndexPage');
-          }else if(response.data.userData.role == "admin"){
-            //navigate('/');
+          }else if(response.data.userData.role == "hr"){
+            navigate('/HrIndexPage');
           }
         }else{
           navigate('/SignIn');

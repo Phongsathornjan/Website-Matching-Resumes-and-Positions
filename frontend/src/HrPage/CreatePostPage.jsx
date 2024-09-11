@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import FormField from '../components/FormField.jsx';
+import Select from 'react-select';
+import { Form } from 'react-bootstrap';
+
+import JobFieldOptions from '../components/Data/jobField';
+import LocationOptions from '../components/LocationOptions';
 import HRNavbar from '../components/navbar/HRNavbar.jsx';
+import jobFile from '../components/Data/jobField';
 
 const CreatePostPage = () => {
   const navigate = useNavigate();
@@ -18,15 +23,13 @@ const CreatePostPage = () => {
         })
 
         if(response.status == 200){
-          if(response.data.userData.role != "admin"){
+          if(response.data.userData.role != "hr"){
             navigate('/SignIn');
           }
-        }else{
-          navigate('/SignIn');
         }
 
       } catch(err){
-        navigate('/SignIn');
+        console.log(err)
       }
     }
    
@@ -55,6 +58,8 @@ const CreatePostPage = () => {
   const [success, setSuccess] = useState('');
 
   const handleButton = async () => {
+    console.log(WorkField)
+
     setError(null);
     const userId = localStorage.getItem('id_user');
     if(!userId){return}
@@ -81,33 +86,88 @@ const CreatePostPage = () => {
   return (
     <>
     <HRNavbar></HRNavbar>
-      <div style={{margin: '40px',marginTop: '100px'}}>
+      <div style={{marginLeft: '35px', marginTop: '90px'}}>
       <h1 style={titleStyle}>Create Post</h1>
-      {error ? ( <div className="alert alert-danger" role="alert" style={{animation: 'fadeInFromBottom 0.2s ease-in'}}>{error}</div> 
-      ): success ? (
-        <div className="alert alert-success" role="alert" style={{animation: 'fadeInFromBottom 0.2s ease-in'}}>{success}</div> 
-      ):(
-        <div style={{height: '74px'}}></div>
-      )}
-      <div style={formStyle}>
-          <FormField label="Topic" type="text" placeholder="Enter the topic" onChange={(e) => setTopic(e.target.value)}/>
-        <div style={formRowStyle}>
-          <FormField label="Position" type="text" placeholder="Enter the position" onChange={(e) => setPosition(e.target.value)}/>
-          <FormField label="Salary" type="text" placeholder="Enter the salary" onChange={(e) => setSalary(e.target.value)}/>
-        </div>
-        <div style={formRowStyle}>
-          <FormField label="Company" type="text" placeholder="Enter the company name" onChange={(e) => setCompany(e.target.value)}/>
-          <FormField label="Location" type="text" placeholder="Enter the location" onChange={(e) => setLocation(e.target.value)}/>
-        </div>
-        <div style={{ marginBottom: '20px' }}>
-          <label style={labelStyle}>Description</label>
-          <textarea placeholder="Enter a description" style={textareaStyle} onChange={(e) => setDescription(e.target.value)}></textarea>
-        </div>
-        <button type="submit" style={buttonStyle} onClick={handleButton}>Create Post</button>
+
+      {/* show error */}
+
+      <div>
+
+          <div style={{display: 'flex', marginBottom: '20px', justifyContent: 'space-between'}}>
+            <Form.Control
+              placeholder="Position"
+              style={{width: '400px'}}
+              onChange={(e) => setPosition(e.target.value)}
+            />
+            <Form.Control
+              placeholder="Salary"
+              style={{width: '400px'}}
+              onChange={(e) => setSalary(e.target.value)}
+            />
+            <div style={{width: '240px'}}>
+              <Select
+                      options={LocationOptions}
+                      placeholder="พื้นที่ทำงาน"
+                      styles={{ width: '100%'}}
+                      onChange={(e) => setLocation(e.value)}
+              />
+            </div>
+            <div style={{width: '240px'}}>
+              <Select
+                options={JobFieldOptions}
+                placeholder="สายอาชีพ"
+                styles={{ width: '100%' }}
+                onChange={(e) => setWorkField(e.id)}
+              />
+            </div>
+          </div>
+          <div style={{marginBottom: '20px'}}>
+          <p>&nbsp;Requirements</p>
+          <Form.Control
+              style={{width: '100%', height: '150px'}}
+              onChange={(e) => setRequirements(e.target.value)}
+          />
+          </div>
+          <div style={{marginBottom: '20px'}}>
+          <p>&nbsp;Qualifications</p>
+          <Form.Control
+              style={{width: '100%', height: '150px'}}
+              onChange={(e) => setQualifications(e.target.value)}
+          />
+          </div>
+          <div style={{marginBottom: '20px'}}>
+          <p>&nbsp;Experience</p>
+          <Form.Control
+              style={{width: '100%', height: '150px'}}
+              onChange={(e) => setExperience(e.target.value)}
+          />
+          </div>
+
+            <button type="submit" style={styles.button} onClick={handleButton}>สร้างโพสค์</button>
+
       </div>
       </div>
     </>
   );
+};
+
+const styles = {
+  input: {
+    padding: '12px',
+    fontSize: '16px',
+    width: '100%',
+    border: '1px solid #ccc',
+    borderRadius: '5px',
+  }, 
+  button: {
+    backgroundColor: '#4683d9',
+    color: 'white',
+    padding: '12px',
+    fontSize: '16px',
+    border: 'none',
+    borderRadius: '5px',
+    cursor: 'pointer',
+  }
 };
 
 const titleStyle = {
@@ -118,41 +178,6 @@ const titleStyle = {
   marginBottom: '30px',
 };
 
-const formStyle = {
-  display: 'grid',
-  gap: '20px',
-};
-
-const formRowStyle = {
-  display: 'flex',
-  justifyContent: 'space-between',
-};
-
-const labelStyle = {
-  display: 'block',
-  marginBottom: '5px',
-  color: '#333',
-  fontSize: '16px',
-  fontFamily: 'Trirong',
-};
-
-const textareaStyle = {
-  width: '100%',
-  height: '150px',
-  padding: '10px',
-  border: '1px solid #ccc',
-  borderRadius: '5px',
-  fontFamily: 'Trirong',
-};
-
-const buttonStyle = {
-  padding: '10px',
-  backgroundColor: '#3769B4',
-  color: 'white',
-  border: 'none',
-  fontFamily: 'Trirong',
-  cursor: 'pointer',
-};
 
 const globalStyle = `
 @keyframes fadeInFromBottom {

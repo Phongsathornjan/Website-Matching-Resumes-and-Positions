@@ -19,15 +19,13 @@ const HRApplicantPage = () => {
         })
 
         if(response.status == 200){
-          if(response.data.userData.role != "admin"){
+          if(response.data.userData.role != "hr"){
             navigate('/SignIn');
           }
-        }else{
-          navigate('/SignIn');
         }
 
       } catch(err){
-        navigate('/SignIn');
+        console.log(err)
       }
     }
    
