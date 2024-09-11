@@ -18,7 +18,7 @@ const UserNavbar = () => {
       </div>
       <div style={rightBarStyle}>
         <div>
-        <Link to={'/RecommendJobPage'} style={linkStyle} >Job Recommend Feature</Link>
+        <Link to={'#'} style={linkStyle} >Job Recommend Feature</Link>
         </div>
         <div>
         <Link to={'/UserIndexPage'} style={linkStyle} >find a job</Link>
