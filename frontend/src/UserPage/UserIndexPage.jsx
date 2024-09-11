@@ -8,7 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 
 const Userindexpage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -20,14 +19,16 @@ const Userindexpage = () => {
             'x-access-token': token
           }
         })
+
         if(response.status == 200){
-          setIsLoggedIn(true);
+          if(!response.data.userData.role == "member"){
+            navigate('/SignIn');
+          }
         }else{
-          setIsLoggedIn(false);
           navigate('/SignIn');
         }
+
       } catch(err){
-        setIsLoggedIn(false);
         navigate('/SignIn');
       }
     }

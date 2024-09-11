@@ -18,14 +18,16 @@ function UploadResumePage() {
             'x-access-token': token
           }
         })
+
         if(response.status == 200){
-          setIsLoggedIn(true);
+          if(!response.data.userData.role == "member"){
+            navigate('/SignIn');
+          }
         }else{
-          setIsLoggedIn(false);
           navigate('/SignIn');
         }
+
       } catch(err){
-        setIsLoggedIn(false);
         navigate('/SignIn');
       }
     }

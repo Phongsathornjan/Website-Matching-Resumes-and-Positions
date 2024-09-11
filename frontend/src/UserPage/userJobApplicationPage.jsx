@@ -5,7 +5,6 @@ import axios from 'axios';
 import UserJobApplicationList from '../components/userComponents/userJobApplicationForm.jsx'
 
 const userJobApplicationPage = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -17,14 +16,16 @@ const userJobApplicationPage = () => {
             'x-access-token': token
           }
         })
+
         if(response.status == 200){
-          setIsLoggedIn(true);
+          if(!response.data.userData.role == "member"){
+            navigate('/SignIn');
+          }
         }else{
-          setIsLoggedIn(false);
           navigate('/SignIn');
         }
+
       } catch(err){
-        setIsLoggedIn(false);
         navigate('/SignIn');
       }
     }
