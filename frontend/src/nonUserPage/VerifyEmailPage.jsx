@@ -5,10 +5,13 @@ import Navbar from '../components/navbar/Navbar.jsx';
 
 const VerifyEmailPage = () => {
   const [status, setStatus] = useState(false);
+  const [sign, setSign] = useState(null);
   const navigate = useNavigate();
 
   const location = useLocation();
-  const otp = location.state?.otp;  //รับมาจากหน้า ResetPasswordPage
+
+  const [otp, setOTP] = useState(location.state?.otp);
+  const [inputOtp, setInputOtp] = useState(null);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -23,10 +26,13 @@ const VerifyEmailPage = () => {
   }, []);
 
   const onClickButton = () => {
-    // ตรวจสอบ otp 
-
-    // ถ้าตรง 
-    setStatus(true)
+    console.log(otp)
+    if(otp == inputOtp){
+      setStatus(true)
+      setSign(null)
+    }else{
+      setSign("OTP ไม่ถูกต้อง")
+    }
   }
 
   const setNewPassword = () => {
@@ -45,6 +51,7 @@ const VerifyEmailPage = () => {
         </div>
         <h5 style={styles.VerifyText}>Verify Email</h5>
         <p style={styles.Text}> We will send you a OTP to email. Please Enter OTP.</p>
+        {sign && <div className="alert alert-danger" role="alert">{sign}</div>}
         {status ? (
           <>
           <div className="alert alert-success" style={animation} role="alert">Success Please Enter new Password</div>
@@ -69,6 +76,7 @@ const VerifyEmailPage = () => {
             <input
               type="int"
               placeholder="OTP"
+              onChange={(e) => setInputOtp(e.target.value)}
               required
               style={styles.input}
             />

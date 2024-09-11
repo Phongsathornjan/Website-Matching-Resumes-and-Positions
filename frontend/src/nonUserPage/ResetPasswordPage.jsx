@@ -83,6 +83,7 @@ const ResetPasswordPage = () => {
               placeholder="Email"
               style={styles.input}
               onChange={(e) => setEmail(e.target.value)}
+              required
             />
           </div>
           <Link to={'#'}>
