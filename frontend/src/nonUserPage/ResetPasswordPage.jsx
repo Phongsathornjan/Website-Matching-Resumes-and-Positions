@@ -31,11 +31,12 @@ const ResetPasswordPage = () => {
   },[otp])
 
   const sendOTP = async () => {
+    setError(null)
     setIsLoad(true)
     if(!email){
       setError('Please Enter your Email')
-      return;
       setIsLoad(false)
+      return;
     }
     try{
     const response = await axios.post('http://localhost:4001/sendOTP', {
@@ -43,7 +44,7 @@ const ResetPasswordPage = () => {
       otp,
     });
     if(response.status == 200){
-      navigate('/VerifyEmailPage', { state: { otp: otp } });
+      navigate('/VerifyEmailPage', { state: { otp: otp,email: email } });
     }
     }catch(err){
       console.log(err.response.data.message);

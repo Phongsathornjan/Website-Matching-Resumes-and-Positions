@@ -2,17 +2,21 @@ import React, {useEffect, useState} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import Navbar from '../components/navbar/Navbar.jsx';
+import axios from 'axios';
 
 const VerifyEmailPage = () => {
-  const [status, setStatus] = useState(false);
-  const [sign, setSign] = useState(null);
+    
   const navigate = useNavigate();
-
   const location = useLocation();
 
+  const [status, setStatus] = useState(false);
+  const [sign, setSign] = useState(null);
+  const [isLoad, setIsLoad] = useState(null);
+
+  const [email, setEmail] = useState(location.state?.email);
+  const [newPassword, setNewPassword] = useState(null);
   const [otp, setOTP] = useState(location.state?.otp);
   const [inputOtp, setInputOtp] = useState(null);
-  const [isLoad, setIsLoad] = useState(null);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -39,10 +43,15 @@ const VerifyEmailPage = () => {
     }
   }
 
-  const setNewPassword = () => {
+  const setPassword = async () => {
     //back end api
-
-    navigate('/Signin');
+    const response = await axios.patch('http://localhost:4001/resetPassword',{
+      email,
+      newPassword
+    });
+    if(response.status == 200){
+      navigate('/Signin');
+    }
   }
 
   return (
@@ -63,14 +72,15 @@ const VerifyEmailPage = () => {
           <form style={styles.form}>
           <div style={styles.formGroup}>
             <input
-              type="int"
+              type="password"
               placeholder="New Password"
+              onChange={(e) => setNewPassword(e.target.value)}
               required
               style={styles.input}
             />
           </div>
           <Link to={'#'}>
-          <button type="submit" style={styles.button} onClick={setNewPassword} >Confirm</button>
+          <button type="submit" style={styles.button} onClick={setPassword} >Confirm</button>
           </Link>
         </form>
           </>        

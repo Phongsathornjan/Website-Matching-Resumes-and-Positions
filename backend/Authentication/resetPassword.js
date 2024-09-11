@@ -14,8 +14,6 @@ const resetPassword = async (req, res) => {
                 { new: true } // This will return the updated document
             );
 
-            console.log(updatedUser)
-
             if (updatedUser) {
                 return res.status(200).json({
                     message: 'Success'
