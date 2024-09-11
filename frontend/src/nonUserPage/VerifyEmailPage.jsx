@@ -12,6 +12,7 @@ const VerifyEmailPage = () => {
 
   const [otp, setOTP] = useState(location.state?.otp);
   const [inputOtp, setInputOtp] = useState(null);
+  const [isLoad, setIsLoad] = useState(null);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -26,12 +27,15 @@ const VerifyEmailPage = () => {
   }, []);
 
   const onClickButton = () => {
+    setIsLoad(true)
     console.log(otp)
     if(otp == inputOtp){
       setStatus(true)
       setSign(null)
+      setIsLoad(false)
     }else{
       setSign("OTP ไม่ถูกต้อง")
+      setIsLoad(false)
     }
   }
 
@@ -52,6 +56,7 @@ const VerifyEmailPage = () => {
         <h5 style={styles.VerifyText}>Verify Email</h5>
         <p style={styles.Text}> We will send you a OTP to email. Please Enter OTP.</p>
         {sign && <div className="alert alert-danger" role="alert">{sign}</div>}
+        {isLoad && <center><div style={spinnerStyle}></div></center>}
         {status ? (
           <>
           <div className="alert alert-success" style={animation} role="alert">Success Please Enter new Password</div>
@@ -107,6 +112,15 @@ const globalStyle = `
   100% {
     opacity: 1;
     transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -178,5 +192,13 @@ const styles = {
   }
 };
 
+const spinnerStyle = {
+  border: '4px solid rgba(0, 0, 0, 0.1)',
+  width: '36px',
+  height: '36px',
+  borderRadius: '50%',
+  borderLeftColor: '#09f',
+  animation: 'spin 1s ease infinite'
+};
 
 export default VerifyEmailPage;

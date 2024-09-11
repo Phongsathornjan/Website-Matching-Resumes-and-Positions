@@ -10,6 +10,7 @@ const ResetPasswordPage = () => {
   const [email, setEmail] = useState(null);
   const [otp, setOtp] = useState(null);
   const [error, setError] = useState(null);
+  const [isLoad, setIsLoad] = useState(null);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -30,9 +31,11 @@ const ResetPasswordPage = () => {
   },[otp])
 
   const sendOTP = async () => {
+    setIsLoad(true)
     if(!email){
       setError('Please Enter your Email')
       return;
+      setIsLoad(false)
     }
     try{
     const response = await axios.post('http://localhost:4001/sendOTP', {
@@ -46,6 +49,7 @@ const ResetPasswordPage = () => {
       console.log(err.response.data.message);
       setError(err.response.data.message)
     }
+    setIsLoad(false)
   }
 
   const onButtonClick = () => {
@@ -71,8 +75,9 @@ const ResetPasswordPage = () => {
         <h5 style={styles.ResetText}>RESET YOU PASSWORD</h5>
         <div style={{height: '25px'}}></div>
         <p style={styles.Text}> Enter your user account's verified email address <br />and we will send you a password reset link to email.</p>
+        {isLoad && <center><div style={spinnerStyle}></div></center>}
         {error ? (
-          <><div className="alert alert-danger" style={alertStyle} role="alert">{error}</div></>
+          <><div className="alert alert-danger" style={animation} role="alert">{error}</div></>
         ):(
           <><div style={{height: '58px'}}></div></>
         )}
@@ -96,7 +101,7 @@ const ResetPasswordPage = () => {
   );
 };
 
-const alertStyle = {
+const animation = {
   animation: 'fadeInFromBottom 0.5s ease-in',
 }
 
@@ -109,6 +114,15 @@ const globalStyle = `
   100% {
     opacity: 1;
     transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
   }
 }
 
@@ -178,6 +192,15 @@ const styles = {
   buttonHover: {
     backgroundColor: '#3b74c3',
   }
+};
+
+const spinnerStyle = {
+  border: '4px solid rgba(0, 0, 0, 0.1)',
+  width: '36px',
+  height: '36px',
+  borderRadius: '50%',
+  borderLeftColor: '#09f',
+  animation: 'spin 1s ease infinite'
 };
 
 
