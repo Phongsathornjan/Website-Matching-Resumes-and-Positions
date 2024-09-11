@@ -9,6 +9,7 @@ const verifyLogin = require('./Authentication/login');
 const verifyRegister =require('./Authentication/register');
 const auth = require('./middleware/auth');
 const tokenDecoder = require('./Authentication/tokenDecoder');
+const resetPassword = require('./Authentication/resetPassword');
 
 //Resume
 const checkValidResume = require('./checkValidResume');
@@ -83,10 +84,12 @@ app.post("/deletePost", async (req, res) => {
 })
 
 //Email
-//sendOTP
-//deletePost
 app.post("/sendOTP", async (req, res) => {
     return sendOTP(req,res)
+})
+
+app.patch("/resetPassword", async (req, res) => {
+    return resetPassword(req,res)
 })
 
 
