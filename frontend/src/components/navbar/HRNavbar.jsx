@@ -17,7 +17,7 @@ const HRNavbar = () => {
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >Manage Post</Link>
+      <Link to={'/HrIndexPage'} style={linkStyle} >Manage Post</Link>
       </div>
       <div>
       <Link to={'#'} style={linkStyle} >Interview Appointment</Link>

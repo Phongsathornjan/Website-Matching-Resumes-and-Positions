@@ -29,13 +29,24 @@ const HrIndexPage = () => {
      
       authentication();
 
+      const styleSheet = document.createElement("style");
+      styleSheet.type = "text/css";
+      styleSheet.innerText = globalStyle;
+      document.head.appendChild(styleSheet);
+  
+      // Cleanup on component unmount
+      return () => {
+        document.head.removeChild(styleSheet);
+      };
     }, []);
 
     return (
       <>
         <HRNavbar></HRNavbar>
+        <div style={HrIndexStyle}>
         <div style={sideBarStyle}>
         <HrSidebar></HrSidebar>
+        </div>
         </div>
       </>
     );
@@ -44,5 +55,21 @@ const HrIndexPage = () => {
   const sideBarStyle = {
     marginTop: '150px'
   }
+
+  const HrIndexStyle = {
+    animation: 'fadeInFromBottom 0.5s ease-in',
+  }
+
+  const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}`;
 
   export default HrIndexPage

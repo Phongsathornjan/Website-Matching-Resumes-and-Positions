@@ -53,9 +53,6 @@ const CreatePostPage = () => {
   const [Qualifications, setQualifications] = useState(null);
   const [Experience, setExperience] = useState(null);
 
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-
   const handleButton = async () => {
     setError(null);
     const userId = localStorage.getItem('id_user');
@@ -85,7 +82,7 @@ const CreatePostPage = () => {
   return (
     <>
     <HRNavbar></HRNavbar>
-      <div style={{marginLeft: '20px', marginTop: '90px',marginRight: '20px'}}>
+      <div style={createPostStyle}>
       <h1 style={titleStyle}>Create Post</h1>
 
       <div>
@@ -150,8 +147,11 @@ const CreatePostPage = () => {
   );
 };
 
-const animation = {
-  animation: 'fadeInFromBottom'
+const createPostStyle = {
+  marginLeft: '20px', 
+  marginTop: '90px',
+  marginRight: '20px',
+  animation: 'fadeInFromBottom 0.5s ease-in',
 }
 
 const styles = {
