@@ -7,7 +7,6 @@ import { Form } from 'react-bootstrap';
 import JobFieldOptions from '../components/Data/jobField';
 import LocationOptions from '../components/LocationOptions';
 import HRNavbar from '../components/navbar/HRNavbar.jsx';
-import jobFile from '../components/Data/jobField';
 
 const CreatePostPage = () => {
   const navigate = useNavigate();
@@ -58,8 +57,6 @@ const CreatePostPage = () => {
   const [success, setSuccess] = useState('');
 
   const handleButton = async () => {
-    console.log(WorkField)
-
     setError(null);
     const userId = localStorage.getItem('id_user');
     if(!userId){return}
@@ -74,10 +71,12 @@ const CreatePostPage = () => {
         Qualifications: Qualifications,
         Experience: Experience,
       });
-      setSuccess('Create Post Success. Refreshing...');
+      if(response.status == 200){
+        navigate('/HrIndexPage');
+      }
     }catch(err){
       if(err.response.status == 400){
-        setError(err.response.data.message);
+        alert(err.response.data.message)
       }
       console.log(err);
     }
@@ -86,13 +85,10 @@ const CreatePostPage = () => {
   return (
     <>
     <HRNavbar></HRNavbar>
-      <div style={{marginLeft: '35px', marginTop: '90px'}}>
+      <div style={{marginLeft: '20px', marginTop: '90px',marginRight: '20px'}}>
       <h1 style={titleStyle}>Create Post</h1>
 
-      {/* show error */}
-
       <div>
-
           <div style={{display: 'flex', marginBottom: '20px', justifyContent: 'space-between'}}>
             <Form.Control
               placeholder="Position"
@@ -121,26 +117,29 @@ const CreatePostPage = () => {
               />
             </div>
           </div>
-          <div style={{marginBottom: '20px'}}>
-          <p>&nbsp;Requirements</p>
-          <Form.Control
-              style={{width: '100%', height: '150px'}}
+          <div style={{ marginBottom: '20px' }}>
+            <p>&nbsp;Requirements</p>
+            <Form.Control
+              as="textarea"
+              style={{ width: '100%', height: '150px' }}
               onChange={(e) => setRequirements(e.target.value)}
-          />
+            />
           </div>
-          <div style={{marginBottom: '20px'}}>
-          <p>&nbsp;Qualifications</p>
-          <Form.Control
-              style={{width: '100%', height: '150px'}}
+          <div style={{ marginBottom: '20px' }}>
+            <p>&nbsp;Qualifications</p>
+            <Form.Control
+              as="textarea"
+              style={{ width: '100%', height: '150px' }}
               onChange={(e) => setQualifications(e.target.value)}
-          />
+            />
           </div>
-          <div style={{marginBottom: '20px'}}>
-          <p>&nbsp;Experience</p>
-          <Form.Control
-              style={{width: '100%', height: '150px'}}
+          <div style={{ marginBottom: '20px' }}>
+            <p>&nbsp;Experience</p>
+            <Form.Control
+              as="textarea"
+              style={{ width: '100%', height: '150px' }}
               onChange={(e) => setExperience(e.target.value)}
-          />
+            />
           </div>
 
             <button type="submit" style={styles.button} onClick={handleButton}>สร้างโพสค์</button>
@@ -150,6 +149,10 @@ const CreatePostPage = () => {
     </>
   );
 };
+
+const animation = {
+  animation: 'fadeInFromBottom'
+}
 
 const styles = {
   input: {

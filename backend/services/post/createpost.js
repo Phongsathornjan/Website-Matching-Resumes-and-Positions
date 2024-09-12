@@ -7,7 +7,7 @@ const createPost = async (req, res) => {
 
         if(!(userId && Position && Salary && WorkField && Location && Requirements && Qualifications && Experience)){
             return res.status(400).json({
-                message: 'All input is require'
+                message: 'กรุณากรอกข้อมูลให้ครบ'
             })
         }
 

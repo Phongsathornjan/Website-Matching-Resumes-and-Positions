@@ -9,10 +9,10 @@ const HRNavbar = () => {
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >Manage Post</Link>
+      <Link to={'#'} style={linkStyle} >จัดการโพสต์</Link>
       </div>
       <div>
-      <Link to={'#'} style={linkStyle} >Interview Appointment</Link>
+      <Link to={'#'} style={linkStyle} >นัดหมายสัมภาษณ์งาน</Link>
       </div>
       <div>
       <Link to={'#'} style={linkStyle} >My Profile</Link>
