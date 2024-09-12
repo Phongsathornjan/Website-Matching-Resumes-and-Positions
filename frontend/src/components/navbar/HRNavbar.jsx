@@ -1,7 +1,15 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 const HRNavbar = () => {
+  const navigate = useNavigate();
+
+  const SignOut = () =>{
+    localStorage.removeItem('token');
+    localStorage.removeItem('id_user');
+    navigate('/SignIn');
+  }
+
   return (
     <div style={navbarStyle}>
       <div>
@@ -9,14 +17,22 @@ const HRNavbar = () => {
       </div>
       <div style={rightBarStyle}>
       <div>
-      <Link to={'#'} style={linkStyle} >จัดการโพสต์</Link>
+      <Link to={'#'} style={linkStyle} >Manage Post</Link>
       </div>
       <div>
-      <Link to={'#'} style={linkStyle} >นัดหมายสัมภาษณ์งาน</Link>
+      <Link to={'#'} style={linkStyle} >Interview Appointment</Link>
       </div>
-      <div>
-      <Link to={'#'} style={linkStyle} >My Profile</Link>
-      </div>
+      <div className="dropdown">
+          <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
+            My Account
+          </button>
+          <ul className="dropdown-menu">
+            <Link to={'#'} style={linkStyle}>
+              <li><p className="dropdown-item">ข้อมูลส่วนตัว</p></li>
+            </Link>
+              <li><p className="dropdown-item" onClick={SignOut}>Sign out</p></li>
+          </ul>
+        </div>
       </div>
     </div>
   )
