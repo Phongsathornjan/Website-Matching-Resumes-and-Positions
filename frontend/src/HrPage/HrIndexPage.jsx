@@ -1,21 +1,13 @@
 import React, { useEffect,useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'
 
 import HRNavbar from './../components/navbar/HRNavbar';
 import HrSidebar from '../components/HrComponents/Hrsidebar';
 import HrJobPost from '../components/HrComponents/HrJobPost';
 
 const HrIndexPage = () => {
-    const [currentSlide, setCurrentSlide] = useState(0);
     const navigate = useNavigate();
-
-    const handleNext = () => {
-
-    }
-
-    const handlePrev = () => {
-      
-    }
 
     useEffect(() => {
 
@@ -36,6 +28,7 @@ const HrIndexPage = () => {
           }
         } catch(err){
           console.log(err)
+          navigate('/SignIn');
         }
       }
      
@@ -63,16 +56,6 @@ const HrIndexPage = () => {
           </div>
           <div style={contentStyle}>
             <HrJobPost />
-            <div></div>
-            <div style={SlideNavigation}>
-              <button style={NavigationButton} onClick={handlePrev} disabled={currentSlide === 0}>
-                {'<'}
-              </button>
-              <div style={{ width: '40px' }}></div>
-              <button style={NavigationButton} onClick={handleNext} disabled={currentSlide === 3}>
-                {'>'}
-              </button>
-            </div>
           </div>
         </div>
       </>
@@ -99,30 +82,6 @@ const HrIndexPage = () => {
   const contentStyle = {
     marginLeft: '420px', 
     width: '100%',
-  };
-
-  const NavigationButton = {
-    backgroundColor: '#fff',
-    width: '40px',
-    height: '40px',
-    borderRadius: '50%',
-    boxShadow: '0px 1px 5px 0px rgba(0, 0, 0, 0.3)',
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    cursor: 'pointer',
-    userSelect: 'none',
-    border: 'none',
-    margin: '0 10px',
-    position: 'relative', // ตำแหน่งของปุ่ม
-  };
-  
-  const SlideNavigation = {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: '20px',
-    position: 'relative'
   };
   
   const globalStyle = `
