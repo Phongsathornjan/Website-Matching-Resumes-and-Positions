@@ -5,7 +5,7 @@ import { FaBriefcase, FaCalendarCheck, FaUsers } from 'react-icons/fa';
 import StatusCard from '../../components/StatusCard';
 
 function HrSidebar() {
-  const [color1, setColor1] = useState('#fff')
+  const [color1, setColor1] = useState('#f2d5ff')
   const [color2, setColor2] = useState('#fff')
   const [color3, setColor3] = useState('#fff')
 

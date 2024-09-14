@@ -63,7 +63,6 @@ const HrIndexPage = () => {
   };
 
   const HrIndexStyle = {
-    animation: 'fadeInFromBottom 0.5s ease-in',
     display: 'flex',
     justifyContent: 'space-between',
     margin: '20px'
@@ -76,7 +75,6 @@ const HrIndexPage = () => {
     width: '250px',   
     height: 'calc(100vh - 120px)', 
     overflowY: 'auto',  
-    animation: 'fadeInFromBottom 0.5s ease-in',
   };
 
   const contentStyle = {

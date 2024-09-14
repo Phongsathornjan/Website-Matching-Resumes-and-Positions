@@ -116,7 +116,10 @@ const HrJobPost = () => {
           {currentJobs.map(job => (
             <Card key={job.id} className="mb-3" style={cardStyle}>
               <Card.Body>
-                <Card.Title>{job.title}</Card.Title>
+                <div style={{display: 'flex',justifyContent: 'space-between'}}>
+                  <Card.Title>{job.title}</Card.Title>
+                  <Button variant="danger">Delete</Button>
+                </div>
                 <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
                 <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
                 <Card.Text>- {job.description}</Card.Text>
@@ -124,7 +127,7 @@ const HrJobPost = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Card.Text>{job.posted}</Card.Text>
                   <Link to={'#'}>
-                    <Button variant="success">รายละเอียด</Button>
+                    <Button variant="success">Find candidate</Button>
                   </Link>
                 </div>
               </Card.Body>
