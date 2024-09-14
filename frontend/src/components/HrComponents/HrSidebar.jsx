@@ -1,38 +1,100 @@
-import React from 'react';
-import { MdOutlineWork } from "react-icons/md";
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FaBriefcase, FaCalendarCheck, FaUsers } from 'react-icons/fa';
+
+import StatusCard from '../../components/StatusCard';
 
 function HrSidebar() {
+  const [color1, setColor1] = useState('#fff')
+  const [color2, setColor2] = useState('#fff')
+  const [color3, setColor3] = useState('#fff')
 
+  const onClickButton = (color, clickOn) => {
+    switch (clickOn) {
+      case "job":
+        setColor1(color)
+        setColor2('#fff')
+        setColor3('#fff')
+        break;
+      case "interview":
+        setColor2(color)
+        setColor1('#fff')
+        setColor3('#fff')
+        break;
+      // More cases as needed
+      case "application":
+        setColor3(color)
+        setColor2('#fff')
+        setColor1('#fff')
+        break;
+    }
+  }
+  
   return (
     <div style={sidebarStyle}>
-      <Link to={'/CreatePost'}>
-      <button style={buttonStyle}>Create Your Post</button>
-      </Link>
-      <div>
+      <center>
+        <p style={fontStyle}>Create Your Post</p>
+        <Link to={'/CreatePost'}>
+        <button style={buttonStyle}>Create</button>
+        </Link>
         <div>
-            <MdOutlineWork />
-            <p>job : 8</p>
+          <div style ={statusStyle} onClick={() => onClickButton("#f2d5ff","job")}>
+            <StatusCard
+              title="Job"
+              count="8"
+              color={color1}
+              icon={<FaBriefcase />}
+              iconAndTextColor = "#9d8ee1"
+            />
+          </div>
+          <div style ={statusStyle} onClick={() => onClickButton("#faffd5","interview")}>
+            <StatusCard
+              title="Interview"
+              count="16"
+              color={color2}
+              icon={<FaCalendarCheck />}
+              iconAndTextColor = "#f1c40f"
+            />
+          </div>
+          <div style ={statusStyle} onClick={() => onClickButton("#dbffd5","application")}>
+            <StatusCard
+              title="Applicant"
+              count="9"
+              color={color3}
+              icon={<FaUsers />}
+              iconAndTextColor = "#2ecc71"
+            />
+          </div>
         </div>
-      </div>
+      </center>
     </div>
   );
 }
 
 const sidebarStyle = {
-    width: '200px',
+    width: '250px',
     padding: '20px',
   };
 
-  const buttonStyle = {
-    marginBottom: '20px',
-    padding: '10px 20px',
-    backgroundColor: '#ff6b6b',
-    border: 'none',
-    color: '#fff',
-    cursor: 'pointer',
-    borderRadius: '5px',
-  };
+const fontStyle = {
+  fontWeight: 'bold',
+  fontSize: '22px',
+}
 
+const buttonStyle = {
+  marginTop: '10px',
+  marginBottom: '80px',
+  padding: '10px 20px',
+  backgroundColor: '#ff6b6b',
+  border: 'none',
+  color: '#fff',
+  cursor: 'pointer',
+  borderRadius: '5px',
+  width: '180px'
+ };
+
+ const statusStyle = {
+  marginBottom: '30px'
+ }
 
 export default HrSidebar;

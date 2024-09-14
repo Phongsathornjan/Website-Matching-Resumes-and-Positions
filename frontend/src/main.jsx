@@ -1,8 +1,6 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 
-import HRApplicantPage from './HrPage/HRApplicantPage.jsx';
-import HRInterviewPage from './HrPage/HRInterviewPage.jsx';
 import CreatePostPage from './HrPage/CreatePostPage';
 import SendEmailPage from './HrPage/SendEmailPage.jsx';
 import HrIndexPage from './HrPage/HrIndexPage';
@@ -26,14 +24,6 @@ import {
 } from "react-router-dom";
 
 const router = createBrowserRouter([
-  {
-    path: "/HRApplicant",
-    element: <HRApplicantPage></HRApplicantPage>
-  },
-  {
-    path: "/HRInterview",
-    element: <HRInterviewPage></HRInterviewPage>
-  },
   {
     path: "/CreatePost",
     element: <CreatePostPage></CreatePostPage>
