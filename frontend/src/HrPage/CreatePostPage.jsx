@@ -45,6 +45,8 @@ const CreatePostPage = () => {
     };
   }, []);
 
+  const [notification, setNotification] = useState(null);
+
   const [Position, setPosition] = useState(null);
   const [Salary, setSalary] = useState(null);
   const [WorkField, setWorkField] = useState(null);
@@ -54,7 +56,7 @@ const CreatePostPage = () => {
   const [Experience, setExperience] = useState(null);
 
   const handleButton = async () => {
-    setError(null);
+    setNotification(null)
     const userId = localStorage.getItem('id_user');
     if(!userId){return}
     try{
@@ -73,7 +75,10 @@ const CreatePostPage = () => {
       }
     }catch(err){
       if(err.response.status == 400){
-        alert(err.response.data.message)
+        window.scrollTo(0, 0);
+        setTimeout(function() {
+          setNotification(err.response.data.message)
+        }, 400);
       }
       console.log(err);
     }
@@ -84,7 +89,7 @@ const CreatePostPage = () => {
     <HRNavbar></HRNavbar>
       <div style={createPostStyle}>
       <h1 style={titleStyle}>Create Post</h1>
-
+      {notification && <div className="alert alert-danger" role="alert" style={notificationStyle}>{notification}</div>}
       <div>
           <div style={{display: 'flex', marginBottom: '20px', justifyContent: 'space-between'}}>
             <Form.Control
@@ -147,6 +152,11 @@ const CreatePostPage = () => {
   );
 };
 
+const notificationStyle = {
+  width: '200px',
+  animation: 'fadeInFromBottom 0.5s ease-in',
+}
+
 const createPostStyle = {
   marginLeft: '20px', 
   marginTop: '90px',
@@ -179,6 +189,7 @@ const titleStyle = {
   fontSize: '48px', // Adjusted to match the image size
   fontWeight: 'bold',
   marginBottom: '30px',
+  marginRight: '100px'
 };
 
 
