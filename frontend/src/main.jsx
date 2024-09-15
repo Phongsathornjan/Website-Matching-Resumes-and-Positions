@@ -72,6 +72,7 @@ const router = createBrowserRouter([
     path: "/VerifyEmailPage",
     element:  <VerifyEmailPage></VerifyEmailPage>
   },
+
 ]);
 
 
