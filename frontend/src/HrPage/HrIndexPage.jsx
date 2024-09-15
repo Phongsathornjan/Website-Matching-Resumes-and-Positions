@@ -9,29 +9,29 @@ import HrJobPost from '../components/HrComponents/HrJobPost';
 const HrIndexPage = () => {
     const navigate = useNavigate();
 
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+
+        if(response.status == 200){
+          if(response.data.userData.role != "hr"){
+            navigate('/SignIn');
+          }
+        }
+      } catch(err){
+        console.log(err)
+        navigate('/SignIn');
+      }
+    }
+
     useEffect(() => {
 
       //Authentication Hr role
-      async function authentication() {
-        try{
-          let token = localStorage.getItem('token');
-          const response = await axios.post('http://localhost:4001/auth', {} ,{
-            headers: {
-              'x-access-token': token
-            }
-          })
-  
-          if(response.status == 200){
-            if(response.data.userData.role != "hr"){
-              navigate('/SignIn');
-            }
-          }
-        } catch(err){
-          console.log(err)
-          navigate('/SignIn');
-        }
-      }
-     
       authentication();
 
       //add animation

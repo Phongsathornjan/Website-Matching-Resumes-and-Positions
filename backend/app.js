@@ -19,6 +19,7 @@ const uploadPDF2mongo = require('./uploadPDF2mongo');
 //Post
 const createPost = require('./services/post/createpost');
 const deletePost = require('./services/post/deletepost');
+const getPost = require('./services/post/getpost')
 
 //email
 const sendOTP = require('./services/email/sendOTP');
@@ -34,6 +35,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'Resume')));
+
+
+
+
 
 //Register
 app.post("/register", async (req, res) =>{
@@ -55,6 +60,14 @@ app.post("/tokenDecoder", async (req, res) => {
     return tokenDecoder(req, res);
 })
 
+app.patch("/resetPassword", async (req, res) => {
+    return resetPassword(req,res)
+})
+
+
+
+
+
 //uploadPDF
 app.post("/uploadPDF", upload.single('file'),async (req, res) => {
     try {
@@ -71,6 +84,10 @@ app.post("/checkValidResume", async (req, res) => {
     return checkValidResume(req, res);
 })
 
+
+
+
+
 //createPost
 app.post("/createPost", async (req, res) => {
     return createPost(req,res);
@@ -80,15 +97,18 @@ app.post("/createPost", async (req, res) => {
 app.post("/deletePost", async (req, res) => {
     return deletePost(req,res);
 })
+//getPost
+app.get("/getPost/:userId", async (req,res) => {
+    return getPost(req,res)
+})
+
+
+
+
 
 //Email
 app.post("/sendOTP", async (req, res) => {
     return sendOTP(req,res)
 })
-
-app.patch("/resetPassword", async (req, res) => {
-    return resetPassword(req,res)
-})
-
 
 module.exports = app;

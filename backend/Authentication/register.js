@@ -34,8 +34,6 @@ const verifyRegister = async (req , res) => {
             password: encryptedPassword,
             role: 'member',
             location: location,
-            company_name: '-',
-            phone: '-',
         })
 
         //Create token

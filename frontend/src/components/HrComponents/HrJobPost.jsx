@@ -1,77 +1,14 @@
 import React, {useEffect,useState} from "react";
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
-
-const jobList = [
-  {
-    id: 1,
-    title: 'Junior Programmer1',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 2,
-    title: 'Junior Programmer2',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 3,
-    title: 'Junior Programmer3',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 4,
-    title: 'Junior Programmer4',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 5,
-    title: 'Junior Programmer5',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 6,
-    title: 'Junior Programmer6',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 7,
-    title: 'Junior Programmer7',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  }
-];
+import axios from 'axios'
+import moment from 'moment'
 
 const HrJobPost = () => {
+  const [jobList,setJobList] = useState([])
   const jobsPerPage = 6; // จำนวนงานต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(Math.ceil(jobList.length / jobsPerPage));
+  const [totalPages, setTotalPages] = useState(0);
 
   const handleNext = () => {
     if (currentPage < totalPages) {
@@ -90,7 +27,25 @@ const HrJobPost = () => {
   const endIndex = startIndex + jobsPerPage;
   const currentJobs = jobList.slice(startIndex, endIndex);
 
+  async function getPost() {
+    const userId = localStorage.getItem('id_user')
+    try{
+      const response = await axios.get(`http://localhost:4001/getPost/${userId}`)
+      setJobList(response.data)
+    }catch(err){
+      console.log(err)
+    }
+
+  }
+
   useEffect(() => {
+    setTotalPages(Math.ceil(jobList.length / jobsPerPage));
+  }, [jobList]);
+
+  useEffect(() => {
+    //Get Post
+    getPost()
+
     // เพิ่ม global animation style
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
@@ -108,24 +63,26 @@ const HrJobPost = () => {
       {/* ตรวจสอบว่า jobList ว่างหรือไม่ */}
       {jobList.length === 0 ? (
         <center>
-          <div style={{fontSize: '20px',color: 'gray',marginTop: '80px'}}>คุณยังไม่มีโพสต์รับสมัคร สามารถสร้างได้เลยตอนนี้</div>
-          <img src="../../../public/PleaseSelectFiled.png" style={imgStyle}/>
+          <div style={{animation: 'fadeInFromBottom 0.6s ease-in'}}>
+            <div style={{fontSize: '20px',color: 'gray',marginTop: '80px'}}>คุณยังไม่มีโพสต์รับสมัคร สามารถสร้างได้เลยตอนนี้</div>
+            <img src="../../../public/PleaseSelectFiled.png" style={imgStyle}/> 
+          </div>
         </center>
       ) : (
         <>
           {currentJobs.map(job => (
-            <Card key={job.id} className="mb-3" style={cardStyle}>
+            <Card key={job.time_stamp} className="mb-3" style={cardStyle}>
               <Card.Body>
                 <div style={{display: 'flex',justifyContent: 'space-between'}}>
-                  <Card.Title>{job.title}</Card.Title>
+                  <Card.Title style={ellipsisStyle}>{job.Position}</Card.Title>
                   <Button variant="danger">Delete</Button>
                 </div>
-                <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
-                <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
-                <Card.Text>- {job.description}</Card.Text>
-                <Card.Text>- {job.requirements}</Card.Text>
+                <Card.Subtitle className="mb-2 text-muted">{job.Salary}</Card.Subtitle>
+                <Card.Text style={ellipsisStyle}>Requirements : {job.Requirements}</Card.Text>
+                <Card.Text style={ellipsisStyle}>Qualifications : {job.Qualifications}</Card.Text>
+                <Card.Text style={ellipsisStyle}>Experience : {job.Experience}</Card.Text>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                  <Card.Text>{job.posted}</Card.Text>
+                  <Card.Text>โพสต์เมื่อวันที่ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                   <Link to={'#'}>
                     <Button variant="success">Find candidate</Button>
                   </Link>
@@ -147,6 +104,13 @@ const HrJobPost = () => {
     </div>
   );
 };
+
+const ellipsisStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',        
+  textOverflow: 'ellipsis'     
+};
+
 
 const cardStyle = {
   width: '1000px',
