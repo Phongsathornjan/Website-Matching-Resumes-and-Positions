@@ -69,9 +69,7 @@ const Userindexpage = () => {
       <UserNavbar></UserNavbar>
       <div style={{ height: '60px' }}></div>
 
-      {/* Container for two columns */}
       <div style={containerStyle}>
-        {/* Left column: Form with location and career selection */}
         <div style={leftColumnStyle}>
           <div style={inputContainerStyle}>
             <Form.Control
@@ -79,7 +77,6 @@ const Userindexpage = () => {
               style={inputStyle}
               onChange={(e) => setPrompt(e.target.value)}
             />
-            {/* Row for location, job field, and button */}
             <div style={formRowStyle}>
               <div style={dropdownWrapperStyle}>
                 <Select
@@ -104,7 +101,6 @@ const Userindexpage = () => {
           </div>
         </div>
 
-        {/* Right column: Cards in one row */}
         <div style={rightColumnStyle}>
           <div style={statusStyle} onClick={() => onClickButton('#f2d5ff', 'job')}>
             <StatusCard
@@ -127,7 +123,6 @@ const Userindexpage = () => {
         </div>
       </div>
 
-      {/* Conditional rendering for the rest of the content */}
       {!jobfield ? (
         <>
           <careerFileContext.Provider value={[jobfield, setJobField]}>
