@@ -15,24 +15,29 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                 { role: "user", content: [
                     {
                      type: "text",
-                     text:                     `***Context***
-                     You are my assistant. I will send a Text to you.
-                     Text that i will send to you is come from Resume(JPG file).
-                     You work is to compose and extract data from Text follow as my instruction.
-                     ***Key information**
-                     Then You have to response in JSON follow as this structure.
-                     {
-                         "Output":[
-                             {
-                                 "university": "",
-                                 "Experience": "",
-                                 "skill": "",
-                                 "summary": "this field is summary of Resume Do not empty or null"
-                             }
-                         ]
-                     }
-                     ***Role of you***
-                     1. If data cannot be found as my instruction then you can response empty string for that field.
+                     text:                     `
+                        ***Context***
+                        You are my assistant. I will send base64 from a Resume (JPG file) to you.
+                        Your task is to compose and extract keywords from the Resume following my instructions.
+                        I will use your response to match job positions and keywords from the Resume.
+                        ***Key information***
+                        "keyword": (Field of skill like hard skill and soft skill)
+                        "Experience": (Highlight the Skill, Position, and How long for that position) 
+                        ***Role of you***
+                        1. If data cannot be found as my instruction then you can response empty string for that field.
+                        2. You have to response in JSON follow as this structure.
+                            {
+                                "Output":[
+                                    {
+                                        "Experience": "your combined Experience response here (max 300 characters)", 
+                                        "keyword": "your combined keyword response here (max 300 characters)"
+                                    }
+                                ]
+                            }
+                        3. Combine all experiences into a single string for "Experience" and all keywords into a single string for "keyword." 
+                        Separate different experiences or keywords using commas.
+                        4.Ensure the response for "Experience" is no longer than 300 characters and "keyword" no longer than 300 characters. 
+                        If it exceeds the limit, summarize or shorten the content.
                     `
                     },{
                         type: "image_url",

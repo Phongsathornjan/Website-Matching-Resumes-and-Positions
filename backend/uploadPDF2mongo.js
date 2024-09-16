@@ -42,10 +42,8 @@ const uploadData2Mongo = async (userId,data) =>{
         const Validate = await Resume.findOneAndUpdate(
             { userId: userId },
             { $set: {
-                university:  data.Output[0].university,
                 Experience:  data.Output[0].Experience,
-                skill:       data.Output[0].skill,
-                summary:     data.Output[0].summary,
+                keyword:       data.Output[0].keyword,
                 userId:      userId,
             } },
             { new: true, upsert: true }
