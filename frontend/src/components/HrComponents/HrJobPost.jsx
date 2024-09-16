@@ -37,6 +37,17 @@ const HrJobPost = () => {
     }
 
   }
+  
+  const OnClickDeletePost = async (idPost) => {
+    try{
+      const response = await axios.delete(`http://localhost:4001/deletePost/${idPost}`)
+      if(response.status == 200){
+        window.location.reload()
+      }
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   useEffect(() => {
     setTotalPages(Math.ceil(jobList.length / jobsPerPage));
@@ -75,7 +86,7 @@ const HrJobPost = () => {
               <Card.Body>
                 <div style={{display: 'flex',justifyContent: 'space-between'}}>
                   <Card.Title style={ellipsisStyle}>{job.Position}</Card.Title>
-                  <Button variant="danger">Delete</Button>
+                  <Button variant="danger" onClick={() => OnClickDeletePost(job._id)}>Delete</Button>
                 </div>
                 <Card.Subtitle className="mb-2 text-muted">{job.Salary}</Card.Subtitle>
                 <Card.Text style={ellipsisStyle}>Requirements : {job.Requirements}</Card.Text>
@@ -83,9 +94,14 @@ const HrJobPost = () => {
                 <Card.Text style={ellipsisStyle}>Experience : {job.Experience}</Card.Text>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Card.Text>โพสต์เมื่อวันที่ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
-                  <Link to={'#'}>
+                  <div style={{width: '250px',display: 'flex',justifyContent: 'space-between'}}>
+                    <Link to={'#'}>
+                      <Button variant="success">More detail</Button>
+                    </Link>
+                    <Link to={'#'}>
                     <Button variant="success">Find candidate</Button>
-                  </Link>
+                    </Link>
+                  </div>
                 </div>
               </Card.Body>
             </Card>

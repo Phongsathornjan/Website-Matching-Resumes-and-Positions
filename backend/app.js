@@ -94,7 +94,7 @@ app.post("/createPost", async (req, res) => {
 })
 
 //deletePost
-app.post("/deletePost", async (req, res) => {
+app.delete("/deletePost/:idPost", async (req, res) => {
     return deletePost(req,res);
 })
 //getPost
