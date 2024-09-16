@@ -95,7 +95,7 @@ const HrJobPost = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Card.Text>โพสต์เมื่อวันที่ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                   <div style={{width: '250px',display: 'flex',justifyContent: 'space-between'}}>
-                    <Link to={'#'}>
+                    <Link to={`/PostDetail/:${job._id}`}>
                       <Button variant="success">More detail</Button>
                     </Link>
                     <Link to={'#'}>

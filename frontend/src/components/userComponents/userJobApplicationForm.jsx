@@ -49,29 +49,6 @@ const userJobApplicationForm = () => {
     };
   }, []);
 
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileChange = (event) => {
-    setSelectedFile(event.target.files[0]);
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('resume', selectedFile);
-
-    try {
-      const response = await axios.post('http://localhost:3001/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
-      alert(response.data);
-    } catch (error) {
-      console.error('There was an error uploading the file!', error);
-    }
-  };
-
   return (
     <div className="container" style={Fade}>
       <section className="mb-5 w-75">

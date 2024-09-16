@@ -77,7 +77,7 @@ const CompanyList = () => {
                 <div style={{height: '410px'}}></div>
                 <div style={{display: 'flex'}}>
                 <div style={{width: '500px'}}></div>
-                <Link to={'/userJobApplication'}>
+                <Link to={'/SignIn'}>
                 <Button variant="success">สมัครที่นี่</Button>
                 </Link>
                 </div>

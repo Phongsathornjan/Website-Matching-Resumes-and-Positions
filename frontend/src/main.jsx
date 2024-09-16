@@ -4,11 +4,11 @@ import ReactDOM from 'react-dom/client'
 import CreatePostPage from './HrPage/CreatePostPage';
 import SendEmailPage from './HrPage/SendEmailPage.jsx';
 import HrIndexPage from './HrPage/HrIndexPage';
+import PostDetailPage from './HrPage/PostDetailPage.jsx';
 
 import IndexPage from './nonUserPage/IndexPage.jsx';
 import SignUpPage from './nonUserPage/SignUpPage.jsx';
 import SignInPage from './nonUserPage/SignInPage.jsx';
-import JobApplicationPage from './nonUserPage/JobApplicationPage.jsx';
 import ResetPasswordPage from './nonUserPage/ResetPasswordPage.jsx';
 import VerifyEmailPage from './nonUserPage/VerifyEmailPage.jsx';
 
@@ -50,10 +50,6 @@ const router = createBrowserRouter([
     element:  <SignInPage></SignInPage>
   },
   {
-    path: "/JobApplication",
-    element:  <JobApplicationPage></JobApplicationPage>
-  },  
-  {
     path: "/UserIndexPage",
     element:  <UserIndexPage></UserIndexPage>
   },
@@ -76,6 +72,10 @@ const router = createBrowserRouter([
   {
     path: "/UserResumeIndexPage",
     element:  <UserResumeIndexPage></UserResumeIndexPage>
+  },
+  {
+    path: "/PostDetail/:idPost",  //รอเพิ่ม params
+    element:  <PostDetailPage></PostDetailPage>
   },
 
 ]);
