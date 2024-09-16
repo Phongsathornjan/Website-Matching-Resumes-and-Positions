@@ -13,7 +13,7 @@ const jobList = [
     description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
     requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
     postedDays: 1, 
-    matchPercentage: 84,
+    matchPercentage: 92,
   },
   {
     id: 2,
@@ -23,7 +23,7 @@ const jobList = [
     description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
     requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
     postedDays: 2,
-    matchPercentage: 72,
+    matchPercentage: 82,
   },
   {
     id: 3,
@@ -62,7 +62,7 @@ const MatchCompanyList = () => {
               onClick={() => handleJobClick(job)}
             >
               <Card.Body style={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                <span style={{ ...matchStyle, backgroundColor: getMatchColor(job.matchPercentage) }}>
+                <span style={{ ...matchStyle, backgroundColor: getMatchColor(job.matchPercentage),boxShadow: `0 4px 15px ${getMatchColor(job.matchPercentage)}` }}>
                   Match {job.matchPercentage}%
                 </span>
                 <div>
@@ -84,9 +84,11 @@ const MatchCompanyList = () => {
                   <Card.Text style={postedTextStyle}>
                     ลงประกาศเมื่อ {job.postedDays} วันที่ผ่านมา
                   </Card.Text>
-                  <Button variant="success" style={applyButtonStyle}>
-                    สมัครที่นี่
-                  </Button>
+                  <Link to={'/userJobApplication'}>
+                    <Button variant="success" style={applyButtonStyle}>
+                      สมัครที่นี่
+                    </Button>
+                  </Link>
                 </div>
               </Card.Body>
             </Card>

@@ -37,6 +37,7 @@ const jobData = {
 const userJobApplicationForm = () => {
 
   useEffect(() => {
+    window.scrollTo(0,0);
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;

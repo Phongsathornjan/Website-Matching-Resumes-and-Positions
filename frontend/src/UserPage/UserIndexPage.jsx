@@ -27,7 +27,7 @@ const Userindexpage = () => {
   const navigate = useNavigate();
 
   const [isResume, setIsResume] = useState(null)
-  const [appState, setAppState] = useState("main")
+  const [appState, setAppState] = useState("Recommend Job")
 
   const [prompt, setPrompt] = useState(null);
   const [location, setLocation] = useState('Bangkok');
@@ -60,12 +60,18 @@ const Userindexpage = () => {
         setColor3('#fff');
         setAppState('My Job')
         break;
-      case 'main':
+      case 'Recommend Job':
         setColor3(color);
         setColor1('#fff');
         setColor2('#fff');
-        setAppState('main')
+        setAppState('Recommend Job')
         setJobField(null)
+        setTimeout(function() {
+          window.scrollTo({
+            top: 680,        
+            behavior: 'smooth' 
+          });
+        }, 100);    
         break;
     }
   };
@@ -158,9 +164,11 @@ const Userindexpage = () => {
         </div>
 
         <div style={rightColumnStyle}>
-          <div style={{...HomeStyle, backgroundColor: color3}} onClick={() => onClickButton('#B7E4B0','main')}>
-            <div style={{color: 'green',marginLeft: '15px'}}><FaHome /></div>
-            <p style={{color: 'green',  fontSize: '20px',fontWeight: 'bold'}}>Home</p>
+          <div style={{...HomeStyle, backgroundColor: color3}} onClick={() => onClickButton('#B7E4B0','Recommend Job')}>
+            <center>
+            <div style={{color: 'green'}}><FaHome /></div>
+            <p style={{color: 'green',  fontSize: '22px',fontWeight: 'bold'}}>Recommend Job</p>
+            </center>
           </div>
 
           <div style={{ ...statusStyle, position: 'relative' }} onClick={() => onClickButton('#FEB3B7', 'New Job')}>
@@ -195,7 +203,7 @@ const Userindexpage = () => {
               <SlidePage></SlidePage>
             </div>
           </careerFileContext.Provider>
-          {appState === "main" && <>
+          {appState === "Recommend Job" && <>
             {isResume ? (
             <>
               <div style={{ height: '30px' }}></div>
@@ -311,9 +319,8 @@ const newLabelStyle = {
 };
 
 const HomeStyle = {
-  width: '100px',
+  width: '200px',
   paddingTop: '25px',
-  paddingLeft: '25px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
   transition: 'background-color 0.5s ease',
   borderRadius: '10px',

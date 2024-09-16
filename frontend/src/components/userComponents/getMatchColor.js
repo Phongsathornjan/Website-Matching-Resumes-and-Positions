@@ -1,7 +1,7 @@
 const getMatchColor = (percentage) => {
-    if (percentage >= 80) return '#8bc34a'; 
-    if (percentage >= 65) return '#ff9800'; 
-    return '#f44336'; 
+    if (percentage >= 90) return '#D738F6'; 
+    if (percentage >= 75) return '#F66B38'; 
+    return '#7F7D89'; 
   };
 
 export default getMatchColor
