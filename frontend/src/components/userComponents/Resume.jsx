@@ -37,9 +37,7 @@ const Resume = () => {
 
   const checkResume = async () =>{
     try{
-    const response = await axios.post('http://localhost:4001/checkValidResume',{
-      id_user: userId
-    });
+    const response = await axios.get(`http://localhost:4001/checkValidResume/${userId}`);
     if(response.status == 200){
       setImage(true);
     }

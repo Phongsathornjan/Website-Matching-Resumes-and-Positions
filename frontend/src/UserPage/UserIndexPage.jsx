@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState} from 'react';
+import { FaHome } from "react-icons/fa";
 import { useNavigate } from 'react-router-dom';
 import UserNavbar from '../components/navbar/UserNavbar.jsx';
 import CompanyList from '../components/userComponents/userCompanyList.jsx';
@@ -13,27 +14,81 @@ import SlidePage from '../components/SlidePage';
 import Bottombar from './../components/navbar/Bottombar';
 import { FaBriefcase, FaUser } from 'react-icons/fa';
 import StatusCard from '../components/StatusCard';
+import MatchCompanyList from './../components/userComponents/MatchCompanyList';
+import NewCompanyList from './../components/userComponents/NewCompanyList';
+
+const NewLabel = () => (
+  <div style={newLabelStyle}>
+    NEW!
+  </div>
+);
 
 const Userindexpage = () => {
   const navigate = useNavigate();
+
+  const [isResume, setIsResume] = useState(null)
+  const [appState, setAppState] = useState("main")
+
   const [prompt, setPrompt] = useState(null);
   const [location, setLocation] = useState('Bangkok');
-  const [jobfield, setJobField] = useState(null);
+  const [jobFieldSelect, setJobFieldSelect] = useState(null);
   const [color1, setColor1] = useState('#fff');
   const [color2, setColor2] = useState('#fff');
+  const [color3, setColor3] = useState('#B7E4B0');
+
+  const [jobfield, setJobField] = useState(null);
+
 
   const onClickButton = (color, clickOn) => {
     switch (clickOn) {
-      case 'My Job':
+      case 'New Job':
         setColor1(color);
         setColor2('#fff');
+        setColor3('#fff');
+        setJobField(null);
+        setAppState('New Job')
+        setTimeout(function() {
+          window.scrollTo({
+            top: 680,        
+            behavior: 'smooth' 
+          });
+        }, 100);        
         break;
-      case 'Interview':
+      case 'My Job':
         setColor2(color);
         setColor1('#fff');
+        setColor3('#fff');
+        setAppState('My Job')
+        break;
+      case 'main':
+        setColor3(color);
+        setColor1('#fff');
+        setColor2('#fff');
+        setAppState('main')
+        setJobField(null)
         break;
     }
   };
+
+  const checkResume = async () => {
+    const userId = localStorage.getItem('id_user')
+    const response = await axios.get(`http://localhost:4001/checkValidResume/${userId}`);
+    if(response.status == 200){
+      setIsResume(true)
+    }else{
+      setIsResume(false)
+    }
+  }
+
+  const SearchPosts = () => {
+    setJobField(true) //ต้องแก้
+  }
+
+  const setAllColorWhite = () => {
+    setColor1('#fff')
+    setColor2('#fff')
+    setColor3('#fff')
+  }
 
   useEffect(() => {
     async function authentication() {
@@ -61,7 +116,8 @@ const Userindexpage = () => {
       }
     }
 
-    authentication();
+    authentication()
+    checkResume()
   }, []);
 
   return (
@@ -91,10 +147,10 @@ const Userindexpage = () => {
                   options={JobFieldOptions}
                   placeholder="สายอาชีพ"
                   styles={selectStyle}
-                  onChange={(e) => setJobField(e.value)}
+                  onChange={(e) => setJobFieldSelect(e.value)}
                 />
               </div>
-              <Button variant="btn" id="button-addon2" style={buttonStyle}>
+              <Button variant="btn" id="button-addon2" style={buttonStyle} onClick={SearchPosts}>
                 หางาน
               </Button>
             </div>
@@ -102,33 +158,51 @@ const Userindexpage = () => {
         </div>
 
         <div style={rightColumnStyle}>
-          <div style={statusStyle} onClick={() => onClickButton('#f2d5ff', 'My Job')}>
+          <div style={{...HomeStyle, backgroundColor: color3}} onClick={() => onClickButton('#B7E4B0','main')}>
+            <div style={{color: 'green',marginLeft: '15px'}}><FaHome /></div>
+            <p style={{color: 'green',  fontSize: '20px',fontWeight: 'bold'}}>Home</p>
+          </div>
+
+          <div style={{ ...statusStyle, position: 'relative' }} onClick={() => onClickButton('#FEB3B7', 'New Job')}>
+            <NewLabel />
+            <StatusCard
+              title="New Job"
+              count="0"
+              color={color1}
+              icon={<FaUser />}
+              iconAndTextColor="#FD3A44"
+            />
+          </div>
+          
+          <div style={{ ...statusStyle, position: 'relative' }} onClick={() => onClickButton('#f2d5ff', 'My Job')}>
+            <NewLabel /> 
             <StatusCard
               title="My Job"
               count="0"
-              color={color1}
+              color={color2}
               icon={<FaBriefcase />}
               iconAndTextColor="#9d8ee1"
             />
           </div>
-          <div style={statusStyle} onClick={() => onClickButton('#dbffd5', 'Interview')}>
-            <StatusCard
-              title="Interview"
-              count="0"
-              color={color2}
-              icon={<FaUser />}
-              iconAndTextColor="#2ecc71"
-            />
-          </div>
         </div>
+
       </div>
 
       {!jobfield ? (
         <>
           <careerFileContext.Provider value={[jobfield, setJobField]}>
-            <SlidePage></SlidePage>
+            <div onClick={setAllColorWhite}>
+              <SlidePage></SlidePage>
+            </div>
           </careerFileContext.Provider>
-          <center>
+          {appState === "main" && <>
+            {isResume ? (
+            <>
+              <div style={{ height: '30px' }}></div>
+              <MatchCompanyList/>
+            </>
+          ):(
+            <center>
             <div>
               <img src="../../public/PleaseSelectFiled.png" style={{ marginTop: '60px' }} />
             </div>
@@ -136,10 +210,21 @@ const Userindexpage = () => {
               <span style={{ color: '#828282', fontSize: '48px' }}>กรุณาเลือกสายอาชีพ</span>
             </div>
           </center>
+          )}
+          </>
+          }
+          {appState === "New Job" && 
+          <>
+            <div style={{ height: '30px' }}></div>
+            <NewCompanyList/>
+          </>}
+          {appState === "My Job" && <></>}
+
         </>
       ) : (
         <CompanyList></CompanyList>
       )}
+
       <div style={{ height: '200px' }}></div>
       <Bottombar></Bottombar>
     </div>
@@ -192,12 +277,11 @@ const leftColumnStyle = {
 };
 
 const rightColumnStyle = {
-  flex: 1,
   display: 'flex',
   flexDirection: 'row',
-  justifyContent: 'center', 
+  justifyContent: 'space-between', 
   gap: '20px', 
-  
+  marginLeft: '40px'
 };
 
 const statusStyle = {
@@ -214,6 +298,26 @@ const selectStyle = {
   flex: 1
 };
 
+const newLabelStyle = {
+  position: 'absolute',
+  backgroundColor: '#FD3A44',
+  color: '#fff',
+  fontSize: '12px',
+  fontWeight: 'bold',
+  borderRadius: '20px',
+  padding: '3px 10px',
+  top: '-10px',
+  left: '-10px',
+};
 
+const HomeStyle = {
+  width: '100px',
+  paddingTop: '25px',
+  paddingLeft: '25px',
+  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
+  transition: 'background-color 0.5s ease',
+  borderRadius: '10px',
+  fontFamily: 'Trirong',
+}
 
 export default Userindexpage;

@@ -80,7 +80,7 @@ app.post("/uploadPDF", upload.single('file'),async (req, res) => {
 })
 
 //checkValidResume
-app.post("/checkValidResume", async (req, res) => {
+app.get("/checkValidResume/:userId", async (req, res) => {
     return checkValidResume(req, res);
 })
 

@@ -2,9 +2,9 @@ const fs = require('fs');
 
 const checkValidResume = async (req, res) => {
     try{
-        const {id_user} = req.body;
-        if(id_user){
-            const filePath = `../frontend/public/Resume/${id_user}-1.jpg`;
+        const {userId} = req.params;
+        if(userId){
+            const filePath = `../frontend/public/Resume/${userId}-1.jpg`;
             if (fs.existsSync(filePath)) {
                 return res.status(200).json({
                     message: 'found resume'
@@ -16,7 +16,7 @@ const checkValidResume = async (req, res) => {
               }
         }else{
             return res.status(400).json({
-                message: 'Invalid id_user'
+                message: 'Invalid userId'
             })
         }
     }catch(err){

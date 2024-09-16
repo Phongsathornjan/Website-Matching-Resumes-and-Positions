@@ -37,22 +37,11 @@ const jobList = [
   },
 ];
 
-// NewLabel Component
-const NewLabel = () => (
-  <div style={newLabelStyle}>
-    NEW!
-  </div>
-);
-
-const NewCompanyList = () => {
+const MatchCompanyList = () => {
   const [selectedJob, setSelectedJob] = useState(jobList[0]);
-  const [viewedJobs, setViewedJobs] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
 
   const handleJobClick = (job) => {
-    if (!viewedJobs.includes(job.id)) {
-      setViewedJobs([...viewedJobs, job.id]);
-    }
     setIsAnimating(true);
     setSelectedJob(null);
     setTimeout(() => {
@@ -73,7 +62,6 @@ const NewCompanyList = () => {
               onClick={() => handleJobClick(job)}
             >
               <Card.Body style={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                {job.postedDays <= 14 && !viewedJobs.includes(job.id) && <NewLabel />}
                 <span style={{ ...matchStyle, backgroundColor: getMatchColor(job.matchPercentage) }}>
                   Match {job.matchPercentage}%
                 </span>
@@ -190,34 +178,4 @@ const matchStyle = {
   fontWeight: 'bold',
 };
 
-const newLabelStyle = {
-    position: 'absolute',
-    backgroundColor: '#FD3A44',
-    color: '#fff',
-    fontSize: '14px', 
-    fontWeight: 'bold',
-    borderRadius: '12px',
-    padding: '5px 15px',
-    top: '-10px',
-    left: '-10px',
-  };
-
-
-const globalStyle = `
-@keyframes fadeInFromBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
-  }
-}
-
-.fade-in-from-bottom {
-  animation: fadeInFromBottom 0.3s ease-in-out;
-}
-`;
-
-export default NewCompanyList;
+export default MatchCompanyList;
