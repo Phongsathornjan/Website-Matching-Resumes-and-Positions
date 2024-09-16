@@ -83,7 +83,7 @@ const fontStyle = {
 
 const buttonStyle = {
   marginTop: '10px',
-  marginBottom: '80px',
+  marginBottom: '70px',
   padding: '10px 20px',
   backgroundColor: '#ff6b6b',
   border: 'none',
@@ -94,7 +94,7 @@ const buttonStyle = {
  };
 
  const statusStyle = {
-  marginBottom: '30px'
+  marginBottom: '40px'
  }
 
 export default HrSidebar;

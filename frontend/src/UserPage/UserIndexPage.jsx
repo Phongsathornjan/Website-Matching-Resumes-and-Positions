@@ -167,7 +167,7 @@ const Userindexpage = () => {
           <div style={{...HomeStyle, backgroundColor: color3}} onClick={() => onClickButton('#B7E4B0','Recommend Job')}>
             <center>
             <div style={{color: 'green'}}><FaHome /></div>
-            <p style={{color: 'green',  fontSize: '22px',fontWeight: 'bold'}}>Recommend Job</p>
+            <p style={{color: 'green',  fontSize: '18px',fontWeight: 'bold'}}>Recommend Job</p>
             </center>
           </div>
 
@@ -319,8 +319,8 @@ const newLabelStyle = {
 };
 
 const HomeStyle = {
-  width: '200px',
-  paddingTop: '25px',
+  width: '120px',
+  paddingTop: '10px',
   boxShadow: '0 4px 8px rgba(0, 0, 0, 0.3)',
   transition: 'background-color 0.5s ease',
   borderRadius: '10px',
