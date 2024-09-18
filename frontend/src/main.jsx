@@ -74,7 +74,7 @@ const router = createBrowserRouter([
     element:  <UserResumeIndexPage></UserResumeIndexPage>
   },
   {
-    path: "/PostDetail/:idPost",  //รอเพิ่ม params
+    path: "/PostDetail/:idPost", 
     element:  <PostDetailPage></PostDetailPage>
   },
 

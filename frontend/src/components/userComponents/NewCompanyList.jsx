@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import getMatchColor from './getMatchColor';
+import Alert from '../Alert';
 
 
 const jobList = [
@@ -37,13 +38,6 @@ const jobList = [
   },
 ];
 
-// NewLabel Component
-const NewLabel = () => (
-  <div style={newLabelStyle}>
-    NEW!
-  </div>
-);
-
 const NewCompanyList = () => {
   const [selectedJob, setSelectedJob] = useState(jobList[0]);
   const [viewedJobs, setViewedJobs] = useState([]);
@@ -73,7 +67,7 @@ const NewCompanyList = () => {
               onClick={() => handleJobClick(job)}
             >
               <Card.Body style={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-                {job.postedDays <= 14 && !viewedJobs.includes(job.id) && <NewLabel />}
+                <Alert text="NEW!"/>
                 <span style={{ ...matchStyle, backgroundColor: getMatchColor(job.matchPercentage),boxShadow: `0 4px 15px ${getMatchColor(job.matchPercentage)}` }}>
                   Match {job.matchPercentage}%
                 </span>

@@ -18,13 +18,7 @@ const UserNavbar = () => {
       </div>
       <div style={rightBarStyle}>
         <div>
-        <Link to={'#'} style={linkStyle} >Job Recommend Feature</Link>
-        </div>
-        <div>
-        <Link to={'/UserIndexPage'} style={linkStyle} >find a job</Link>
-        </div>
-        <div>
-        <Link to={'#'} style={linkStyle} >Notification</Link>
+        <Link to={'/UserIndexPage'} style={linkStyle} >Job for you</Link>
         </div>
         <div className="dropdown">
           <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
@@ -65,7 +59,7 @@ const linkStyle = {
 };
 
 const rightBarStyle = {
-  width: "650px",
+  width: "250px",
   justifyContent: "space-between",
   display: "flex"
 };

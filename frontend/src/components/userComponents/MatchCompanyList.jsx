@@ -6,17 +6,15 @@ import getMatchColor from './getMatchColor';
 
 const jobList = [
   {
-    id: 1,
     title: 'Junior Programmer1',
     company: 'บริษัท Ai จำกัด',
     location: 'กรุงเทพมหานคร',
     description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
     requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    postedDays: 1, 
+    postedDays: 15, 
     matchPercentage: 92,
   },
   {
-    id: 2,
     title: 'Junior Programmer2',
     company: 'บริษัท Ai จำกัด',
     location: 'กรุงเทพมหานคร',
@@ -26,7 +24,6 @@ const jobList = [
     matchPercentage: 82,
   },
   {
-    id: 3,
     title: 'Junior Programmer3',
     company: 'บริษัท Ai จำกัด',
     location: 'กรุงเทพมหานคร',
@@ -56,7 +53,6 @@ const MatchCompanyList = () => {
         <Col md={6}>
           {jobList.map((job) => (
             <Card
-              key={job.id}
               className={`mb-3 ${isAnimating ? 'fade-in-from-bottom' : ''}`} 
               style={cardStyle}
               onClick={() => handleJobClick(job)}

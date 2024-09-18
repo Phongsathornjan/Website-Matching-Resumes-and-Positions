@@ -34,16 +34,6 @@ const HrIndexPage = () => {
       //Authentication Hr role
       authentication();
 
-      //add animation
-      const styleSheet = document.createElement("style");
-      styleSheet.type = "text/css";
-      styleSheet.innerText = globalStyle;
-      document.head.appendChild(styleSheet);
-  
-      // Cleanup on component unmount
-      return () => {
-        document.head.removeChild(styleSheet);
-      };
     }, []);
 
     return (
@@ -82,16 +72,6 @@ const HrIndexPage = () => {
     width: '100%',
   };
   
-  const globalStyle = `
-@keyframes fadeInFromBottom {
-  0% {
-    opacity: 0;
-    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
-  }
-}`;
+
 
   export default HrIndexPage

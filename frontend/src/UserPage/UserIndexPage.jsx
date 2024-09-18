@@ -16,12 +16,8 @@ import { FaBriefcase, FaUser } from 'react-icons/fa';
 import StatusCard from '../components/StatusCard';
 import MatchCompanyList from './../components/userComponents/MatchCompanyList';
 import NewCompanyList from './../components/userComponents/NewCompanyList';
-
-const NewLabel = () => (
-  <div style={newLabelStyle}>
-    NEW!
-  </div>
-);
+import MyJob from './../components/userComponents/MyJob';
+import Alert from './../components/Alert';
 
 const Userindexpage = () => {
   const navigate = useNavigate();
@@ -59,6 +55,12 @@ const Userindexpage = () => {
         setColor1('#fff');
         setColor3('#fff');
         setAppState('My Job')
+        setTimeout(function() {
+          window.scrollTo({
+            top: 680,        
+            behavior: 'smooth' 
+          });
+        }, 100);  
         break;
       case 'Recommend Job':
         setColor3(color);
@@ -172,7 +174,7 @@ const Userindexpage = () => {
           </div>
 
           <div style={{ ...statusStyle, position: 'relative' }} onClick={() => onClickButton('#FEB3B7', 'New Job')}>
-            <NewLabel />
+            <Alert text="New!"/>
             <StatusCard
               title="New Job"
               count="0"
@@ -183,7 +185,7 @@ const Userindexpage = () => {
           </div>
           
           <div style={{ ...statusStyle, position: 'relative' }} onClick={() => onClickButton('#f2d5ff', 'My Job')}>
-            <NewLabel /> 
+            <Alert text="New!"/>
             <StatusCard
               title="My Job"
               count="0"
@@ -226,7 +228,11 @@ const Userindexpage = () => {
             <div style={{ height: '30px' }}></div>
             <NewCompanyList/>
           </>}
-          {appState === "My Job" && <></>}
+          {appState === "My Job" && 
+          <>
+            <div style={{ height: '30px' }}></div>
+            <MyJob/>
+          </>}
 
         </>
       ) : (
@@ -304,18 +310,6 @@ const statusStyle = {
 
 const selectStyle = {
   flex: 1
-};
-
-const newLabelStyle = {
-  position: 'absolute',
-  backgroundColor: '#FD3A44',
-  color: '#fff',
-  fontSize: '12px',
-  fontWeight: 'bold',
-  borderRadius: '20px',
-  padding: '3px 10px',
-  top: '-10px',
-  left: '-10px',
 };
 
 const HomeStyle = {
