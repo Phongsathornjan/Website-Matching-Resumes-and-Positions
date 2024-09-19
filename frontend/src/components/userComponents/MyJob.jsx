@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react"
 import { Link } from 'react-router-dom';
 import { Card, Button} from 'react-bootstrap';
 import Alert from "../Alert";
+import MyCalendar from "./InterViewCalendar";
 
 const MyJob = () => {
   const [jobApplyList, setJobApplyList] = useState([
@@ -160,9 +161,7 @@ const MyJob = () => {
             </div>
             <div  style={interviewMenuStyle}>
                 <h1>นัดสัมภาษณ์งานของฉัน</h1>
-                <div></div>
-                <div></div>
-                <div></div>
+                <MyCalendar/>
             </div>
         </div>
     )
