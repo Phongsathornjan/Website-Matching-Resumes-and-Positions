@@ -4,28 +4,21 @@ import { FaBriefcase, FaCalendarCheck, FaUsers } from 'react-icons/fa';
 
 import StatusCard from '../../components/StatusCard';
 
-function HrSidebar() {
+function HrSidebar({ onSidebarClick }) { 
   const [color1, setColor1] = useState('#f2d5ff')
   const [color2, setColor2] = useState('#fff')
-  const [color3, setColor3] = useState('#fff')
 
   const onClickButton = (color, clickOn) => {
     switch (clickOn) {
       case "job":
-        setColor1(color)
-        setColor2('#fff')
-        setColor3('#fff')
+        setColor1(color);
+        setColor2('#fff');
+        onSidebarClick('job');
         break;
       case "interview":
-        setColor2(color)
-        setColor1('#fff')
-        setColor3('#fff')
-        break;
-      // More cases as needed
-      case "application":
-        setColor3(color)
-        setColor2('#fff')
-        setColor1('#fff')
+        setColor2(color);
+        setColor1('#fff');
+        onSidebarClick('interview'); 
         break;
     }
   }
@@ -35,36 +28,28 @@ function HrSidebar() {
       <center>
         <p style={fontStyle}>Create Your Post</p>
         <Link to={'/CreatePost'}>
-        <button style={buttonStyle}>Create</button>
+          <button style={buttonStyle}>Create</button>
         </Link>
         <div>
-          <div style ={statusStyle} onClick={() => onClickButton("#f2d5ff","job")}>
+          <div style={statusStyle} onClick={() => onClickButton("#f2d5ff", "job")}>
             <StatusCard
               title="Job"
               count="8"
               color={color1}
               icon={<FaBriefcase />}
-              iconAndTextColor = "#9d8ee1"
+              iconAndTextColor="#9d8ee1"
             />
           </div>
-          <div style ={statusStyle} onClick={() => onClickButton("#faffd5","interview")}>
+          <div style={statusStyle} onClick={() => onClickButton("#faffd5", "interview")}>
             <StatusCard
               title="Interview"
               count="16"
               color={color2}
               icon={<FaCalendarCheck />}
-              iconAndTextColor = "#f1c40f"
+              iconAndTextColor="#f1c40f"
             />
           </div>
-          <div style ={statusStyle} onClick={() => onClickButton("#dbffd5","application")}>
-            <StatusCard
-              title="Applicant"
-              count="9"
-              color={color3}
-              icon={<FaUsers />}
-              iconAndTextColor = "#2ecc71"
-            />
-          </div>
+
         </div>
       </center>
     </div>
@@ -74,7 +59,8 @@ function HrSidebar() {
 const sidebarStyle = {
     width: '250px',
     padding: '20px',
-  };
+    marginLeft: '30px',
+};
 
 const fontStyle = {
   fontWeight: 'bold',
@@ -93,8 +79,8 @@ const buttonStyle = {
   width: '180px'
  };
 
- const statusStyle = {
+const statusStyle = {
   marginBottom: '40px'
- }
+}
 
 export default HrSidebar;

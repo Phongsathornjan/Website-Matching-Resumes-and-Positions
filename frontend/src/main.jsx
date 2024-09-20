@@ -5,6 +5,7 @@ import CreatePostPage from './HrPage/CreatePostPage';
 import SendEmailPage from './HrPage/SendEmailPage.jsx';
 import HrIndexPage from './HrPage/HrIndexPage';
 import PostDetailPage from './HrPage/PostDetailPage.jsx';
+import InsidePost from './HrPage/InsidePost.jsx';
 
 import IndexPage from './nonUserPage/IndexPage.jsx';
 import SignUpPage from './nonUserPage/SignUpPage.jsx';
@@ -77,7 +78,10 @@ const router = createBrowserRouter([
     path: "/PostDetail/:idPost", 
     element:  <PostDetailPage></PostDetailPage>
   },
-
+  {
+    path: "/InsidePost", 
+    element:  <InsidePost></InsidePost>
+  },
 ]);
 
 
