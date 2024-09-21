@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import HRNavbar from './../components/navbar/HRNavbar';
-import HrInterviewSidebar from '../components/HrComponents/HrInterviewSidebar';
 import HrSidebar from '../components/HrComponents/HrSidebar';
 import HrJobPost from '../components/HrComponents/HrJobPost';
 import HrInterview from '../components/HrComponents/HrInterview';

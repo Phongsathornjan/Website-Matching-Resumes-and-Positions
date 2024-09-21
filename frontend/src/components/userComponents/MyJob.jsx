@@ -81,6 +81,12 @@ const MyJob = () => {
 
   const handlePrev = () => {
     if (currentPage > 1) {
+      setTimeout(function() {
+        window.scrollTo({
+          top: 680,        
+          behavior: 'smooth' 
+        });
+      }, 100);
       setCurrentPage(currentPage - 1);
     }
   };
