@@ -144,7 +144,7 @@ const MyJob = () => {
                             นัดสัมภาษณ์
                           </Button>
                         </Link>}
-                        <Link to={'#'}>
+                        <Link to={'/userJobApplication'}>
                           <Button variant="success" style={detailButtonStyle}>
                             ดูโพส
                           </Button>

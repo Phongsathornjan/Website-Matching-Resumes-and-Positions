@@ -1,3 +1,4 @@
+const ExtractDataJobPost = require('../../ExtractDataJobPost');
 const Post = require('../../model/post');
 
 const createPost = async (req, res) => {
@@ -11,6 +12,14 @@ const createPost = async (req, res) => {
             })
         }
 
+        const Job_Description = {
+            Position: `${Position}`,
+            Requirements: `${Requirements}`,
+            Qualifications: `${Qualifications}`,
+            Experience: `${Experience}`
+        }
+
+        const ExtractedData = await ExtractDataJobPost(Job_Description)
         const post = await Post.create({
             userId: userId,
             Position: Position,
@@ -21,6 +30,8 @@ const createPost = async (req, res) => {
             Qualifications: Qualifications,
             Experience: Experience,
             time_stamp: Date.now(),
+            keyword: ExtractedData.Output[0].keyword,
+            Experience: ExtractedData.Output[0].Experience
         })
         return res.status(200).json({
             post,

@@ -16,7 +16,9 @@ const postSchema = new mongoose.Schema({
             appliedDate: { type: Date, default: Date.now }, 
             status: { type: String, default: 'pending' }   
         }
-    ]
+    ],
+    keyword: { type: String, required: true },
+    Experience: { type: String, required: true },
 });
 
 module.exports = mongoose.model('Post', postSchema);

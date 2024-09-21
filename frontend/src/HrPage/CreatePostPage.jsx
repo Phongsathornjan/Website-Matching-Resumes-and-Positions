@@ -115,7 +115,7 @@ const CreatePostPage = () => {
                 options={JobFieldOptions}
                 placeholder="สายอาชีพ"
                 styles={{ width: '100%' }}
-                onChange={(e) => setWorkField(e.id)}
+                onChange={(e) => setWorkField(e.value)}
               />
             </div>
           </div>
