@@ -1,20 +1,66 @@
 import React, { useEffect, useState } from 'react';
-import Navbar from '../components/navbar/Navbar.jsx';
-import Bottombar from '../components/navbar/Bottombar.jsx';
-import Select from 'react-select';
-import axios from 'axios';
-import LocationOptions from '../components/LocationOptions.jsx';
 import { Link, useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import Select from 'react-select';
+import { Dropdown , Form } from "react-bootstrap";
 
-const SignUpPage = () => {
-  const navigate = useNavigate();
+import AdminNavbar from './AdminNavbar.jsx';
+import jobFile from '../components/Data/jobField.js';
+import LocationOptions from '../components/LocationOptions.jsx';
 
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+const CreateUserPage = () =>{
+const navigate = useNavigate();
+  //member
+  const [firstName, setFirstName] = useState(null);
+  const [lastName, setLastName] = useState(null);
+  const [role, setRole] = useState('member');
+  const [jobField, setJobField] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [location, setLocation] = useState('Bangkok');
+
+  //Hr
+  const [companyName, setCompanyName] = useState('');
+  const [companyDetail, setCompanyDetail] = useState('');
+
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+
+  useEffect(() => {
+    async function authentication() {
+      try{
+        let token = localStorage.getItem('token');
+        const response = await axios.post('http://localhost:4001/auth', {} ,{
+          headers: {
+            'x-access-token': token
+          }
+        })
+
+        if(response.status == 200){
+          if(response.data.userData.role != "admin"){
+            navigate('/SignIn');
+          }
+        }
+
+      } catch(err){
+        console.log(err)
+      }
+    }
+   
+    authentication();
+
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
 
   const submit = async () => {
     try{
@@ -24,17 +70,21 @@ const SignUpPage = () => {
         email: email,
         password: password,
         location: location,
-        role: 'member'
+        role: role,
+        jobField: jobField,
+        companyName: companyName,
+        companyDetail: companyDetail
       })
       if(response.status == 200){
-        localStorage.setItem('token',response.data.token);
-        localStorage.setItem('id_user',response.data.id);
-        navigate('/SignIn');
+        setError(null)
+        setSuccess("สร้างสำเร็จ")
+        setTimeout(function() {
+          window.location.reload();
+        }, 700); 
       }
-
-
-    }catch(err){
+   }catch(err){
       if(err.response.status == 400){
+        setSuccess(null)
         setError(err.response.data.message);
       }
     }
@@ -54,12 +104,23 @@ const SignUpPage = () => {
 
   return (
     <>
-    <Navbar></Navbar>
+    <AdminNavbar></AdminNavbar>
     <div style={SignUpStyle}>
-        <h1 style={titleStyle}>Sign Up</h1>
-        <p style={subheadingStyle}>Please fill in personal information.</p>
+        <h1 style={titleStyle}>Create User</h1>
         {error && <div className="alert alert-danger" role="alert">{error}</div>}
+        {success && <div className="alert alert-success" role="alert">{success}</div>}
         <form style={formStyle}>
+            <Dropdown>
+              <Dropdown.Toggle variant="success" id="dropdown-basic">
+              {role}
+              </Dropdown.Toggle>
+
+              <Dropdown.Menu>
+                <Dropdown.Item onClick={() => setRole("admin")}>admin</Dropdown.Item>
+                <Dropdown.Item onClick={() => setRole("member")}>member</Dropdown.Item>
+                <Dropdown.Item onClick={() => setRole("hr")}>hr</Dropdown.Item>
+              </Dropdown.Menu>
+            </Dropdown>
             <div style={formRowStyle}>
                 <input type="text" placeholder="Firstname" style={inputStyle} onChange={(e) => setFirstName(e.target.value)}/>
                 <input type="text" placeholder="Lastname" style={inputStyle}  onChange={(e) => setLastName(e.target.value)}/>
@@ -73,6 +134,25 @@ const SignUpPage = () => {
                 styles={{ width: '100%' }}
                 onChange={(e) => setLocation(e.value)}
             />
+            <div style={{height: "10px"}}></div>
+            {role == "member" && 
+              <Select
+              options={jobFile}
+              placeholder="สายอาชีพ"
+              styles={{ width: '100%' }}
+              onChange={(e) => setJobField(e.value)}
+              />
+            }
+            <div style={{height: "10px"}}></div>
+            {role == "hr" && <>
+              <input type="text" placeholder="Company Name" style={inputStyle} onChange={(e) => setCompanyName(e.target.value)}/>
+              <Form.Control
+              placeholder='Company detail'
+              as="textarea"
+              style={{ width: '100%', height: '150px' }}
+              onChange={(e) => setCompanyDetail(e.target.value)}
+              />
+            </>}
             <center>
             <Link to={'#'}>
             <button type="submit" style={buttonStyle} onClick={submit}>Register</button>
@@ -80,8 +160,6 @@ const SignUpPage = () => {
             </center>
         </form>
       </div>
-      <div style={{height: '30px'}}></div>
-    <Bottombar></Bottombar>
     </>
   );
 };
@@ -92,13 +170,6 @@ const SignUpStyle = {
   width: '1440px',
   animation: 'fadeInFromBottom 0.5s ease-in',
 }
-
-
-const subheadingStyle = {
-    fontSize: '1.2rem',
-    color: '#888888',
-    marginBottom: '40px',
-};
 
 const formStyle = {
     display: 'flex',
@@ -160,5 +231,4 @@ const titleStyle = {
   }
   `;
 
-
-export default SignUpPage;
+export default CreateUserPage

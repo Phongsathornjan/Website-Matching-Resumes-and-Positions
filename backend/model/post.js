@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
-    userId: { type: String, required: true },        
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },        
     Position: { type: String, required: true },      
     Salary: { type: String, required: true },        
     WorkField: { type: String, required: true },     

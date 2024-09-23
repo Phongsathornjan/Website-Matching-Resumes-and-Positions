@@ -27,6 +27,8 @@ const SignInPage = () => {
             navigate('/UserIndexPage');
           }else if(response.data.userData.role == "hr"){
             navigate('/HrIndexPage');
+          }else if(response.data.userData.role == "admin"){
+            navigate('/AdminIndexPage');
           }
         }else{
           navigate('/SignIn');

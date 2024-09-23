@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
     password: { type: String},
     role: { type: String},
     location: { type: String},
+    jobField: { type: String},
     token: { type: String},
     appliedJobs: [
         {
@@ -15,11 +16,15 @@ const userSchema = new mongoose.Schema({
             status: { type: String, default: 'pending' }  
         }
     ],
+
+    //hr
     postedJobs: [
         {
             jobId: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' }, 
         }
-    ]
+    ],
+    companyName: { type: String, default: null},
+    companyDetail: { type: String, default: null}
 })
 
 module.exports = mongoose.model('users',userSchema);

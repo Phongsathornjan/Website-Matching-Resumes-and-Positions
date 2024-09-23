@@ -18,6 +18,9 @@ import UserResumeIndexPage from './UserPage/UserResumeIndexPage.jsx';
 import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
 import UploadResumePage from './UserPage/UploadResumePage.jsx';
 
+import AdminIndexPage from './adminPage/AdminIndexPage.jsx';
+import CreateUserPage from './adminPage/CreateUserPage.jsx';
+
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
@@ -82,6 +85,14 @@ const router = createBrowserRouter([
     path: "/InsidePost", 
     element:  <InsidePost></InsidePost>
   },
+  {
+    path: "/AdminIndexPage", 
+    element:  <AdminIndexPage></AdminIndexPage>
+  },
+  {
+    path: "/CreateUser", 
+    element: <CreateUserPage></CreateUserPage>
+  }
 ]);
 
 
