@@ -4,9 +4,9 @@ const Post = require('../../model/post');
 const createPost = async (req, res) => {
     
     try{
-        const {userId, Position, Salary, WorkField, Location, Requirements, Qualifications, Experience} = req.body;
+        const {userId, Position, Salary, WorkField, Location, JobDescription, Qualifications, Experience} = req.body;
 
-        if(!(userId && Position && Salary && WorkField && Location && Requirements && Qualifications && Experience)){
+        if(!(userId && Position && Salary && WorkField && Location && JobDescription && Qualifications && Experience)){
             return res.status(400).json({
                 message: 'กรุณากรอกข้อมูลให้ครบ'
             })
@@ -14,7 +14,7 @@ const createPost = async (req, res) => {
 
         const Job_Description = {
             Position: `${Position}`,
-            Requirements: `${Requirements}`,
+            JobDescription: `${JobDescription}`,
             Qualifications: `${Qualifications}`,
             Experience: `${Experience}`
         }
@@ -26,7 +26,7 @@ const createPost = async (req, res) => {
             Salary: Salary,
             WorkField: WorkField,
             Location: Location,
-            Requirements: Requirements,
+            JobDescription: JobDescription,
             Qualifications: Qualifications,
             Experience: Experience,
             time_stamp: Date.now(),

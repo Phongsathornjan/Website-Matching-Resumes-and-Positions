@@ -6,7 +6,7 @@ const postSchema = new mongoose.Schema({
     Salary: { type: String, required: true },        
     WorkField: { type: String, required: true },     
     Location: { type: String, required: true },      
-    Requirements: { type: String, required: true },  
+    JobDescription: { type: String, required: true },  
     Qualifications: { type: String, required: true }, 
     Experience: { type: String, required: true },    
     time_stamp: { type: String, required: true },    

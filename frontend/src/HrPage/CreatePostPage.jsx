@@ -51,7 +51,7 @@ const CreatePostPage = () => {
   const [Salary, setSalary] = useState(null);
   const [WorkField, setWorkField] = useState(null);
   const [Location, setLocation] = useState(null);
-  const [Requirements, setRequirements] = useState(null);
+  const [JobDescription, setJobDescription] = useState(null);
   const [Qualifications, setQualifications] = useState(null);
   const [Experience, setExperience] = useState(null);
 
@@ -66,7 +66,7 @@ const CreatePostPage = () => {
         Salary: Salary,
         WorkField: WorkField,
         Location: Location,
-        Requirements: Requirements,
+        JobDescription: JobDescription,
         Qualifications: Qualifications,
         Experience: Experience,
       });
@@ -120,15 +120,15 @@ const CreatePostPage = () => {
             </div>
           </div>
           <div style={{ marginBottom: '20px' }}>
-            <p>&nbsp;Requirements</p>
+            <p>&nbsp;JobDescription</p>
             <Form.Control
               as="textarea"
               style={{ width: '100%', height: '150px' }}
-              onChange={(e) => setRequirements(e.target.value)}
+              onChange={(e) => setJobDescription(e.target.value)}
             />
           </div>
           <div style={{ marginBottom: '20px' }}>
-            <p>&nbsp;Qualifications</p>
+            <p>&nbsp;Qualifications / Requirement</p>
             <Form.Control
               as="textarea"
               style={{ width: '100%', height: '150px' }}
