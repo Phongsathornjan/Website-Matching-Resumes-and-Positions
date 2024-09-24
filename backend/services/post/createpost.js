@@ -31,7 +31,7 @@ const createPost = async (req, res) => {
             Experience: Experience,
             time_stamp: Date.now(),
             keyword: ExtractedData.Output[0].keyword,
-            Experience: ExtractedData.Output[0].Experience
+            KeyExperience: ExtractedData.Output[0].Experience
         })
         return res.status(200).json({
             post,

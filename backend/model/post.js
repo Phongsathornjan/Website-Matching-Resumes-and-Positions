@@ -18,7 +18,7 @@ const postSchema = new mongoose.Schema({
         }
     ],
     keyword: { type: String, required: true },
-    Experience: { type: String, required: true },
+    KeyExperience: { type: String, required: true },
 });
 
 module.exports = mongoose.model('Post', postSchema);
