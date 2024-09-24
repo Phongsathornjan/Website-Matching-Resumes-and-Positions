@@ -20,6 +20,8 @@ const uploadPDF2mongo = require('./uploadPDF2mongo');
 const createPost = require('./services/post/createpost');
 const deletePost = require('./services/post/deletepost');
 const getPost = require('./services/post/getpost')
+const getPostBySearch = require('./services/post/getPostBySearch');
+
 
 //email
 const sendOTP = require('./services/email/sendOTP');
@@ -97,11 +99,16 @@ app.post("/createPost", async (req, res) => {
 app.delete("/deletePost/:idPost", async (req, res) => {
     return deletePost(req,res);
 })
+
 //getPost
 app.get("/getPost/:userId", async (req,res) => {
     return getPost(req,res)
 })
 
+//getPostBySearch
+app.get("/getPostBySearch/:textSearch/:location/:jobField", async (req, res) => {
+    return getPostBySearch(req,res)
+});
 
 
 

@@ -21,4 +21,20 @@ const postSchema = new mongoose.Schema({
     KeyExperience: { type: String, required: true },
 });
 
+postSchema.index({
+    Position: "text",
+    Salary: "text",
+    JobDescription: "text",
+    Qualifications: "text",
+    Experience: "text"
+  }, {
+    weights: { 
+      Position: 8, 
+      Salary: 5,
+      JobDescription: 5,
+      Qualifications: 5,
+      Experience: 5 
+    }
+  });
+
 module.exports = mongoose.model('Post', postSchema);
