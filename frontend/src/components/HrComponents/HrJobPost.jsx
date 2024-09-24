@@ -89,7 +89,7 @@ const HrJobPost = () => {
                   <Button variant="danger" onClick={() => OnClickDeletePost(job._id)}>Delete</Button>
                 </div>
                 <Card.Subtitle className="mb-2 text-muted">{job.Salary}</Card.Subtitle>
-                <Card.Text style={ellipsisStyle}>Requirements : {job.JobDescription}</Card.Text>
+                <Card.Text style={ellipsisStyle}>JobDescription : {job.JobDescription}</Card.Text>
                 <Card.Text style={ellipsisStyle}>Qualifications / Requirement: {job.Qualifications}</Card.Text>
                 <Card.Text style={ellipsisStyle}>Experience : {job.Experience}</Card.Text>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
