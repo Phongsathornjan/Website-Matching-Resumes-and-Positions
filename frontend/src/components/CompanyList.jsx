@@ -1,40 +1,14 @@
 import React, { useEffect,useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
-
-const jobList = [
-  {
-    id: 1,
-    title: 'Junior Programmer1',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 2,
-    title: 'Junior Programmer2',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 3,
-    title: 'Junior Programmer3',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  }
-];
+import { JobListContext } from "../context/JobListContext"
 
 const CompanyList = () => {
 
+  const [jobList, setJobList] = React.useContext(JobListContext);
+
   useEffect(() => {
+
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;
@@ -53,14 +27,15 @@ const CompanyList = () => {
       <Row>
         <Col md={6}>
           {jobList.map(job => (
-            <Card key={job.id} className="mb-3" style={cardStyle} onClick={() => {setSelectedJob(null); setTimeout(() => setSelectedJob(job), 0);}}>
+            <Card key={job._id} className="mb-3" style={cardStyle} onClick={() => {setSelectedJob(null); setTimeout(() => setSelectedJob(job), 0);}}>
               <Card.Body>
-                <Card.Title>{job.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
-                <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
-                <Card.Text>{job.description}</Card.Text>
-                <Card.Text>{job.requirements}</Card.Text>
-                <Card.Text>{job.posted}</Card.Text>
+                <Card.Title>{job.Position}</Card.Title>
+                {/* <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle> */}
+                <Card.Subtitle className="mb-2 text-muted">{job.Location}</Card.Subtitle>
+                <Card.Text style={ellipsisStyle}>JobDescription : {job.JobDescription}</Card.Text>
+                <Card.Text style={ellipsisStyle}>Qualifications : {job.Qualifications}</Card.Text>
+                <Card.Text style={ellipsisStyle}>Experience : {job.Experience}</Card.Text>
+                <Card.Text>โพสต์เมื่อ : {job.time_stamp}</Card.Text>
                 <Button variant="primary">รายละเอียด</Button>
               </Card.Body>
             </Card>
@@ -68,13 +43,14 @@ const CompanyList = () => {
         </Col>
         <Col md={6}>
           {selectedJob ? (
-            <Card style={cardStyle} className='h-75' >
+            <Card style={cardStyle}>
               <Card.Body>
-                <Card.Title>{selectedJob.title}</Card.Title>
-                <Card.Text>{selectedJob.description}</Card.Text>
-                <Card.Text>{selectedJob.requirements}</Card.Text>
-                <Card.Text>{selectedJob.posted}</Card.Text>
-                <div style={{height: '410px'}}></div>
+                <Card.Title>{selectedJob.Position}</Card.Title>
+                <Card.Text>{selectedJob.Location}</Card.Text>
+                <Card.Text>JobDescription : {selectedJob.JobDescription}</Card.Text>
+                <Card.Text>Qualifications : {selectedJob.Qualifications}</Card.Text>
+                <Card.Text>Experience : {selectedJob.Experience}</Card.Text>
+                <Card.Text>{selectedJob.time_stamp}</Card.Text>
                 <div style={{display: 'flex'}}>
                 <div style={{width: '500px'}}></div>
                 <Link to={'/SignIn'}>
@@ -93,6 +69,13 @@ const CompanyList = () => {
     </Container>
   );
 };
+
+  const ellipsisStyle = {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',        
+    textOverflow: 'ellipsis'     
+  };
+
 
  const cardStyle = {
     borderRadius: '20px',

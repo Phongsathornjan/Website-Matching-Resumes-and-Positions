@@ -37,8 +37,8 @@ const SlidePage = () => {
     }
   };
 
-  const onClick = (value) => {
-    setJobField(value)
+  const onClick = (e) => {
+    setJobField(e.value)
   }
 
   const renderSlides = () => {

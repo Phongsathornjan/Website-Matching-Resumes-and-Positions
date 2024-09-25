@@ -112,7 +112,6 @@ app.get("/getPostBySearch/:textSearch/:location/:jobField", async (req, res) => 
 
 
 
-
 //Email
 app.post("/sendOTP", async (req, res) => {
     return sendOTP(req,res)

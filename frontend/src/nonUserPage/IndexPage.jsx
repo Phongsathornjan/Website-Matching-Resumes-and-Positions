@@ -1,4 +1,6 @@
 import React, { useState} from 'react'
+import axios from 'axios';
+
 import Navbar from '../components/navbar/Navbar'
 import CompanyList from '../components/CompanyList';
 import LocationOptions from '../components/LocationOptions';
@@ -7,12 +9,31 @@ import Select from 'react-select';
 import { Form, Button} from 'react-bootstrap';
 import SlidePage from '../components/SlidePage';
 import Bottombar from './../components/navbar/Bottombar';
+
 import { careerFileContext } from '../context/careerFileContext'
+import { JobListContext } from "../context/JobListContext"
 
 function IndexPage() {
-  const [prompt, setPrompt] = useState(null);
-  const [location, setLocation] = useState('Bangkok');
-  const [jobfield, setJobField] = useState(null); //5 is IT
+  const [jobList,setJobList] = useState([])
+
+  const [prompt, setPrompt] = useState('null');
+  const [location, setLocation] = useState('null');
+  const [jobfield, setJobField] = useState('null');
+
+  const [search, setSearch] = useState(false);
+
+  const SearchButton = async (textSearch, location, jobField) => {
+      try{
+        const encodedTextSearch = encodeURIComponent(textSearch);
+        const encodedLocation = encodeURIComponent(location);
+        const encodedJobField = encodeURIComponent(jobField);  
+        const response = await axios.get(`http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`)
+        setSearch(true)
+        setJobList(response.data)
+      }catch(e){
+        console.log(e)
+      }
+    }
 
   return (
     <div style={{
@@ -36,7 +57,7 @@ function IndexPage() {
         />
         </div>
         <div style={{width: '240px'}}>
-        {!jobfield ? (
+        {jobfield == 'null' ? (
           <Select
           options={JobFieldOptions}
           placeholder="สายอาชีพ"
@@ -46,18 +67,17 @@ function IndexPage() {
         ):(
           <Select
           options={JobFieldOptions}
-          placeholder={jobfield.value}
+          placeholder={jobfield}
           styles={{ width: '100%' }}
           onChange={(e) => setJobField(e.value)}
           />
         )}
         </div>
-
-        <Button variant="btn" id="button-addon2" style={{width: '150px', backgroundColor: '#3769B4', color: '#fff'}}>
-          หางาน
-        </Button>
+          <Button variant="btn" id="button-addon2" onClick={() => SearchButton(prompt,location,jobfield)} style={{width: '150px', backgroundColor: '#3769B4', color: '#fff'}}>
+            หางาน
+          </Button>
     </div>
-    {!jobfield ? (
+    {jobfield == 'null' && !search ? (
         <>
         <careerFileContext.Provider value={[jobfield,setJobField]}>
           <SlidePage></SlidePage>
@@ -68,7 +88,9 @@ function IndexPage() {
         </center>
         </>
     ):(
-      <CompanyList></CompanyList>  //รอสร้าง prev ส่งค่า prompt location jobfield ให้
+      <JobListContext.Provider value={[jobList,setJobList]}>
+        <CompanyList></CompanyList>
+      </JobListContext.Provider>
     )}
     <div style={{height: '200px'}}></div>
     <Bottombar></Bottombar>
