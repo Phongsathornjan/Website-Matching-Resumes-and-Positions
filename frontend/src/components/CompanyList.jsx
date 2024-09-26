@@ -23,7 +23,18 @@ const CompanyList = () => {
   const [selectedJob, setSelectedJob] = useState(null);
 
   return (
-    <Container>
+    <>
+    {jobList.length == 0 ? (
+      <center style={fade}>
+        <div>
+          <img src="../../public/PleaseSelectFiled.png" style={{ marginTop: '60px',width: '400px' }} />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <span style={{ color: '#828282', fontSize: '48px' }}>ไม่เจอผลลัพธ์</span>
+        </div>
+      </center>
+    ):(
+      <Container>
       <Row>
         <Col md={6}>
           {jobList.map(job => (
@@ -32,9 +43,9 @@ const CompanyList = () => {
                 <Card.Title>{job.Position}</Card.Title>
                 {/* <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle> */}
                 <Card.Subtitle className="mb-2 text-muted">{job.Location}</Card.Subtitle>
-                <Card.Text style={ellipsisStyle}>JobDescription : {job.JobDescription}</Card.Text>
-                <Card.Text style={ellipsisStyle}>Qualifications : {job.Qualifications}</Card.Text>
-                <Card.Text style={ellipsisStyle}>Experience : {job.Experience}</Card.Text>
+                <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>JobDescription :</span> {job.JobDescription}</Card.Text>
+                <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>Qualifications : </span>{job.Qualifications}</Card.Text>
+                <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>Experience : </span>{job.Experience}</Card.Text>
                 <Card.Text>โพสต์เมื่อ : {job.time_stamp}</Card.Text>
                 <Button variant="primary">รายละเอียด</Button>
               </Card.Body>
@@ -47,9 +58,9 @@ const CompanyList = () => {
               <Card.Body>
                 <Card.Title>{selectedJob.Position}</Card.Title>
                 <Card.Text>{selectedJob.Location}</Card.Text>
-                <Card.Text>JobDescription : {selectedJob.JobDescription}</Card.Text>
-                <Card.Text>Qualifications : {selectedJob.Qualifications}</Card.Text>
-                <Card.Text>Experience : {selectedJob.Experience}</Card.Text>
+                <Card.Text><p style={{fontWeight: 'bold', color: '#3F4447'}}>JobDescription :</p> {selectedJob.JobDescription}</Card.Text>
+                <Card.Text><p style={{fontWeight: 'bold', color: '#3F4447'}}>Qualifications :</p> {selectedJob.Qualifications}</Card.Text>
+                <Card.Text><p style={{fontWeight: 'bold', color: '#3F4447'}}>Experience : </p> {selectedJob.Experience}</Card.Text>
                 <Card.Text>{selectedJob.time_stamp}</Card.Text>
                 <div style={{display: 'flex'}}>
                 <div style={{width: '500px'}}></div>
@@ -67,20 +78,25 @@ const CompanyList = () => {
         </Col>
       </Row>
     </Container>
+    )}
+    </>
   );
 };
 
   const ellipsisStyle = {
     whiteSpace: 'nowrap',
     overflow: 'hidden',        
-    textOverflow: 'ellipsis'     
+    textOverflow: 'ellipsis', 
   };
+
+  const fade = {
+    animation: 'fadeInFromBottom 0.6s ease-in',
+  }
 
 
  const cardStyle = {
     borderRadius: '20px',
     animation: 'fadeInFromBottom 0.6s ease-in',
-
  };
 
  const globalStyle = `

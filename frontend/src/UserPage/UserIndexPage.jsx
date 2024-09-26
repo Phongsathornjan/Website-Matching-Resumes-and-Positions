@@ -9,7 +9,6 @@ import axios from 'axios';
 import Select from 'react-select';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
-import { careerFileContext } from '../context/careerFileContext';
 import SlidePage from '../components/SlidePage';
 import Bottombar from './../components/navbar/Bottombar';
 import { FaBriefcase, FaUser } from 'react-icons/fa';
@@ -19,20 +18,29 @@ import NewCompanyList from './../components/userComponents/NewCompanyList';
 import MyJob from './../components/userComponents/MyJob';
 import Alert from './../components/Alert';
 
+import { careerFileContext } from '../context/careerFileContext'
+import { JobListUserContext } from "../context/JobListUserContext"
+
 const Userindexpage = () => {
   const navigate = useNavigate();
+
+  const [jobList,setJobList] = useState('null')
 
   const [isResume, setIsResume] = useState(null)
   const [appState, setAppState] = useState("Recommend Job")
 
-  const [prompt, setPrompt] = useState(null);
-  const [location, setLocation] = useState('Bangkok');
-  const [jobFieldSelect, setJobFieldSelect] = useState(null);
+  const [prompt, setPrompt] = useState("null");
+  const [location, setLocation] = useState('null');
+  const [jobfield, setJobField] = useState("null");
   const [color1, setColor1] = useState('#fff');
   const [color2, setColor2] = useState('#fff');
   const [color3, setColor3] = useState('#B7E4B0');
 
-  const [jobfield, setJobField] = useState(null);
+  useEffect(() => {
+    if(jobfield != 'null'){
+      SearchPosts()
+    }
+  }, [jobfield]);
 
 
   const onClickButton = (color, clickOn) => {
@@ -41,7 +49,7 @@ const Userindexpage = () => {
         setColor1(color);
         setColor2('#fff');
         setColor3('#fff');
-        setJobField(null);
+        setJobField("null");
         setAppState('New Job')
         setTimeout(function() {
           window.scrollTo({
@@ -67,7 +75,7 @@ const Userindexpage = () => {
         setColor1('#fff');
         setColor2('#fff');
         setAppState('Recommend Job')
-        setJobField(null)
+        setJobField("null")
         setTimeout(function() {
           window.scrollTo({
             top: 680,        
@@ -88,8 +96,17 @@ const Userindexpage = () => {
     }
   }
 
-  const SearchPosts = () => {
-    setJobField(true) //ต้องแก้
+  const SearchPosts = async () => {
+    try{
+      const encodedTextSearch = encodeURIComponent(prompt);
+      const encodedLocation = encodeURIComponent(location);
+      const encodedJobField = encodeURIComponent(jobfield);  
+      const response = await axios.get(`http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`)
+      setJobList(response.data)
+      console.log(response.data)
+    }catch(e){
+      console.log(e)
+    }
   }
 
   const setAllColorWhite = () => {
@@ -151,12 +168,21 @@ const Userindexpage = () => {
                 />
               </div>
               <div style={dropdownWrapperStyle}>
+              {jobfield == 'null' ? (
                 <Select
-                  options={JobFieldOptions}
-                  placeholder="สายอาชีพ"
-                  styles={selectStyle}
-                  onChange={(e) => setJobFieldSelect(e.value)}
+                options={JobFieldOptions}
+                placeholder="สายอาชีพ"
+                styles={{ width: '100%' }}
+                onChange={(e) => setJobField(e.value)}
                 />
+              ):(
+                <Select
+                options={JobFieldOptions}
+                placeholder={jobfield}
+                styles={{ width: '100%' }}
+                onChange={(e) => setJobField(e.value)}
+                />
+              )}
               </div>
               <Button variant="btn" id="button-addon2" style={buttonStyle} onClick={SearchPosts}>
                 หางาน
@@ -198,9 +224,9 @@ const Userindexpage = () => {
 
       </div>
 
-      {!jobfield ? (
+      {jobList == 'null' ? (
         <>
-          <careerFileContext.Provider value={[jobfield, setJobField]}>
+          <careerFileContext.Provider value={[jobfield,setJobField]}>
             <div onClick={setAllColorWhite}>
               <SlidePage></SlidePage>
             </div>
@@ -236,7 +262,9 @@ const Userindexpage = () => {
 
         </>
       ) : (
-        <CompanyList></CompanyList>
+        <JobListUserContext.Provider value={[jobList,setJobList]}>
+          <CompanyList></CompanyList>
+        </JobListUserContext.Provider>
       )}
 
       <div style={{ height: '200px' }}></div>

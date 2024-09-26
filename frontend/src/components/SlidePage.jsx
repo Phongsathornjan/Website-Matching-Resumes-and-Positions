@@ -5,7 +5,7 @@ import jobFileData from './Data/jobField';
 
 const SlidePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [jobfield, setJobField] = React.useContext(careerFileContext);
+  const [jobfield,setJobField] = React.useContext(careerFileContext);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -37,7 +37,7 @@ const SlidePage = () => {
     }
   };
 
-  const onClick = (e) => {
+  const onClick = async (e) => {
     setJobField(e.value)
   }
 

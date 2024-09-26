@@ -2,37 +2,11 @@ import React, { useEffect,useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom'
 
-const jobList = [
-  {
-    id: 1,
-    title: 'Junior Programmer1',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 2,
-    title: 'Junior Programmer2',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  },
-  {
-    id: 3,
-    title: 'Junior Programmer3',
-    company: 'บริษัท Ai จำกัด',
-    location: 'กรุงเทพมหานคร',
-    description: 'Web Application PHP, HTML, CSS, JavaScript, Web APIs, SQL, UX/UI...',
-    requirements: 'วุฒิการศึกษาระดับปริญญาตรี สาขา Computer Science, Computer Engineering...',
-    posted: 'ลงประกาศเมื่อ 30 วันที่ผ่านมา'
-  }
-];
+import { JobListUserContext } from "../../context/JobListUserContext"
 
 const userCompanyList = () => {
+
+  const [jobList, setJobList] = React.useContext(JobListUserContext);
 
   useEffect(() => {
     const styleSheet = document.createElement("style");
@@ -46,21 +20,37 @@ const userCompanyList = () => {
     };
   }, []);
 
+  useEffect(() => {
+    setSelectedJob(null)
+  }, [jobList]);
+
   const [selectedJob, setSelectedJob] = useState(null);
 
   return (
-    <Container>
+    <>
+    {jobList.length == 0 ? (
+      <center style={fade}>
+        <div>
+          <img src="../../public/PleaseSelectFiled.png" style={{ marginTop: '60px',width: '400px' }} />
+        </div>
+        <div style={{ marginTop: '20px' }}>
+          <span style={{ color: '#828282', fontSize: '48px' }}>ไม่เจอผลลัพธ์</span>
+        </div>
+      </center>
+    ):(
+      <Container>
       <Row>
         <Col md={6}>
           {jobList.map(job => (
-            <Card key={job.id} className="mb-3" style={cardStyle} onClick={() => {setSelectedJob(null); setTimeout(() => setSelectedJob(job), 0);}}>
+            <Card key={job._id} className="mb-3" style={cardStyle} onClick={() => {setSelectedJob(null); setTimeout(() => setSelectedJob(job), 0);}}>
               <Card.Body>
-                <Card.Title>{job.title}</Card.Title>
-                <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle>
-                <Card.Subtitle className="mb-2 text-muted">{job.location}</Card.Subtitle>
-                <Card.Text>{job.description}</Card.Text>
-                <Card.Text>{job.requirements}</Card.Text>
-                <Card.Text>{job.posted}</Card.Text>
+                <Card.Title>{job.Position}</Card.Title>
+                {/* <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle> */}
+                <Card.Subtitle className="mb-2 text-muted">{job.Location}</Card.Subtitle>
+                <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>JobDescription :</span> {job.JobDescription}</Card.Text>
+                <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>Qualifications : </span>{job.Qualifications}</Card.Text>
+                <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>Experience : </span>{job.Experience}</Card.Text>
+                <Card.Text>โพสต์เมื่อ : {job.time_stamp}</Card.Text>
                 <Button variant="primary">รายละเอียด</Button>
               </Card.Body>
             </Card>
@@ -68,17 +58,18 @@ const userCompanyList = () => {
         </Col>
         <Col md={6}>
           {selectedJob ? (
-            <Card style={cardStyle} className='h-75' >
+            <Card style={cardStyle}>
               <Card.Body>
-                <Card.Title>{selectedJob.title}</Card.Title>
-                <Card.Text>{selectedJob.description}</Card.Text>
-                <Card.Text>{selectedJob.requirements}</Card.Text>
-                <Card.Text>{selectedJob.posted}</Card.Text>
-                <div style={{height: '410px'}}></div>
+                <Card.Title>{selectedJob.Position}</Card.Title>
+                <Card.Text>{selectedJob.Location}</Card.Text>
+                <Card.Text><span style={{fontWeight: 'bold', color: '#3F4447'}}>JobDescription :</span> {selectedJob.JobDescription}</Card.Text>
+                <Card.Text><span style={{fontWeight: 'bold', color: '#3F4447'}}>Qualifications :</span> {selectedJob.Qualifications}</Card.Text>
+                <Card.Text><span style={{fontWeight: 'bold', color: '#3F4447'}}>Experience : </span> {selectedJob.Experience}</Card.Text>
+                <Card.Text>{selectedJob.time_stamp}</Card.Text>
                 <div style={{display: 'flex'}}>
                 <div style={{width: '500px'}}></div>
-                <Link to={'/userJobApplication'}>
-                <Button variant="success">สมัครที่นี่</Button>
+                <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
+                  <Button variant="success">รายละเอียด</Button>
                 </Link>
                 </div>
               </Card.Body>
@@ -91,7 +82,15 @@ const userCompanyList = () => {
         </Col>
       </Row>
     </Container>
+    )}
+    </>
   );
+};
+
+const ellipsisStyle = {
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',        
+  textOverflow: 'ellipsis', 
 };
 
  const cardStyle = {
@@ -99,6 +98,10 @@ const userCompanyList = () => {
     animation: 'fadeInFromBottom 0.6s ease-in',
 
  };
+
+ const fade = {
+    animation: 'fadeInFromBottom 0.6s ease-in',
+ }
 
  const globalStyle = `
 @keyframes fadeInFromBottom {
