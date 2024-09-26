@@ -21,6 +21,7 @@ const createPost = require('./services/post/createpost');
 const deletePost = require('./services/post/deletepost');
 const getPost = require('./services/post/getpost')
 const getPostBySearch = require('./services/post/getPostBySearch');
+const applyJobPost = require('./services/post/applyJobPost')
 
 
 //email
@@ -109,6 +110,12 @@ app.get("/getPost/:userId", async (req,res) => {
 app.get("/getPostBySearch/:textSearch/:location/:jobField", async (req, res) => {
     return getPostBySearch(req,res)
 });
+
+//applyPost
+app.patch("/applyPost/:idPost/:idUser", async (req, res) => {
+    return applyJobPost(req,res)
+});
+
 
 
 
