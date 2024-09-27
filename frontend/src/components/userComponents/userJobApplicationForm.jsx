@@ -60,7 +60,14 @@ const userJobApplicationForm = () => {
   const ApplyJobButton = async () => {
     try{
       const response = await axios.patch(`http://localhost:4001/applyPost/${idPost}/${id_User}`)
-      swal("OK!", "สมัครงานเรียบร้อย!", "success");
+      swal({
+        title: "OK!",
+        text: "สมัครงานเรียบร้อย!",
+        icon: "success"
+      }).then(() => {
+        // Reload หลังจากกดปุ่ม OK
+        window.location.reload();
+      });
     }catch(err){
       console.log(err)
     }

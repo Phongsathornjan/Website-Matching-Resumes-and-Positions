@@ -1,5 +1,4 @@
 const Post = require('../../model/post')
-const User = require('../../model/user')
 
 const getAppliedJob = async (req,res) => {
     const {userId} = req.params
@@ -32,9 +31,12 @@ const getAppliedJob = async (req,res) => {
                 "applicants.status": 1,
                 "applicants.time_stamp": 1,
                 "userDetails.companyName": 1,         
-                "userDetails.companyDetail": 1
+                "userDetails.companyLocation": 1
               }
-            }
+            },
+            {
+              $sort: { "applicants.time_stamp": -1 }, 
+            },
           ]);
           
 

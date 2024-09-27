@@ -3,66 +3,22 @@ import { Link } from 'react-router-dom';
 import { Card, Button} from 'react-bootstrap';
 import Alert from "../Alert";
 import MyCalendar from "./InterViewCalendar";
+import axios from 'axios';
+
 
 const MyJob = () => {
-  const [jobApplyList, setJobApplyList] = useState([
-    {
-      Position: 'backend developer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'interview'
-    },
-    {
-      Position: 'devops engineer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'interview'
-    },
-    {
-      Position: 'BA ,SA',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'pending'
-    },          
-    {
-      Position: 'devops engineer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'pending'
-    },
-    {
-      Position: 'devops engineer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'pending'
-    },
-    {
-      Position: 'devops engineer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'pending'
-    },
-    {
-      Position: 'devops engineer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'pending'
-    },
-    {
-      Position: 'devops engineer',
-      company: 'บริษัท Ai จำกัด',
-      location: 'กรุงเทพมหานคร',
-      time_Stamp: '10 / 9 / 2567',
-      status: 'pending'
+
+  const getAppliedJob = async () => {
+    const userId = localStorage.getItem("id_user")
+    try{
+      const response = await axios.get(`http://localhost:4001/getAppliedJob/${userId}`)
+      setJobApplyList(response.data)
+    }catch(err){
+      console.log(err)
     }
-  ])
+  }
+
+  const [jobApplyList, setJobApplyList] = useState([])
   const jobsPerPage = 6;
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -100,6 +56,7 @@ const MyJob = () => {
   }, [jobApplyList]);
 
   useEffect(() => {
+    getAppliedJob()
 
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
@@ -119,24 +76,24 @@ const MyJob = () => {
                 <div style={{marginTop: '20px'}}>
                 {currentJobs.map((job) => (
                 <Card
+                  key={job._id}
                   className={`mb-3`} 
                   style={cardStyle}
-                  onClick={{}}
                 >
                   <Card.Body style={{ position: 'relative', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                     {job.status == "interview" && <Alert text="สัมภาษณ์!"/>}
                     <div>
                       <Card.Title style={titleStyle}>{job.Position}</Card.Title>
-                      <Card.Subtitle style={companyStyle}>
-                        {job.company}
+                      <Card.Subtitle style={companyNameStyle}>
+                        {job.companyName}
                       </Card.Subtitle>
-                      <Card.Subtitle style={locationStyle}>
-                        {job.location}
+                      <Card.Subtitle style={LocationStyle}>
+                        {job.Location}
                       </Card.Subtitle>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <Card.Text style={postedTextStyle}>
-                        สมัครเมื่อ {job.time_Stamp} วันที่ผ่านมา
+                        สมัครเมื่อ {job.time_stamp} วันที่ผ่านมา
                       </Card.Text>
                       <div style={{display: 'flex',justifyContent: 'space-between'}}>
                         {job.status === "interview" && <Link to={'#'}>
@@ -206,13 +163,13 @@ const titleStyle = {
   marginBottom: '15px', 
 };
 
-const companyStyle = {
+const companyNameStyle = {
   fontSize: '16px',
   color: '#6c757d',
   marginBottom: '10px',
 };
 
-const locationStyle = {
+const LocationStyle = {
   fontSize: '14px',
   color: '#6c757d',
   marginBottom: '10px',
