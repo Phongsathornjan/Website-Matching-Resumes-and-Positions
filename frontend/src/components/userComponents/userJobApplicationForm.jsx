@@ -89,16 +89,18 @@ const userJobApplicationForm = () => {
         <section className="mb-5 w-75">
           <h5><strong>Full Descriptions</strong></h5>
           <div className='card mt-3 p-4'>
+          <p>สถานที่ทำงาน : </p>
+          <p>เงินเดือน : {jobDetail.Salary} </p>
           <h5><strong>JobDescription : </strong></h5>
-            <div className='mt-1'>
+            <div className='mt-2 mb-3'>
               {jobDetail.JobDescription}
             </div>
           <h5><strong>Qualifications : </strong></h5>
-            <div className='mt-1'>
+            <div className='mt-1 mb-3'>
               {jobDetail.Qualifications}
             </div>
           <h5><strong>Experience : </strong></h5>
-          <div className="mb-1">
+          <div className="mb-3">
             {jobDetail.Experience}
           </div>
           <h5><strong>Working</strong></h5>

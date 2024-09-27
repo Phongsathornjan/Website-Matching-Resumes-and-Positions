@@ -42,6 +42,13 @@ const Userindexpage = () => {
     }
   }, [jobfield]);
 
+  const setAllInputNull = () => {
+    document.getElementById("Search").value = "";
+    setPrompt("null")
+    setLocation("null")
+    setJobField("null")
+    setJobList("null")
+  }
 
   const onClickButton = (color, clickOn) => {
     switch (clickOn) {
@@ -49,7 +56,7 @@ const Userindexpage = () => {
         setColor1(color);
         setColor2('#fff');
         setColor3('#fff');
-        setJobField("null");
+        setAllInputNull()
         setAppState('New Job')
         setTimeout(function() {
           window.scrollTo({
@@ -62,6 +69,7 @@ const Userindexpage = () => {
         setColor2(color);
         setColor1('#fff');
         setColor3('#fff');
+        setAllInputNull()
         setAppState('My Job')
         setTimeout(function() {
           window.scrollTo({
@@ -74,6 +82,7 @@ const Userindexpage = () => {
         setColor3(color);
         setColor1('#fff');
         setColor2('#fff');
+        setAllInputNull()
         setAppState('Recommend Job')
         setJobField("null")
         setTimeout(function() {
@@ -97,6 +106,7 @@ const Userindexpage = () => {
   }
 
   const SearchPosts = async () => {
+    setAllColorWhite()
     try{
       const encodedTextSearch = encodeURIComponent(prompt);
       const encodedLocation = encodeURIComponent(location);
@@ -154,6 +164,7 @@ const Userindexpage = () => {
         <div style={leftColumnStyle}>
           <div style={inputContainerStyle}>
             <Form.Control
+              id='Search'
               placeholder="อธิบายงานที่เหมาะกับคุณให้เราฟังสิ ?"
               style={inputStyle}
               onChange={(e) => setPrompt(e.target.value)}

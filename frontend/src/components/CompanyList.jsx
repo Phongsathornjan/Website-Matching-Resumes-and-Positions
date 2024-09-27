@@ -43,6 +43,7 @@ const CompanyList = () => {
                 <Card.Title>{job.Position}</Card.Title>
                 {/* <Card.Subtitle className="mb-2 text-muted">{job.company}</Card.Subtitle> */}
                 <Card.Subtitle className="mb-2 text-muted">{job.Location}</Card.Subtitle>
+                <Card.Subtitle className="mb-2 text-muted">เงินเดือน : {job.Salary}</Card.Subtitle>
                 <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>JobDescription :</span> {job.JobDescription}</Card.Text>
                 <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>Qualifications : </span>{job.Qualifications}</Card.Text>
                 <Card.Text style={ellipsisStyle}><span style={{fontWeight: 'bold', color: '#3F4447'}}>Experience : </span>{job.Experience}</Card.Text>
@@ -58,6 +59,7 @@ const CompanyList = () => {
               <Card.Body>
                 <Card.Title>{selectedJob.Position}</Card.Title>
                 <Card.Text>{selectedJob.Location}</Card.Text>
+                <Card.Subtitle className="mb-2 text-muted">เงินเดือน : {selectedJob.Salary}</Card.Subtitle>
                 <Card.Text><p style={{fontWeight: 'bold', color: '#3F4447'}}>JobDescription :</p> {selectedJob.JobDescription}</Card.Text>
                 <Card.Text><p style={{fontWeight: 'bold', color: '#3F4447'}}>Qualifications :</p> {selectedJob.Qualifications}</Card.Text>
                 <Card.Text><p style={{fontWeight: 'bold', color: '#3F4447'}}>Experience : </p> {selectedJob.Experience}</Card.Text>
