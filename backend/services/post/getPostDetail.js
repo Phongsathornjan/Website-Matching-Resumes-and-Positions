@@ -15,7 +15,6 @@ const getPostDetail = async (req, res) => {
             const companyDetail = await User.findById(result.userId)
             result.companyName = companyDetail.companyName
             result.companyDetail = companyDetail.companyDetail
-            console.log(result)
             return res.status(200).json(result)
         }else{
             return res.status(400).json({

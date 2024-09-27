@@ -23,6 +23,7 @@ const getPost = require('./services/post/getpost')
 const getPostBySearch = require('./services/post/getPostBySearch');
 const applyJobPost = require('./services/post/applyJobPost')
 const getPostDetail = require('./services/post/getPostDetail')
+const getAppliedJob = require('./services/post/getAppliedJob')
 
 
 //email
@@ -120,6 +121,11 @@ app.patch("/applyPost/:idPost/:idUser", async (req, res) => {
 //getPostDetail
 app.get("/getPostDetail/:idPost", async (req, res) => {
     return getPostDetail(req,res)
+});
+
+//getAppliedJob
+app.get("/getAppliedJob/:userId", async (req, res) => {
+    return getAppliedJob(req,res)
 });
 
 

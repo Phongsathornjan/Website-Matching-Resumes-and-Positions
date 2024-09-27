@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import axios from 'axios';
 
 import Navbar from '../components/navbar/Navbar'
@@ -20,20 +20,23 @@ function IndexPage() {
   const [location, setLocation] = useState('null');
   const [jobfield, setJobField] = useState('null');
 
-  const [search, setSearch] = useState(false);
-
   const SearchButton = async (textSearch, location, jobField) => {
       try{
         const encodedTextSearch = encodeURIComponent(textSearch);
         const encodedLocation = encodeURIComponent(location);
         const encodedJobField = encodeURIComponent(jobField);  
         const response = await axios.get(`http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`)
-        setSearch(true)
         setJobList(response.data)
       }catch(e){
         console.log(e)
       }
     }
+
+    useEffect(() => {
+      if(jobfield != 'null'){
+        SearchButton(prompt,location,jobfield)
+      }
+    }, [jobfield]);
 
   return (
     <div style={{
@@ -77,7 +80,7 @@ function IndexPage() {
             หางาน
           </Button>
     </div>
-    {jobfield == 'null' && !search ? (
+    {jobfield == 'null'? (
         <>
         <careerFileContext.Provider value={[jobfield,setJobField]}>
           <SlidePage></SlidePage>
