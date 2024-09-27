@@ -15,13 +15,7 @@ const HRNavbar = () => {
       <div>
       <Link to={'/HrIndexPage'} style={linkStyle} >Resume Union</Link>
       </div>
-      <div style={rightBarStyle}>
       <div>
-      <Link to={'/HrIndexPage'} style={linkStyle} >Manage Post</Link>
-      </div>
-      <div>
-      <Link to={'#'} style={linkStyle} >Interview Appointment</Link>
-      </div>
       <div className="dropdown">
           <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
             My Account
@@ -55,12 +49,6 @@ const navbarStyle = {
 const linkStyle = {
   textDecoration: 'none',
   color: '#fff'
-};
-
-const rightBarStyle = {
-  width: "500px",
-  justifyContent: "space-between",
-  display: "flex"
 };
 
 export default HRNavbar

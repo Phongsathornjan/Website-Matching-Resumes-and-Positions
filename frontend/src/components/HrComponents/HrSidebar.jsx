@@ -57,7 +57,7 @@ function HrSidebar({ onSidebarClick }) {
 }
 
 const sidebarStyle = {
-    width: '250px',
+    width: '220px',
     padding: '20px',
     marginLeft: '30px',
 };

@@ -3,14 +3,14 @@ import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
 import {FaBriefcase, FaUsers } from 'react-icons/fa';
 import StatusCard from '../StatusCard';
+import swal from 'sweetalert';
 
 const Resume = () => {
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [image, setImage] = useState(false);
   const [userId, setUserId] = useState(null);
-  const [error, setError] = useState(null);
-  const [Alert,setAlert] = useState(null);
+  const [isLoading,setIsLoading] = useState(null);
 
   useEffect(() => {
     setUserId(localStorage.getItem('id_user'));
@@ -48,24 +48,20 @@ const Resume = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
     const formData = new FormData();
     formData.append('file', selectedFile);
     formData.append('id', userId);
 
     if(!selectedFile){
-      setAlert(null); 
-      setError('กรุณาเลือก Resume ของคุณ');
+      swal("Oops!", "กรุณาเลือก Resume ของคุณ", "error");
       return
     };
 
     if(selectedFile.type != 'application/pdf'){
-      setAlert(null); 
-      setError('กรุณาเลือกไฟล์ PDF');
+      swal("Oops!", "กรุณาเลือกไฟล์ PDF", "error");
       return
     }
-
-    setAlert('Uploading...');
+    setIsLoading(true)
     try{
       const response = await axios.post('http://localhost:4001/uploadPDF', formData, {
           headers: {
@@ -73,14 +69,16 @@ const Resume = () => {
           }
       });
       if(response.status == 200){
-        setError(null);
-        setAlert('Upload Done Refreshing...');
-        setTimeout(() => {
+        swal({
+          title: "OK!",
+          text: "อัพโหลด Resume เรียบร้อย",
+          icon: "success"
+        }).then(() => {
           window.location.reload();
-      }, 1000);
+        });
       }
   } catch(err){
-        console.error(err);
+        console.log(err)
       }
   }
   
@@ -90,8 +88,7 @@ const Resume = () => {
         <Col md={3}>
           <div className="text-center">
               <p style={TextStyle}> Upload Your Resume</p>
-              {error && <div className="alert alert-danger" role="alert">{error}</div>}
-              {Alert && <div className="alert alert-success" role="alert">{Alert}</div>}
+              {isLoading && <center><div style={spinnerStyle}></div></center>}
           </div>
             <div style={inputStyle}>
             <input type="file" className="form-control" onChange={handleFileChange} />
@@ -160,6 +157,15 @@ const Resume = () => {
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
 `;
 
 const recommendationButtonStyle = {
@@ -193,6 +199,16 @@ const statusContainerStyle = {
   gap: '30px', 
   alignItems: 'center',
   marginBottom: '30px',
+};
+
+const spinnerStyle = {
+  border: '4px solid rgba(0, 0, 0, 0.1)',
+  width: '36px',
+  height: '36px',
+  borderRadius: '50%',
+  borderLeftColor: '#09f',
+  animation: 'spin 1s ease infinite',
+  marginBottom: '30px'
 };
 
 export default Resume;

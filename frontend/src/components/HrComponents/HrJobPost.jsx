@@ -86,7 +86,7 @@ const HrJobPost = () => {
               <Card.Body>
                 <div style={{display: 'flex',justifyContent: 'space-between'}}>
                   <Card.Title style={ellipsisStyle}>{job.Position}</Card.Title>
-                  <Button variant="danger" onClick={() => OnClickDeletePost(job._id)}>Delete</Button>
+                  <Button variant="danger" onClick={() => OnClickDeletePost(job._id)}>ลบโพสต์</Button>
                 </div>
                 <Card.Subtitle className="mb-2 text-muted">{job.Salary}</Card.Subtitle>
                 <Card.Text style={ellipsisStyle}>JobDescription : {job.JobDescription}</Card.Text>
@@ -95,11 +95,11 @@ const HrJobPost = () => {
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                   <Card.Text>โพสต์เมื่อวันที่ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                   <div style={{width: '250px',display: 'flex',justifyContent: 'space-between'}}>
-                    <Link to={`/PostDetail/:${job._id}`}>
-                      <Button variant="success">More detail</Button>
+                    <Link to={`/PostDetail/${job._id}`}>
+                      <Button variant="success">รายละเอียด</Button>
                     </Link>
-                    <Link to={'#'}>
-                    <Button variant="success">Find candidate</Button>
+                    <Link to={'/InsidePost'}>
+                    <Button variant="success">คัดเลือกผู้สมัคร</Button>
                     </Link>
                   </div>
                 </div>

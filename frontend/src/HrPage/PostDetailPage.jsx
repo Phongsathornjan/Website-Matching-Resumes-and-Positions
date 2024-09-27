@@ -1,78 +1,136 @@
-import React, {useEffect} from "react";
-import { Link,useParams } from "react-router-dom";
-import { Button } from 'react-bootstrap';
+import React, { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
 
 import HRNavbar from "../components/navbar/HRNavbar";
 
 const PostDetailPage = () => {
-    const { idPost } = useParams();
+  const { idPost } = useParams();
 
-    useEffect(() => {
-        window.scrollTo(0,0);
-        //api getPostById
+  const [isLoading, setIsLoading] = useState(false);
+  const [jobDetail, setJobDetail] = useState([]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    //api getPostById
+    getPostDetail();
 
-        //load animation
-        const styleSheet = document.createElement("style");
-        styleSheet.type = "text/css";
-        styleSheet.innerText = globalStyle;
-        document.head.appendChild(styleSheet);
-    
-        // Cleanup on component unmount
-        return () => {
-          document.head.removeChild(styleSheet);
-        };
-      }, []);
+    //load animation
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
 
-    return(
-        <>
-        <HRNavbar/>
-        <div style={{height: '100px'}}></div>
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+
+  const getPostDetail = async () => {
+    setIsLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:4001/getPostDetail/${idPost}`
+      );
+      setIsLoading(false);
+      setJobDetail(response.data);
+      console.log(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  return (
+    <>
+      <HRNavbar />
+      <div style={{ height: "100px" }}></div>
+      {isLoading ? (
+        <center>
+          <div style={spinnerStyle}></div>
+        </center>
+      ) : (
         <div className="container" style={Fade}>
-            <h5>Full Descriptions</h5>
-            <div className='card mt-3 p-4'>
-                <h5>Position : </h5>
-                <h5>Salary : </h5>
-                <h5>Requirements : </h5>
-                <h5>Qualifications : </h5>
-                <h5>Experience in one or more of the following will be an advantage:</h5>
-                <div style={{display: 'flex', justifyContent: 'space-between'}}>
-                    <p className="mb-1">Working Location: </p>
-                    <div style={{width: '250px',display: 'flex',justifyContent: 'space-between'}}>
-                        <Link to={'#'}>
-                        <Button variant="danger">Edit Post</Button>
-                        </Link>
-                        <Link to={'#'}>
-                            <Button variant="success">Find candidate</Button>
-                        </Link>
-                    </div>
-                </div>
+          <section className="mb-5 w-75">
+            <h5>
+              <strong>Full Descriptions</strong>
+            </h5>
+            <div className="card mt-3 p-4">
+              <h4>
+                <strong>Position : {jobDetail.Position}</strong>
+              </h4>
+              <p>สถานที่ทำงาน : </p>
+              <p>เงินเดือน : {jobDetail.Salary} </p>
+              <h5>
+                <strong>JobDescription : </strong>
+              </h5>
+              <div className="mt-2 mb-3">{jobDetail.JobDescription}</div>
+              <h5>
+                <strong>Qualifications : </strong>
+              </h5>
+              <div className="mt-1 mb-3">{jobDetail.Qualifications}</div>
+              <h5>
+                <strong>Experience : </strong>
+              </h5>
+              <div className="mb-3">{jobDetail.Experience}</div>
+              <h5>
+                <strong>Working</strong>
+              </h5>
+              <p className="mb-1">Working Location : {jobDetail.Location}</p>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
+                <Link to={'/InsidePost'}>
+                  <button className="btn btn-success">
+                    คัดเลือกผู้สมัคร
+                  </button>
+                </Link>
+              </div>
             </div>
+          </section>
         </div>
-        </>
-    )
-}
+      )}
+    </>
+  );
+};
 
 const Fade = {
-    animation: 'fadeInFromBottom 1s ease-in',
-  };
-  
-  const globalStyle = `
-  @keyframes fadeInFromBottom {
-    0% {
-      opacity: 0;
-      transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
-    }
-  }
-  
-  body {
-    margin: 0;
-    font-family: 'Trirong', sans-serif;
-  }
-  `;
+  animation: 'fadeInFromBottom 1s ease-in',
+};
 
-export default PostDetailPage
+const spinnerStyle = {
+  border: '4px solid rgba(0, 0, 0, 0.1)',
+  width: '36px',
+  height: '36px',
+  borderRadius: '50%',
+  borderLeftColor: '#09f',
+  animation: 'spin 1s ease infinite'
+};
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); /* เริ่มต้นจากด้านล่าง */
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); /* เลื่อนกลับไปที่ตำแหน่งเดิม */
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+body {
+  margin: 0;
+  font-family: 'Trirong', sans-serif;
+}
+`;
+
+export default PostDetailPage;

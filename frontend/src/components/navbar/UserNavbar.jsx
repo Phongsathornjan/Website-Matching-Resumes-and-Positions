@@ -16,10 +16,7 @@ const UserNavbar = () => {
       <div>
       <Link to={'/UserIndexPage'} style={linkStyle} >Resume Union</Link>
       </div>
-      <div style={rightBarStyle}>
-        <div>
-        <Link to={'/UserIndexPage'} style={linkStyle} >Job for you</Link>
-        </div>
+      <div>
         <div className="dropdown">
           <button type="button" className="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown">
             My Account
@@ -58,10 +55,5 @@ const linkStyle = {
   color: '#fff'
 };
 
-const rightBarStyle = {
-  width: "250px",
-  justifyContent: "space-between",
-  display: "flex"
-};
 
 export default UserNavbar

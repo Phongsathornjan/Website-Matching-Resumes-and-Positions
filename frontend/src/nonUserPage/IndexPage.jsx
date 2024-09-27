@@ -14,7 +14,7 @@ import { careerFileContext } from '../context/careerFileContext'
 import { JobListContext } from "../context/JobListContext"
 
 function IndexPage() {
-  const [jobList,setJobList] = useState([])
+  const [jobList,setJobList] = useState("null")
 
   const [prompt, setPrompt] = useState('null');
   const [location, setLocation] = useState('null');
@@ -27,6 +27,7 @@ function IndexPage() {
         const encodedJobField = encodeURIComponent(jobField);  
         const response = await axios.get(`http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`)
         setJobList(response.data)
+        console.log(response.data)
       }catch(e){
         console.log(e)
       }
@@ -80,7 +81,7 @@ function IndexPage() {
             หางาน
           </Button>
     </div>
-    {jobfield == 'null'? (
+    {jobList == "null" ? (
         <>
         <careerFileContext.Provider value={[jobfield,setJobField]}>
           <SlidePage></SlidePage>
