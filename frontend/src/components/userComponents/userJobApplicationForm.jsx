@@ -89,6 +89,7 @@ const userJobApplicationForm = () => {
         <section className="mb-5 w-75">
           <h5><strong>Full Descriptions</strong></h5>
           <div className='card mt-3 p-4'>
+          <h4><strong>Position : {jobDetail.Position}</strong></h4>
           <p>สถานที่ทำงาน : </p>
           <p>เงินเดือน : {jobDetail.Salary} </p>
           <h5><strong>JobDescription : </strong></h5>
@@ -104,8 +105,9 @@ const userJobApplicationForm = () => {
             {jobDetail.Experience}
           </div>
           <h5><strong>Working</strong></h5>
+          <p className="mb-1">Working Location : {jobDetail.Location}</p>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <p className="mb-1">Working Location : {jobDetail.Location}</p>
+            <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
             {isApplicantExists ? (
                 <button className="btn btn-secondary" disabled>
                     <MdDone /> สมัครแล้ว

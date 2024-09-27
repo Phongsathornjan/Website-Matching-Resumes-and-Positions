@@ -24,7 +24,7 @@ const applyJobPost = async (req, res) => {
         post.applicants.push({
             applicantsID: new mongoose.Types.ObjectId(),
             userId: idUser,
-            time_stamp: new Date(),
+            time_stamp: Date.now(),
             status: 'pending'
         });
 

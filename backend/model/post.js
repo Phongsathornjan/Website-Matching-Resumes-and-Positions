@@ -14,7 +14,7 @@ const postSchema = new mongoose.Schema({
         {
             applicantsID: { type: mongoose.Schema.Types.ObjectId, default: new mongoose.Types.ObjectId },
             userId: { type: String, required: true },  
-            time_stamp: { type: Date, default: Date.now }, 
+            time_stamp: { type: String, required: true }, 
             status: { type: String, default: 'pending' }   
         }
     ],
