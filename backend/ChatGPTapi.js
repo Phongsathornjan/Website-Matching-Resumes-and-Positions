@@ -29,15 +29,16 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                             {
                                 "Output":[
                                     {
-                                        "Experience": "your combined Experience response here (max 300 characters)", 
-                                        "keyword": "your combined keyword response here (max 300 characters)"
+                                        "Experience": "your combined Experience response here (max 200 characters)", 
+                                        "keyword": "your combined keyword response here (max 350 characters)"
                                     }
                                 ]
                             }
                         3. Combine all experiences into a single string for "Experience" and all keywords into a single string for "keyword." 
                         Separate different experiences or keywords using commas.
-                        4.Ensure the response for "Experience" is no longer than 300 characters and "keyword" no longer than 300 characters. 
+                        4.Ensure the response for "Experience" is no longer than 200 characters and "keyword" no longer than 350 characters. 
                         If it exceeds the limit, summarize or shorten the content.
+                        5. Only respond in English, even if the input is in another language.
                     `
                     },{
                         type: "image_url",

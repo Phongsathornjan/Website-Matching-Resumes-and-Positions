@@ -25,8 +25,8 @@ const connectToChatGPT = async (Job_Description,apiEndpoint, apiKey) => {
                             {
                                 "Output":[
                                     {
-                                        "Experience": "your combined Experience response here (max 300 characters)", 
-                                        "keyword": "your combined keyword response here (max 300 characters)"
+                                        "Experience": "your combined Experience response here (max 200 characters)", 
+                                        "keyword": "your combined keyword response here (max 350 characters)"
                                     }
                                 ]
                             }
@@ -34,7 +34,7 @@ const connectToChatGPT = async (Job_Description,apiEndpoint, apiKey) => {
                         Separate different experiences or keywords using commas.
                         4.Ensure the response for "Experience" is no longer than 300 characters and "keyword" no longer than 300 characters. 
                         If it exceeds the limit, summarize or shorten the content.
-                        5.Only Response in english even an input is thai.
+                        5. Only respond in English, even if the input is in another language.
                     `
                     },{
                         type: "text",
