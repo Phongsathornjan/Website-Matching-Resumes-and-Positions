@@ -7,7 +7,7 @@ const StatusCard = ({ title, count, color, icon , iconAndTextColor}) => {
         <div style={{color: iconAndTextColor}}>{icon}</div>
       </center>
       <div style={contentStyle}>
-        <h4 style={{...titleStyle, color: iconAndTextColor}}>{title} : &nbsp;</h4>
+        <h4 style={{...titleStyle, color: iconAndTextColor}}>{title}</h4>
         <p style={{...countStyle, color: iconAndTextColor}}> {count}</p>
       </div>
     </div>

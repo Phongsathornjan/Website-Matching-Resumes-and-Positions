@@ -249,36 +249,6 @@ const Userindexpage = () => {
 
         <div style={rightColumnStyle}>
           <div
-            style={{ ...HomeStyle, backgroundColor: color3 }}
-            onClick={() => onClickButton("#B7E4B0", "Recommend Job")}
-          >
-            <center>
-              <div style={{ color: "green" }}>
-                <FaHome />
-              </div>
-              <p
-                style={{ color: "green", fontSize: "18px", fontWeight: "bold" }}
-              >
-                Recommend Job
-              </p>
-            </center>
-          </div>
-
-          <div
-            style={{ ...statusStyle, position: "relative" }}
-            onClick={() => onClickButton("#FEB3B7", "New Job")}
-          >
-            <Alert text="New!" />
-            <StatusCard
-              title="New Job"
-              count="0"
-              color={color1}
-              icon={<FaUser />}
-              iconAndTextColor="#FD3A44"
-            />
-          </div>
-
-          <div
             style={{ ...statusStyle, position: "relative" }}
             onClick={() => onClickButton("#f2d5ff", "My Job")}
           >
@@ -301,6 +271,41 @@ const Userindexpage = () => {
               <SlidePage></SlidePage>
             </div>
           </careerFileContext.Provider>
+          {(appState === "Recommend Job" || appState === "New Job") && (
+                      <div
+                      style={{
+                        display: "flex",
+                        width: "500px",
+                        marginLeft: '70px',
+                        marginTop: '30px'
+                      }}
+                    >
+                      <div
+                        style={{ ...statusStyle, position: "relative" }}
+                        onClick={() => onClickButton("#B7E4B0", "Recommend Job")}
+                      >
+                        <StatusCard
+                          title="Match มากสุด"
+                          color={color3}
+                          icon={<FaHome />}
+                          iconAndTextColor="#009933"
+                        />
+                      </div>
+                      <div
+                        style={{ ...statusStyle, position: "relative" }}
+                        onClick={() => onClickButton("#FEB3B7", "New Job")}
+                      >
+                        <Alert text="New!" />
+                        <StatusCard
+                          title="New Job"
+                          count="0"
+                          color={color1}
+                          icon={<FaUser />}
+                          iconAndTextColor="#FD3A44"
+                        />
+                      </div>
+                    </div>
+          )}
           {appState === "Recommend Job" && (
             <>
               {isResume ? (
@@ -417,12 +422,13 @@ const selectStyle = {
 };
 
 const HomeStyle = {
-  width: "120px",
-  paddingTop: "10px",
-  boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-  transition: "background-color 0.5s ease",
-  borderRadius: "10px",
-  fontFamily: "Trirong",
+  flex: 1,
+  padding: "10px",
+  backgroundColor: "transparent",
+  borderRadius: "50px",
+  transform: "scale(1.2)",
+  transition: "transform 0.3s ease",
+  marginLeft: "50px",
 };
 
 export default Userindexpage;

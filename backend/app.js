@@ -26,6 +26,8 @@ const getPostDetail = require('./services/post/getPostDetail')
 const getAppliedJob = require('./services/post/getAppliedJob')
 const getMostMatchPost = require('./services/post/postMatch/getMostMatchPost')
 
+//User
+const updateJobField = require('./services/users/updateJobField')
 
 //email
 const sendOTP = require('./services/email/sendOTP');
@@ -68,6 +70,14 @@ app.post("/tokenDecoder", async (req, res) => {
 
 app.patch("/resetPassword", async (req, res) => {
     return resetPassword(req,res)
+})
+
+
+
+//User
+//Update JobField
+app.patch("/UpdateJobField/:userId/:jobField", async (req, res) => {
+    return updateJobField(req,res)
 })
 
 

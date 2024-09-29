@@ -17,6 +17,7 @@ import UserIndexPage from './UserPage/UserIndexPage.jsx';
 import UserResumeIndexPage from './UserPage/UserResumeIndexPage.jsx';
 import UserJobApplicationPage from './UserPage/userJobApplicationPage.jsx';
 import UploadResumePage from './UserPage/UploadResumePage.jsx';
+import SelectJobField from './nonUserPage/SelectJobField.jsx';
 
 import AdminIndexPage from './adminPage/AdminIndexPage.jsx';
 import CreateUserPage from './adminPage/CreateUserPage.jsx';
@@ -92,6 +93,10 @@ const router = createBrowserRouter([
   {
     path: "/CreateUser", 
     element: <CreateUserPage></CreateUserPage>
+  },
+  {
+    path: "/SelectJobFieldPage", 
+    element: <SelectJobField></SelectJobField>
   }
 ]);
 
