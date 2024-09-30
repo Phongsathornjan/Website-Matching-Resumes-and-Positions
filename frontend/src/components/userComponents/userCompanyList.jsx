@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Card, Button, Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import moment from 'moment'
+import React, { useEffect, useState } from "react";
+import { Card, Button, Container, Row, Col } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import moment from "moment";
 
-import { JobListUserContext } from '../../context/JobListUserContext';
+import { JobListUserContext } from "../../context/JobListUserContext";
 
 const UserCompanyList = () => {
   const [jobList, setJobList] = React.useContext(JobListUserContext);
@@ -13,8 +13,8 @@ const UserCompanyList = () => {
   const totalPages = Math.ceil(jobList.length / jobsPerPage);
 
   useEffect(() => {
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
     styleSheet.innerText = globalStyle;
     document.head.appendChild(styleSheet);
 
@@ -58,10 +58,15 @@ const UserCompanyList = () => {
       {jobList.length === 0 ? (
         <center style={fade}>
           <div>
-            <img src='../../public/PleaseSelectFiled.png' style={{ marginTop: '60px', width: '400px' }} />
+            <img
+              src="../../public/PleaseSelectFiled.png"
+              style={{ marginTop: "60px", width: "400px" }}
+            />
           </div>
-          <div style={{ marginTop: '20px' }}>
-            <span style={{ color: '#828282', fontSize: '48px' }}>ไม่เจอผลลัพธ์</span>
+          <div style={{ marginTop: "20px" }}>
+            <span style={{ color: "#828282", fontSize: "48px" }}>
+              ไม่เจอผลลัพธ์
+            </span>
           </div>
         </center>
       ) : (
@@ -71,7 +76,7 @@ const UserCompanyList = () => {
               {currentJobs.map((job) => (
                 <Card
                   key={job._id}
-                  className='mb-3'
+                  className="mb-3"
                   style={cardStyle}
                   onClick={() => {
                     setSelectedJob(null);
@@ -80,53 +85,135 @@ const UserCompanyList = () => {
                 >
                   <Card.Body>
                     <Card.Title>{job.Position}</Card.Title>
-                    <Card.Subtitle className='mb-2 text-muted'>{job.Location}</Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>เงินเดือน : {job.Salary}</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {job.Location}
+                    </Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      เงินเดือน : {job.Salary}
+                    </Card.Subtitle>
                     <Card.Text style={ellipsisStyle}>
-                      <span style={{ fontWeight: 'bold', color: '#3F4447' }}>JobDescription :</span> {job.JobDescription}
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        JobDescription :
+                      </span>{" "}
+                      {job.JobDescription}
                     </Card.Text>
                     <Card.Text style={ellipsisStyle}>
-                      <span style={{ fontWeight: 'bold', color: '#3F4447' }}>Qualifications : </span>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Qualifications :{" "}
+                      </span>
                       {job.Qualifications}
                     </Card.Text>
                     <Card.Text style={ellipsisStyle}>
-                      <span style={{ fontWeight: 'bold', color: '#3F4447' }}>Experience : </span>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Experience :{" "}
+                      </span>
                       {job.Experience}
                     </Card.Text>
-                    <Card.Text>โพสต์เมื่อ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
-                    <Button variant='primary'>รายละเอียด</Button>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                    >
+                      <Card.Text style={postedTextStyle}>
+                        โพสต์เมื่อ :{" "}
+                        {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
+                      </Card.Text>
+                      <Button variant="success" style={applyButtonStyle}>
+                        รายละเอียด
+                      </Button>
+                    </div>
                   </Card.Body>
                 </Card>
               ))}
             </Col>
-            <Col md={6} style={{ position: 'sticky', top: '80px', height: 'fit-content' }}>
+            <Col
+              md={6}
+              style={{ position: "sticky", top: "80px", height: "fit-content" }}
+            >
               {selectedJob ? (
-                <Card style={cardStyle}>
-                  <Card.Body>
+                <Card
+                  style={{
+                    ...cardStyle,
+                    overflow: "hidden",
+                    maxHeight: "841px",
+                  }}
+                >
+                  <Card.Body
+                    style={{ maxHeight: "780px", overflowY: "hidden" }}
+                  >
                     <Card.Title>{selectedJob.Position}</Card.Title>
-                    <Card.Subtitle className='mb-2 text-muted'>{selectedJob.Location}</Card.Subtitle>
-                    <Card.Subtitle className='mb-2 text-muted'>เงินเดือน : {selectedJob.Salary}</Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      {selectedJob.Location}
+                    </Card.Subtitle>
+                    <Card.Subtitle className="mb-2 text-muted">
+                      เงินเดือน : {selectedJob.Salary}
+                    </Card.Subtitle>
+
                     <Card.Text>
-                      <span style={{ fontWeight: 'bold', color: '#3F4447' }}>JobDescription :</span> {selectedJob.JobDescription}
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        JobDescription : <br />
+                      </span>
+                      {selectedJob.JobDescription.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
                     </Card.Text>
+
                     <Card.Text>
-                      <span style={{ fontWeight: 'bold', color: '#3F4447' }}>Qualifications :</span> {selectedJob.Qualifications}
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Qualifications : <br />
+                      </span>
+                      {selectedJob.Qualifications.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
                     </Card.Text>
+
                     <Card.Text>
-                      <span style={{ fontWeight: 'bold', color: '#3F4447' }}>Experience : </span> {selectedJob.Experience}
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Experience : <br />
+                      </span>
+                      {selectedJob.Experience.split("\n").map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
                     </Card.Text>
-                    <Card.Text>{moment(Number(selectedJob.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
-                    <div style={{ display: 'flex' }}>
-                      <div style={{ width: '500px' }}></div>
-                      <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
-                        <Button variant='success'>รายละเอียด</Button>
-                      </Link>
-                    </div>
+
+                    <Card.Text>
+                      โพสต์เมื่อ :{" "}
+                      {moment(Number(selectedJob.time_stamp)).format(
+                        "DD-MM-YYYY"
+                      )}
+                    </Card.Text>
                   </Card.Body>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      margin: "20px",
+                    }}
+                  >
+                    <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
+                      <Button variant="success">รายละเอียดเพิ่มเติม</Button>
+                    </Link>
+                  </div>
                 </Card>
               ) : (
-                <div style={{ textAlign: 'center', paddingTop: '50%' }}>
-                  <span style={{ color: '#6c757d', fontSize: '24px' }}>กรุณาเลือกงาน...</span>
+                <div style={{ textAlign: "center", paddingTop: "50%" }}>
+                  <span style={{ color: "#6c757d", fontSize: "24px" }}>
+                    กรุณาเลือกงาน...
+                  </span>
                 </div>
               )}
             </Col>
@@ -157,18 +244,18 @@ const UserCompanyList = () => {
 };
 
 const ellipsisStyle = {
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',
-  textOverflow: 'ellipsis',
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 
 const cardStyle = {
-  borderRadius: '20px',
-  animation: 'fadeInFromBottom 0.6s ease-in',
+  borderRadius: "20px",
+  animation: "fadeInFromBottom 0.6s ease-in",
 };
 
 const fade = {
-  animation: 'fadeInFromBottom 0.6s ease-in',
+  animation: "fadeInFromBottom 0.6s ease-in",
 };
 
 const NavigationButton = {
@@ -193,6 +280,16 @@ const SlideNavigation = {
   justifyContent: "center",
   marginTop: "20px",
   position: "relative",
+};
+
+const postedTextStyle = {
+  color: "#999",
+  alignSelf: "flex-start",
+};
+
+const applyButtonStyle = {
+  padding: "8px 20px",
+  fontSize: "14px",
 };
 
 const globalStyle = `

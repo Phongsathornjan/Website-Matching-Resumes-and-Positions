@@ -64,7 +64,7 @@ app.post("/auth", async (req, res) =>{
 })
 
 //Decoder token
-app.post("/tokenDecoder", async (req, res) => {
+app.get("/tokenDecoder/:token", async (req, res) => {
     return tokenDecoder(req, res);
 })
 

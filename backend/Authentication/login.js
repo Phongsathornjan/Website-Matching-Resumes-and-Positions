@@ -36,6 +36,7 @@ const verifyLogin = async (req , res) => {
                     location: user.location,
                     phone: user.phone,
                     company_name: user.company_name,
+                    jobField: user.jobField
                  },
                 process.env.TOKEN_KEY,
                 {

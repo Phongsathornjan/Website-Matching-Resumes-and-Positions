@@ -4,7 +4,7 @@ const tokenDecoder = (req , res) => {
 
     try{
 
-        let {token} = req.body;
+        let {token} = req.params
         if(!token){
             return res.status(404).json({
                 message: 'Token not found'

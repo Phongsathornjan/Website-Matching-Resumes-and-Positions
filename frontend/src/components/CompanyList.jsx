@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { JobListContext } from "../context/JobListContext";
-import moment from 'moment'
+import moment from "moment";
 
 const CompanyList = () => {
   const [jobList] = React.useContext(JobListContext);
@@ -100,13 +100,19 @@ const CompanyList = () => {
                       </span>{" "}
                       {job.Experience}
                     </Card.Text>
-                    <Card.Text>โพสต์เมื่อ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
+                    <Card.Text>
+                      โพสต์เมื่อ :{" "}
+                      {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
+                    </Card.Text>
                     <Button variant="primary">รายละเอียด</Button>
                   </Card.Body>
                 </Card>
               ))}
             </Col>
-            <Col md={6}  style={{ position: 'sticky', top: '90px', height: 'fit-content' }}>
+            <Col
+              md={6}
+              style={{ position: "sticky", top: "90px", height: "fit-content" }}
+            >
               {selectedJob ? (
                 <Card style={cardStyle}>
                   <Card.Body>
@@ -115,25 +121,56 @@ const CompanyList = () => {
                     <Card.Subtitle className="mb-2 text-muted">
                       เงินเดือน : {selectedJob.Salary}
                     </Card.Subtitle>
+
+                    {/* เว้นบรรทัดใน JobDescription */}
                     <Card.Text>
                       <p style={{ fontWeight: "bold", color: "#3F4447" }}>
                         JobDescription :
-                      </p>{" "}
-                      {selectedJob.JobDescription}
+                      </p>
+                      {selectedJob.JobDescription.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
                     </Card.Text>
+
+                    {/* เว้นบรรทัดใน Qualifications */}
                     <Card.Text>
                       <p style={{ fontWeight: "bold", color: "#3F4447" }}>
                         Qualifications :
-                      </p>{" "}
-                      {selectedJob.Qualifications}
+                      </p>
+                      {selectedJob.Qualifications.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
                     </Card.Text>
+
+                    {/* เว้นบรรทัดใน Experience */}
                     <Card.Text>
                       <p style={{ fontWeight: "bold", color: "#3F4447" }}>
-                        Experience :{" "}
-                      </p>{" "}
-                      {selectedJob.Experience}
+                        Experience :
+                      </p>
+                      {selectedJob.Experience.split("\n").map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
                     </Card.Text>
-                    <Card.Text>{moment(Number(selectedJob.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
+
+                    <Card.Text>
+                      {moment(Number(selectedJob.time_stamp)).format(
+                        "DD-MM-YYYY"
+                      )}
+                    </Card.Text>
+
                     <div style={{ display: "flex" }}>
                       <div style={{ width: "500px" }}></div>
                       <Link to={"/SignIn"}>
