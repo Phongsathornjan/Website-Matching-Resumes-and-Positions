@@ -19,7 +19,8 @@ const SelectJobField = () => {
   const upDateJobFiled = async () => {
     const userId = localStorage.getItem('id_user')
     try{
-      const response = await axios.patch(`http://localhost:4001/UpdateJobField/${userId}/${jobfield}`)
+      const encodedJobField = encodeURIComponent(jobfield);
+      const response = await axios.patch(`http://localhost:4001/UpdateJobField/${userId}/${encodedJobField}`)
       swal({
         title: "OK!",
         text: "สมัครสมาชิกเรียบร้อย",

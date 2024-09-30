@@ -13,6 +13,7 @@ const MatchCompanyList = () => {
   const [jobList, setJobList] = useState([]);
   const [selectedJob, setSelectedJob] = useState(jobList[0]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [notFound, setNotFound] = useState(false);
 
   const [userLocation, setUserLocation] = useState(null);
   const [jobField, setJobField] = useState(null);
@@ -34,7 +35,12 @@ const MatchCompanyList = () => {
         const response = await axios.get(
           `http://localhost:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`
         );
-        setJobList(response.data);
+        console.log(response);
+        if (response.status == 200) {
+          setJobList(response.data);
+        } else if (response.status == 204) {
+          setNotFound(true);
+        }
       } catch (err) {
         console.log(err);
         swal("Oops!", "Internal Server Error", "error");
@@ -149,6 +155,20 @@ const MatchCompanyList = () => {
               </Card.Body>
             </Card>
           ))}
+          {notFound && (
+            <div style={{ marginTop: "10px" }}>
+              <div>
+                <img
+                  src="../../public/PleaseSelectFiled.png"
+                  style={{ width: "300px" }}
+                />
+              </div>
+              <div style={{height: "50px"}}></div>
+              <span style={{ color: "#6c757d" , fontSize: "24px" , marginLeft: "30px"}}>
+                ไม่เจอโพสต์ที่ Match กับคุณ
+              </span>
+            </div>
+          )}
         </Col>
         <Col
           md={6}
@@ -240,11 +260,17 @@ const MatchCompanyList = () => {
               </div>
             </Card>
           ) : (
-            <div style={{ textAlign: "center", paddingTop: "50%" }}>
-              <span style={{ color: "#6c757d", fontSize: "24px" }}>
-                กรุณาเลือกงาน...
-              </span>
-            </div>
+            <>
+              {notFound ? (
+                <></>
+              ) : (
+                <div style={{ textAlign: "center", paddingTop: "50%" }}>
+                  <span style={{ color: "#6c757d", fontSize: "24px" }}>
+                    กรุณาเลือกงาน...
+                  </span>
+                </div>
+              )}
+            </>
           )}
         </Col>
       </Row>
