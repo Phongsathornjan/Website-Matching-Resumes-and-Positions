@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Card, Button, Container, Row, Col } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { JobListContext } from "../context/JobListContext";
+import moment from 'moment'
 
 const CompanyList = () => {
   const [jobList] = React.useContext(JobListContext);
@@ -99,7 +100,7 @@ const CompanyList = () => {
                       </span>{" "}
                       {job.Experience}
                     </Card.Text>
-                    <Card.Text>โพสต์เมื่อ : {job.time_stamp}</Card.Text>
+                    <Card.Text>โพสต์เมื่อ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                     <Button variant="primary">รายละเอียด</Button>
                   </Card.Body>
                 </Card>
@@ -132,7 +133,7 @@ const CompanyList = () => {
                       </p>{" "}
                       {selectedJob.Experience}
                     </Card.Text>
-                    <Card.Text>{selectedJob.time_stamp}</Card.Text>
+                    <Card.Text>{moment(Number(selectedJob.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                     <div style={{ display: "flex" }}>
                       <div style={{ width: "500px" }}></div>
                       <Link to={"/SignIn"}>

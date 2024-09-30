@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Card, Button, Container, Row, Col } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import moment from 'moment'
 
 import { JobListUserContext } from '../../context/JobListUserContext';
 
@@ -92,7 +93,7 @@ const UserCompanyList = () => {
                       <span style={{ fontWeight: 'bold', color: '#3F4447' }}>Experience : </span>
                       {job.Experience}
                     </Card.Text>
-                    <Card.Text>โพสต์เมื่อ : {job.time_stamp}</Card.Text>
+                    <Card.Text>โพสต์เมื่อ : {moment(Number(job.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                     <Button variant='primary'>รายละเอียด</Button>
                   </Card.Body>
                 </Card>
@@ -114,7 +115,7 @@ const UserCompanyList = () => {
                     <Card.Text>
                       <span style={{ fontWeight: 'bold', color: '#3F4447' }}>Experience : </span> {selectedJob.Experience}
                     </Card.Text>
-                    <Card.Text>{selectedJob.time_stamp}</Card.Text>
+                    <Card.Text>{moment(Number(selectedJob.time_stamp)).format('DD-MM-YYYY')}</Card.Text>
                     <div style={{ display: 'flex' }}>
                       <div style={{ width: '500px' }}></div>
                       <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>

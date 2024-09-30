@@ -20,6 +20,7 @@ import Alert from "./../components/Alert";
 
 import { careerFileContext } from "../context/careerFileContext";
 import { JobListUserContext } from "../context/JobListUserContext";
+import { Container } from "react-bootstrap";
 
 const Userindexpage = () => {
   const navigate = useNavigate();
@@ -271,70 +272,69 @@ const Userindexpage = () => {
               <SlidePage></SlidePage>
             </div>
           </careerFileContext.Provider>
-          {(appState === "Recommend Job" || appState === "New Job") && (
-                      <div
-                      style={{
-                        display: "flex",
-                        width: "500px",
-                        marginLeft: '70px',
-                        marginTop: '30px'
-                      }}
-                    >
-                      <div
-                        style={{ ...statusStyle, position: "relative" }}
-                        onClick={() => onClickButton("#B7E4B0", "Recommend Job")}
-                      >
-                        <StatusCard
-                          title="Match มากสุด"
-                          color={color3}
-                          icon={<FaHome />}
-                          iconAndTextColor="#009933"
-                        />
-                      </div>
-                      <div
-                        style={{ ...statusStyle, position: "relative" }}
-                        onClick={() => onClickButton("#FEB3B7", "New Job")}
-                      >
-                        <Alert text="New!" />
-                        <StatusCard
-                          title="New Job"
-                          count="0"
-                          color={color1}
-                          icon={<FaUser />}
-                          iconAndTextColor="#FD3A44"
-                        />
-                      </div>
-                    </div>
-          )}
-          {appState === "Recommend Job" && (
-            <>
-              {isResume ? (
+          {isResume && appState != "My Job" ? (
+            <Container>
+                           <div
+                style={{
+                  display: "flex",
+                  width: "500px",
+                  marginTop: "30px",
+                }}
+              >
+                <div
+                  style={{ ...statusStyle, position: "relative" }}
+                  onClick={() => onClickButton("#B7E4B0", "Recommend Job")}
+                >
+                  <StatusCard
+                    title="Match มากสุด"
+                    color={color3}
+                    icon={<FaHome />}
+                    iconAndTextColor="#009933"
+                  />
+                </div>
+                <div
+                  style={{ ...statusStyle, position: "relative" }}
+                  onClick={() => onClickButton("#FEB3B7", "New Job")}
+                >
+                  <Alert text="New!" />
+                  <StatusCard
+                    title="New Job"
+                    count="0"
+                    color={color1}
+                    icon={<FaUser />}
+                    iconAndTextColor="#FD3A44"
+                  />
+                </div>
+              </div>
+              {appState === "Recommend Job" && (
                 <>
                   <div style={{ height: "30px" }}></div>
                   <MatchCompanyList />
                 </>
-              ) : (
-                <center>
-                  <div>
-                    <img
-                      src="../../public/PleaseSelectFiled.png"
-                      style={{ marginTop: "60px" }}
-                    />
-                  </div>
-                  <div style={{ marginTop: "20px" }}>
-                    <span style={{ color: "#828282", fontSize: "48px" }}>
-                      กรุณาเลือกสายอาชีพ
-                    </span>
-                  </div>
-                </center>
               )}
-            </>
-          )}
-          {appState === "New Job" && (
-            <>
-              <div style={{ height: "30px" }}></div>
-              <NewCompanyList />
-            </>
+              {appState === "New Job" && (
+                <>
+                  <div style={{ height: "30px" }}></div>
+                  <NewCompanyList />
+                </>
+              )}
+            </Container>
+          ) : (appState === "Recommend Job" || appState === "New Job" )? (
+            <center>
+              <div>
+                <img
+                  src="../../public/PleaseSelectFiled.png"
+                  style={{ marginTop: "60px" }}
+                />
+              </div>
+              <div style={{ marginTop: "20px" }}>
+                <span style={{ color: "#828282", fontSize: "48px" }}>
+                  กรุณาเลือกสายอาชีพ
+                </span>
+              </div>
+            </center>
+          ):(
+            <></>
           )}
           {appState === "My Job" && (
             <>
@@ -414,7 +414,7 @@ const statusStyle = {
   borderRadius: "50px",
   transform: "scale(1.2)",
   transition: "transform 0.3s ease",
-  marginLeft: "50px",
+  marginLeft: "20px",
 };
 
 const selectStyle = {

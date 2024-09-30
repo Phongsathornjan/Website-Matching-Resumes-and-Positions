@@ -4,6 +4,7 @@ import { Card, Button } from "react-bootstrap";
 import Alert from "../Alert";
 import MyCalendar from "./InterViewCalendar";
 import axios from "axios";
+import moment from 'moment'
 
 const MyJob = () => {
   const getAppliedJob = async () => {
@@ -116,7 +117,7 @@ const MyJob = () => {
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Card.Text style={postedTextStyle}>
-                      สมัครเมื่อ {job.applicants[0].time_stamp} วันที่ผ่านมา
+                      สมัครเมื่อ {moment(Number(job.applicants[0].time_stamp)).format('DD-MM-YYYY')} 
                     </Card.Text>
                     <div
                       style={{

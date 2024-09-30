@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import swal from 'sweetalert';
+import moment from 'moment'
 
 import { MdDone } from "react-icons/md";
 import { IoAlert } from "react-icons/io5";
@@ -107,7 +108,7 @@ const userJobApplicationForm = () => {
           <h5><strong>Working</strong></h5>
           <p className="mb-1">Working Location : {jobDetail.Location}</p>
           <div style={{display: 'flex', justifyContent: 'space-between'}}>
-            <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
+            <p className="mb-1">โพสต์เมื่อ : {moment(Number(jobDetail.time_stamp)).format('DD-MM-YYYY')}</p>
             {isApplicantExists ? (
                 <button className="btn btn-secondary" disabled>
                     <MdDone /> สมัครแล้ว
