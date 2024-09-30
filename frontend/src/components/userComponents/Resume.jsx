@@ -1,8 +1,6 @@
 import React, { useEffect, useState} from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import axios from 'axios';
-import {FaBriefcase, FaUsers } from 'react-icons/fa';
-import StatusCard from '../StatusCard';
 import swal from 'sweetalert';
 
 const Resume = () => {
@@ -95,22 +93,6 @@ const Resume = () => {
             <div style={{width: '20px'}}></div>
             <button style={recommendationButtonStyle} type='submit' onClick={handleSubmit} >Upload</button>
             </div>
-              <div style={statusContainerStyle}>
-                <StatusCard
-                  title="My Job"
-                  count="3"
-                  color="#9d8ee1"
-                  icon={<FaBriefcase />}
-                />
-              </div>
-              <div style={statusContainerStyle}>
-                <StatusCard
-                  title="Interview"
-                  count="2"
-                  color="#2ecc71"
-                  icon={<FaUsers />}
-                />
-              </div>
         </Col>
         <Col md={1}>
         </Col>
@@ -191,14 +173,6 @@ const TextStyle = {
     fontSize: '18px', 
     fontWeight: 'bold',
     margin: '40px auto',
-};
-
-const statusContainerStyle = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-  gap: '30px', 
-  alignItems: 'center',
-  marginBottom: '30px',
 };
 
 const spinnerStyle = {

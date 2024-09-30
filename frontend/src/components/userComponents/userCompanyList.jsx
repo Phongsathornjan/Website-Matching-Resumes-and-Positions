@@ -140,7 +140,7 @@ const UserCompanyList = () => {
                   }}
                 >
                   <Card.Body
-                    style={{ maxHeight: "780px", overflowY: "hidden" }}
+                    style={{ maxHeight: "541px", overflowY: "hidden" }}
                   >
                     <Card.Title>{selectedJob.Position}</Card.Title>
                     <Card.Subtitle className="mb-2 text-muted">

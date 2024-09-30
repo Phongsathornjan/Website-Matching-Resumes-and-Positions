@@ -82,8 +82,11 @@ const MatchCompanyList = () => {
           {jobList.map((job) => (
             <Card
               key={job._id}
-              className={`mb-3 ${isAnimating ? "fade-in-from-bottom" : ""}`}
-              style={cardStyle}
+              className={`mb-4 ${isAnimating ? "fade-in-from-bottom" : ""}`}
+              style={{
+                ...cardStyle,
+                boxShadow: `0 0px 10px ${getMatchColor(job.matchPercentage)}`,
+              }}
               onClick={() => handleJobClick(job)}
             >
               <span
@@ -154,9 +157,26 @@ const MatchCompanyList = () => {
           {selectedJob ? (
             <Card
               className={`h-25 ${isAnimating ? "fade-in-from-bottom" : ""}`}
-              style={{ ...cardStyle, overflow: "hidden" }}
+              style={{
+                ...selectCardStyle,
+                overflow: "hidden",
+                boxShadow: `0 0px 10px ${getMatchColor(
+                  selectedJob.matchPercentage
+                )}`,
+              }}
             >
-              <Card.Body style={{ maxHeight: "685px", overflowY: "hidden" }}>
+              <span
+                style={{
+                  ...matchStyle,
+                  backgroundColor: getMatchColor(selectedJob.matchPercentage),
+                  boxShadow: `0 4px 15px ${getMatchColor(
+                    selectedJob.matchPercentage
+                  )}`,
+                }}
+              >
+                Match {selectedJob.matchPercentage}%
+              </span>
+              <Card.Body style={{ maxHeight: "527px", overflowY: "hidden" }}>
                 <Card.Title>{selectedJob.Position}</Card.Title>
                 <Card.Subtitle style={locationStyle}>
                   {selectedJob.Location}
@@ -234,11 +254,18 @@ const MatchCompanyList = () => {
 
 const cardStyle = {
   borderRadius: "12px",
-  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
   padding: "20px",
   marginBottom: "15px",
   position: "relative",
   backgroundColor: "#fff",
+  animation: "fadeInFromBottom 0.3s ease-in",
+};
+
+const selectCardStyle = {
+  borderRadius: "12px",
+  padding: "20px",
+  marginBottom: "15px",
+  position: "relative",
   animation: "fadeInFromBottom 0.3s ease-in",
 };
 

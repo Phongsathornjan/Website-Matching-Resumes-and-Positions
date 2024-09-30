@@ -298,8 +298,7 @@ const Userindexpage = () => {
                 >
                   <Alert text="New!" />
                   <StatusCard
-                    title="New Job"
-                    count="0"
+                    title="7 วันล่าสุด"
                     color={color1}
                     icon={<FaUser />}
                     iconAndTextColor="#FD3A44"
