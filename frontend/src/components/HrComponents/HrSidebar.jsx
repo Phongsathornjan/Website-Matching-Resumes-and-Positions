@@ -34,7 +34,6 @@ function HrSidebar({ onSidebarClick }) {
           <div style={statusStyle} onClick={() => onClickButton("#f2d5ff", "job")}>
             <StatusCard
               title="Job"
-              count="8"
               color={color1}
               icon={<FaBriefcase />}
               iconAndTextColor="#9d8ee1"
@@ -43,7 +42,6 @@ function HrSidebar({ onSidebarClick }) {
           <div style={statusStyle} onClick={() => onClickButton("#faffd5", "interview")}>
             <StatusCard
               title="Interview"
-              count="16"
               color={color2}
               icon={<FaCalendarCheck />}
               iconAndTextColor="#f1c40f"
