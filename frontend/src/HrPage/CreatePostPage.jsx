@@ -80,7 +80,7 @@ const CreatePostPage = () => {
         setIsLoading(false);
         swal({
           title: "OK!",
-          text: "อัพโหลด Resume เรียบร้อย",
+          text: "สร้าง Post เรียบร้อย",
           icon: "success",
         }).then(() => {
           navigate("/HrIndexPage");
