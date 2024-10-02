@@ -103,7 +103,7 @@ const MyJob = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {job.status == "interview" && <Alert text="สัมภาษณ์!" />}
+                  {job.applicants[0].status == "interview" && <Alert text="สัมภาษณ์!" />}
                   <div>
                     <Card.Title style={titleStyle}>{job.Position}</Card.Title>
                     <Card.Subtitle style={companyNameStyle}>
@@ -125,7 +125,7 @@ const MyJob = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      {job.status === "interview" && (
+                      {job.applicants[0].status === "interview" && (
                         <Link to={"#"}>
                           <Button variant="danger" style={interviewButtonStyle}>
                             นัดสัมภาษณ์
