@@ -29,7 +29,8 @@ const createPost = async (req, res) => {
             JobDescription: JobDescription,
             Qualifications: Qualifications,
             Experience: Experience,
-            time_stamp: Date.now(),
+            time_stamp: Date.now(),  
+            status: "open",
             keyword: ExtractedData.Output[0].keyword,
             KeyExperience: ExtractedData.Output[0].Experience
         })

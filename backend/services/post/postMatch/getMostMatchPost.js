@@ -13,8 +13,9 @@ const getMostMatchPost = async (req, res) => {
 
     const posts = await Post.find(
       { Location: Location, WorkField: WorkField },
-      { applicants: 0,WorkField: 0}
-    );
+      { applicants: 0, WorkField: 0 }
+  ).populate('userId', 'companyDetail CompanyName');
+  
     if (posts.length == 0) {
       return res.status(204).json({
         message: "Not found post",

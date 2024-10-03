@@ -1,5 +1,5 @@
 const Post = require('../../model/post');
-
+const User = require('../../model/user'); 
 const getPostBySearch = async (req, res) => {
     try {
         const textSearch = req.params.textSearch !== 'null' ? req.params.textSearch : null;
@@ -10,7 +10,7 @@ const getPostBySearch = async (req, res) => {
             return res.status(404).json({ message: 'Not Found' });
         }
 
-        let searchConditions = {};
+        let searchConditions = { status: 'open' };
 
         if (textSearch) {
             searchConditions.$text = { $search: textSearch };
@@ -28,10 +28,39 @@ const getPostBySearch = async (req, res) => {
         if (textSearch) {
             sortCondition = { score: { $meta: "textScore" } };
         } else {
-            sortCondition = { time_stamp: -1 };  // เรียงตามเวลาถ้าไม่มี textSearch
+            sortCondition = { time_stamp: -1 }; 
         }
 
-        const result = await Post.find(searchConditions).sort(sortCondition);
+        const result = await Post.aggregate([
+            { $match: searchConditions }, 
+            {
+                $lookup: {
+                    from: 'users', 
+                    localField: 'userId', 
+                    foreignField: '_id', 
+                    as: 'userDetails' 
+                }
+            },
+            { $unwind: '$userDetails' }, 
+            {
+                $project: {
+                    _id: 1,
+                    userId: 1,
+                    Position: 1,
+                    Salary: 1,
+                    Location: 1,
+                    WorkField: 1,
+                    JobDescription: 1,
+                    Qualifications: 1,
+                    Experience: 1,
+                    time_stamp: 1,
+                    companyName: '$userDetails.companyName',  
+                    companyDetail: '$userDetails.companyDetail', 
+                }
+            },
+            { $sort: sortCondition } 
+        ]);
+
         return res.json(result);
 
     } catch (e) {

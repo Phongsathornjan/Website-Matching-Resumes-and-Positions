@@ -8,6 +8,7 @@ const postSchema = new mongoose.Schema({
     Location: { type: String, required: true },      
     JobDescription: { type: String, required: true },  
     Qualifications: { type: String, required: true }, 
+    status: { type: String, required: true }, 
     Experience: { type: String, required: true },    
     time_stamp: { type: String, required: true },    
     applicants: [                                   

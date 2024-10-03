@@ -19,12 +19,12 @@ const getAppliedJob = async (req,res) => {
             from: "users",                          
             localField: "userId",                   
             foreignField: "_id",                    
-            as: "userDetails"                      
+            as: "CompanyData"                      
           }
         },
         {
           $addFields: {
-            hasInterview: {  // เพิ่มฟิลด์ใหม่เพื่อตรวจสอบว่ามี applicants.status == "interview" หรือไม่
+            hasInterview: {  
               $cond: {
                 if: { $gt: [{ $size: { $filter: { input: "$applicants", cond: { $eq: ["$$this.status", "interview"] } } } }, 0] },
                 then: 1,
@@ -35,8 +35,8 @@ const getAppliedJob = async (req,res) => {
         },
         {
           $sort: { 
-            hasInterview: -1,             // จัดลำดับให้ Post ที่มี interview ขึ้นก่อน
-            "applicants.time_stamp": -1   // จากนั้นจัดลำดับตาม time_stamp
+            hasInterview: -1,            
+            "applicants.time_stamp": -1  
           }
         },
         {
@@ -48,8 +48,9 @@ const getAppliedJob = async (req,res) => {
             JobDescription: 1,
             "applicants.status": 1,
             "applicants.time_stamp": 1,
-            "userDetails.companyName": 1,         
-            "userDetails.companyLocation": 1
+            "CompanyData.companyName": 1,         
+            "CompanyData.companyLocation": 1,
+            "CompanyData.companyDetail": 1
           }
         }
       ]);     
