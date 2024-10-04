@@ -15,25 +15,38 @@ const NewCompanyList = () => {
   const [viewedJobs, setViewedJobs] = useState([]);
   const [isAnimating, setIsAnimating] = useState(false);
 
-  const [notFound, setNotFound] = useState(false);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 3;
+  const [currentPage, setCurrentPage] = useState(0);
+  const postsPerPage = 4;
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = jobList.slice(indexOfFirstPost, indexOfLastPost);
+
+  const [status, setStatus] = useState(null);
+
 
   const handleNext = () => {
     if (currentPage < Math.ceil(jobList.length / postsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
+    setStatus(true)
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+    setStatus(true)
   };
+
+  useEffect(() => {
+    if(status != null){
+      window.scrollTo({
+        top: 680,
+        behavior: "smooth",
+      });
+    }
+    setStatus(null)
+  }, [status]);
 
   const [selectedJobId, setSelectedJobId] = useState(null);
 
@@ -58,6 +71,12 @@ const NewCompanyList = () => {
     getMostMatchPost();
   }, [userLocation, jobField]);
 
+  useEffect(() => {
+    if(currentPosts.length == 0){
+      setCurrentPage(0)
+    }
+  }, [currentPosts]);
+
   const getMostMatchPost = async () => {
     if (userLocation != null && jobField != null) {
       const encodedLocation = encodeURIComponent(userLocation);
@@ -74,8 +93,7 @@ const NewCompanyList = () => {
               return Number(job.time_stamp) >= sevenDaysAgo;
             })
           );
-        } else if (response.status == 204) {
-          setNotFound(true);
+        setCurrentPage(1);
         }
       } catch (err) {
         console.log(err);
@@ -109,6 +127,7 @@ const NewCompanyList = () => {
   };
 
   return (
+    <>
     <Container>
       <Row>
         <Col md={6}>
@@ -158,7 +177,7 @@ const NewCompanyList = () => {
             </Card>
           ))}
 
-          {notFound && (
+          {currentPosts.length == 0 && (
             <div style={{ marginTop: "10px" }}>
               <div>
                 <img
@@ -171,10 +190,10 @@ const NewCompanyList = () => {
                 style={{
                   color: "#6c757d",
                   fontSize: "24px",
-                  marginLeft: "30px",
+                  marginLeft: "90px",
                 }}
               >
-                ไม่เจอโพสต์ที่ Match กับคุณ
+                ไม่เจอผลลัพธ์
               </span>
             </div>
           )}
@@ -216,12 +235,14 @@ const NewCompanyList = () => {
                 </Link>
               </Card.Body>
             </Card>
-          ) : (
-            <div style={{ textAlign: "center", paddingTop: "50%" }}>
-              <span style={{ color: "#6c757d", fontSize: "24px" }}>
-                กรุณาเลือกงาน...
-              </span>
-            </div>
+          ) :(
+            <>
+            { currentPosts.length != 0 &&<div style={{ textAlign: "center", paddingTop: "50%" }}>
+            <span style={{ color: "#6c757d", fontSize: "24px" }}>
+              กรุณาเลือกงาน...
+            </span>
+          </div>}
+            </>
           )}
         </Col>
       </Row>
@@ -246,6 +267,7 @@ const NewCompanyList = () => {
         </button>
       </div>
     </Container>
+    </>
   );
 };
 

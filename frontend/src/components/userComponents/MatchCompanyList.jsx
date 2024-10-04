@@ -8,9 +8,9 @@ import swal from "sweetalert";
 
 const MatchCompanyList = () => {
   const navigate = useNavigate();
-  
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 3;
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const postsPerPage = 4;
 
   const [jobList, setJobList] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
@@ -20,6 +20,8 @@ const MatchCompanyList = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [jobField, setJobField] = useState(null);
 
+  const [status, setStatus] = useState(null);
+
   useEffect(() => {
     getUserData();
   }, []);
@@ -27,6 +29,16 @@ const MatchCompanyList = () => {
   useEffect(() => {
     getMostMatchPost();
   }, [userLocation, jobField]);
+
+  useEffect(() => {
+    if (status != null) {
+      window.scrollTo({
+        top: 680,
+        behavior: "smooth",
+      });
+    }
+    setStatus(null);
+  }, [status]);
 
   const getMostMatchPost = async () => {
     if (userLocation != null && jobField != null) {
@@ -39,8 +51,7 @@ const MatchCompanyList = () => {
         );
         if (response.status == 200) {
           setJobList(response.data);
-        } else if (response.status == 204) {
-          setNotFound(true);
+          setCurrentPage(1);
         }
       } catch (err) {
         console.log(err);
@@ -76,7 +87,7 @@ const MatchCompanyList = () => {
   const [selectedJobId, setSelectedJobId] = useState(null);
 
   const handleJobClick = (job) => {
-    setSelectedJobId(job._id); 
+    setSelectedJobId(job._id);
     setIsAnimating(true);
     setSelectedJob(null);
     setTimeout(() => {
@@ -89,12 +100,14 @@ const MatchCompanyList = () => {
     if (currentPage < Math.ceil(jobList.length / postsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
+    setStatus(true);
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+    setStatus(true);
   };
 
   const indexOfLastPost = currentPage * postsPerPage;
@@ -102,112 +115,194 @@ const MatchCompanyList = () => {
   const currentPosts = jobList.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
-    <Container>
-      <Row>
-        <Col md={6}>
-          {currentPosts.map((job) => (
-            <Card
-              key={job._id}
-              className={`mb-4 ${isAnimating ? "fade-in-from-bottom" : ""}`}
+    <>
+      {jobList.length == 0 ? (
+        <>
+          <div style={{ marginTop: "10px" }}>
+            <div>
+              <img
+                src="../../public/PleaseSelectFiled.png"
+                style={{ width: "300px" }}
+              />
+            </div>
+            <div style={{ height: "50px" }}></div>
+            <span
               style={{
-                ...cardStyle,
-                boxShadow: `0 0px 10px ${selectedJobId === job._id ? getMatchColor(job.matchPercentage) : "white"}`
+                color: "#6c757d",
+                fontSize: "24px",
+                marginLeft: "30px",
               }}
-              onClick={() => handleJobClick(job)}
             >
-              <span
-                style={{
-                  ...matchStyle,
-                  backgroundColor: getMatchColor(job.matchPercentage),
-                  boxShadow: `0 4px 15px ${getMatchColor(job.matchPercentage)}`,
-                }}
-              >
-                Match {job.matchPercentage}%
-              </span>
-              <Card.Body>
-                <Card.Title style={titleStyle}>{job.Position}</Card.Title>
-                <Card.Subtitle style={locationStyle}>{job.Location}</Card.Subtitle>
-                <Card.Subtitle style={companyStyle}>เงินเดือน : {job.Salary}</Card.Subtitle>
-                <Card.Text style={ellipsisStyle}>
-                  <span style={{ fontWeight: "bold", color: "#3F4447" }}>
-                    JobDescription :
-                  </span>{" "}
-                  {job.JobDescription}
-                </Card.Text>
-                <Card.Text>โพสต์เมื่อ : {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}</Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
-          {notFound && (
-            <div style={{ marginTop: "10px" }}>
-              <div>
-                <img
-                  src="../../public/PleaseSelectFiled.png"
-                  style={{ width: "300px" }}
-                />
-              </div>
-              <div style={{ height: "50px" }}></div>
-              <span style={{ color: "#6c757d", fontSize: "24px", marginLeft: "30px" }}>
-                ไม่เจอโพสต์ที่ Match กับคุณ
-              </span>
-            </div>
-          )}
-        </Col>
+              ไม่เจอโพสต์ที่ Match กับคุณ
+            </span>
+          </div>
+        </>
+      ) : (
+        <Container>
+          <Row>
+            <Col md={6}>
+              {currentPosts.map((job) => (
+                <Card
+                  key={job._id}
+                  className={`mb-4 ${isAnimating ? "fade-in-from-bottom" : ""}`}
+                  style={{
+                    ...cardStyle,
+                    boxShadow: `0 0px 10px ${
+                      selectedJobId === job._id
+                        ? getMatchColor(job.matchPercentage)
+                        : "white"
+                    }`,
+                  }}
+                  onClick={() => handleJobClick(job)}
+                >
+                  <span
+                    style={{
+                      ...matchStyle,
+                      backgroundColor: getMatchColor(job.matchPercentage),
+                      boxShadow: `0 4px 15px ${getMatchColor(
+                        job.matchPercentage
+                      )}`,
+                    }}
+                  >
+                    Match {job.matchPercentage}%
+                  </span>
+                  <Card.Body>
+                    <Card.Title style={titleStyle}>{job.Position}</Card.Title>
+                    <div style={{ display: "flex" }}>
+                      <Card.Subtitle style={locationStyle}>
+                        {job.userId.companyName},&nbsp;
+                      </Card.Subtitle>
+                      <Card.Subtitle style={locationStyle}>
+                        {job.Location}
+                      </Card.Subtitle>
+                    </div>
+                    <Card.Subtitle style={companyStyle}>
+                      เงินเดือน : {job.Salary}
+                    </Card.Subtitle>
+                    <Card.Text style={ellipsisStyle}>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        JobDescription :
+                      </span>{" "}
+                      {job.JobDescription}
+                    </Card.Text>
+                    <Card.Text>
+                      โพสต์เมื่อ :{" "}
+                      {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              ))}
+            </Col>
 
-        <Col md={6} style={{ position: "sticky", top: "80px", height: "fit-content" }}>
-          {selectedJob ? (
-            <Card style={{...selectCardStyle,boxShadow: `0 0px 10px ${getMatchColor(selectedJob.matchPercentage)}`,}}>
-              <Card.Body>
-                <Card.Title>{selectedJob.Position}</Card.Title>
-                <Card.Subtitle style={locationStyle}>
-                  {selectedJob.Location}
-                </Card.Subtitle>
-                <Card.Subtitle style={companyStyle}>
-                  เงินเดือน : {selectedJob.Salary}
-                </Card.Subtitle>
-                <Card.Text>
-                  <span style={{ fontWeight: "bold", color: "#3F4447" }}>
-                    JobDescription :
-                  </span>{" "}
-                  {selectedJob.JobDescription}
-                </Card.Text>
-                <Card.Text>โพสต์เมื่อ : {moment(Number(selectedJob.time_stamp)).format("DD-MM-YYYY")}</Card.Text>
-                <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
-                  <Button variant="success">รายละเอียดเพิ่มเติม</Button>
-                </Link>
-              </Card.Body>
-            </Card>
-          ) : (
-            <div style={{ textAlign: "center", paddingTop: "50%" }}>
-              <span style={{ color: "#6c757d", fontSize: "24px" }}>
-                กรุณาเลือกงาน...
-              </span>
-            </div>
-          )}
-        </Col>
-      </Row>
+            <Col
+              md={6}
+              style={{ position: "sticky", top: "80px", height: "fit-content" }}
+            >
+              {selectedJob ? (
+                <Card
+                  style={{
+                    ...selectCardStyle,
+                    boxShadow: `0 0px 10px ${getMatchColor(
+                      selectedJob.matchPercentage
+                    )}`,
+                  }}
+                >
+                  <Card.Body
+                    style={{ maxHeight: "541px", overflowY: "auto" }}
+                  >
+                    <Card.Title>{selectedJob.Position}</Card.Title>
+                    <Card.Subtitle style={locationStyle}>
+                      {selectedJob.Location}
+                    </Card.Subtitle>
+                    <Card.Subtitle style={companyStyle}>
+                      เงินเดือน : {selectedJob.Salary}
+                    </Card.Subtitle>
+                    <Card.Text>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        JobDescription : <br />
+                      </span>
+                      {selectedJob.JobDescription.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
+                    </Card.Text>
 
-      <div style={SlideNavigation}>
-        <button
-          style={NavigationButton}
-          onClick={handlePrev}
-          disabled={currentPage === 1}
-        >
-          {"<"}
-        </button>
-        <span>Page {currentPage} of {Math.ceil(jobList.length / postsPerPage)}</span>
-        <button
-          style={NavigationButton}
-          onClick={handleNext}
-          disabled={currentPage === Math.ceil(jobList.length / postsPerPage)}
-        >
-          {">"}
-        </button>
-      </div>
-    </Container>
+                    <Card.Text>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Qualifications : <br />
+                      </span>
+                      {selectedJob.Qualifications.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
+                    </Card.Text>
+
+                    <Card.Text>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Experience : <br />
+                      </span>
+                      {selectedJob.Experience.split("\n").map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
+                    </Card.Text>
+                    <Card.Text>
+                      โพสต์เมื่อ :{" "}
+                      {moment(Number(selectedJob.time_stamp)).format(
+                        "DD-MM-YYYY"
+                      )}
+                    </Card.Text>
+                  </Card.Body>
+                  <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
+                      <Button variant="success">รายละเอียดเพิ่มเติม</Button>
+                    </Link>
+                </Card>
+              ) : (
+                <div style={{ textAlign: "center", paddingTop: "50%" }}>
+                  <span style={{ color: "#6c757d", fontSize: "24px" }}>
+                    กรุณาเลือกงาน...
+                  </span>
+                </div>
+              )}
+            </Col>
+          </Row>
+
+          <div style={SlideNavigation}>
+            <button
+              style={NavigationButton}
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+            >
+              {"<"}
+            </button>
+            <span>
+              Page {currentPage} of {Math.ceil(jobList.length / postsPerPage)}
+            </span>
+            <button
+              style={NavigationButton}
+              onClick={handleNext}
+              disabled={
+                currentPage === Math.ceil(jobList.length / postsPerPage)
+              }
+            >
+              {">"}
+            </button>
+          </div>
+        </Container>
+      )}
+    </>
   );
 };
-
 
 const NavigationButton = {
   backgroundColor: "#fff",
@@ -232,7 +327,6 @@ const SlideNavigation = {
   marginTop: "20px",
   position: "relative",
 };
-
 
 const cardStyle = {
   borderRadius: "12px",
@@ -259,12 +353,10 @@ const titleStyle = {
 };
 
 const companyStyle = {
-  color: "#6c757d",
   marginBottom: "10px",
 };
 
 const locationStyle = {
-  color: "#6c757d",
   marginBottom: "10px",
 };
 
