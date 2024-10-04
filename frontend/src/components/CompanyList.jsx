@@ -75,11 +75,12 @@ const CompanyList = () => {
                   }}
                 >
                   <Card.Body>
-                    <Card.Title>{job.Position}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {job.Location}
-                    </Card.Subtitle>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Title className="mb-3">{job.Position}</Card.Title>
+                    <div style={{ display: "flex" }} className="mb-2">
+                      <Card.Subtitle>{job.companyName},&nbsp;</Card.Subtitle>
+                      <Card.Subtitle>{job.Location}</Card.Subtitle>
+                    </div>
+                    <Card.Subtitle className="mb-3">
                       เงินเดือน : {job.Salary}
                     </Card.Subtitle>
                     <Card.Text style={ellipsisStyle}>
@@ -100,29 +101,49 @@ const CompanyList = () => {
                       </span>{" "}
                       {job.Experience}
                     </Card.Text>
-                    <Card.Text>
-                      โพสต์เมื่อ :{" "}
-                      {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
-                    </Card.Text>
-                    <Button variant="primary">รายละเอียด</Button>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between"
+                      }}
+                    >
+                      <Card.Text>
+                        โพสต์เมื่อ :{" "}
+                        {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
+                      </Card.Text>
+                      <Button variant="primary">รายละเอียด</Button>
+                    </div>
                   </Card.Body>
                 </Card>
               ))}
             </Col>
             <Col
               md={6}
-              style={{ position: "sticky", top: "90px", height: "fit-content" }}
+              style={{ position: "sticky", top: "80px", height: "fit-content" }}
             >
               {selectedJob ? (
                 <Card style={cardStyle}>
-                  <Card.Body>
-                    <Card.Title>{selectedJob.Position}</Card.Title>
-                    <Card.Text>{selectedJob.Location}</Card.Text>
-                    <Card.Subtitle className="mb-2 text-muted">
+                  <Card.Body
+                    style={{
+                      maxHeight: "541px",
+                      overflowY: "hidden",
+                      overflowY: "auto",
+                      marginTop: "4px",
+                    }}
+                  >
+                    <Card.Title className="mb-3">
+                      {selectedJob.Position}
+                    </Card.Title>
+                    <div style={{ display: "flex" }} className="mb-2">
+                      <Card.Subtitle>
+                        {selectedJob.companyName},&nbsp;
+                      </Card.Subtitle>
+                      <Card.Subtitle>{selectedJob.Location}</Card.Subtitle>
+                    </div>
+                    <Card.Subtitle className="mb-2">
                       เงินเดือน : {selectedJob.Salary}
                     </Card.Subtitle>
 
-                    {/* เว้นบรรทัดใน JobDescription */}
                     <Card.Text>
                       <p style={{ fontWeight: "bold", color: "#3F4447" }}>
                         JobDescription :
@@ -137,7 +158,6 @@ const CompanyList = () => {
                       )}
                     </Card.Text>
 
-                    {/* เว้นบรรทัดใน Qualifications */}
                     <Card.Text>
                       <p style={{ fontWeight: "bold", color: "#3F4447" }}>
                         Qualifications :
@@ -152,7 +172,6 @@ const CompanyList = () => {
                       )}
                     </Card.Text>
 
-                    {/* เว้นบรรทัดใน Experience */}
                     <Card.Text>
                       <p style={{ fontWeight: "bold", color: "#3F4447" }}>
                         Experience :
@@ -164,20 +183,23 @@ const CompanyList = () => {
                         </React.Fragment>
                       ))}
                     </Card.Text>
-
+                  </Card.Body>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "20px",
+                    }}
+                  >
                     <Card.Text>
                       {moment(Number(selectedJob.time_stamp)).format(
                         "DD-MM-YYYY"
                       )}
                     </Card.Text>
-
-                    <div style={{ display: "flex" }}>
-                      <div style={{ width: "500px" }}></div>
-                      <Link to={"/SignIn"}>
-                        <Button variant="success">สมัครที่นี่</Button>
-                      </Link>
-                    </div>
-                  </Card.Body>
+                    <Link to={"/SignIn"}>
+                      <Button variant="success">สมัครที่นี่</Button>
+                    </Link>
+                  </div>
                 </Card>
               ) : (
                 <div style={{ textAlign: "center", paddingTop: "50%" }}>
@@ -226,6 +248,7 @@ const fade = {
 const cardStyle = {
   borderRadius: "20px",
   animation: "fadeInFromBottom 0.6s ease-in",
+  maxHeight: "841px",
 };
 
 const NavigationButton = {

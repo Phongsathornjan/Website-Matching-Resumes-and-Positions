@@ -26,7 +26,7 @@ const Alert = ({text}) => {
     position: 'absolute',
     backgroundColor: '#FD3A44',
     color: '#fff',
-    fontSize: '12px',
+    fontSize: '13px',
     fontWeight: 'bold',
     borderRadius: '20px',
     padding: '3px 10px',

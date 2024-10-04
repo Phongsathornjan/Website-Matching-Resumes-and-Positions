@@ -84,11 +84,12 @@ const UserCompanyList = () => {
                   }}
                 >
                   <Card.Body>
-                    <Card.Title>{job.Position}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {job.Location}
-                    </Card.Subtitle>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Title className="mb-3">{job.Position}</Card.Title>
+                    <div style={{ display: "flex" }} className="mb-2">
+                      <Card.Subtitle>{job.companyName},&nbsp;</Card.Subtitle>
+                      <Card.Subtitle>{job.Location}</Card.Subtitle>
+                    </div>
+                    <Card.Subtitle className="mb-3">
                       เงินเดือน : {job.Salary}
                     </Card.Subtitle>
                     <Card.Text style={ellipsisStyle}>
@@ -135,18 +136,27 @@ const UserCompanyList = () => {
                 <Card
                   style={{
                     ...cardStyle,
-                    overflow: "hidden",
                     maxHeight: "841px",
                   }}
                 >
                   <Card.Body
-                    style={{ maxHeight: "541px", overflowY: "hidden" }}
+                    style={{
+                      maxHeight: "541px",
+                      overflowY: "hidden",
+                      overflowY: "auto",
+                      marginTop: "4px",
+                    }}
                   >
-                    <Card.Title>{selectedJob.Position}</Card.Title>
-                    <Card.Subtitle className="mb-2 text-muted">
-                      {selectedJob.Location}
-                    </Card.Subtitle>
-                    <Card.Subtitle className="mb-2 text-muted">
+                    <Card.Title className="mb-3">
+                      {selectedJob.Position}
+                    </Card.Title>
+                    <div style={{ display: "flex" }} className="mb-2">
+                      <Card.Subtitle>
+                        {selectedJob.companyName},&nbsp;
+                      </Card.Subtitle>
+                      <Card.Subtitle>{selectedJob.Location}</Card.Subtitle>
+                    </div>
+                    <Card.Subtitle className="mb-2">
                       เงินเดือน : {selectedJob.Salary}
                     </Card.Subtitle>
 
@@ -189,21 +199,20 @@ const UserCompanyList = () => {
                         </React.Fragment>
                       ))}
                     </Card.Text>
-
+                  </Card.Body>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "20px",
+                    }}
+                  >
                     <Card.Text>
                       โพสต์เมื่อ :{" "}
                       {moment(Number(selectedJob.time_stamp)).format(
                         "DD-MM-YYYY"
                       )}
                     </Card.Text>
-                  </Card.Body>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "flex-end",
-                      margin: "20px",
-                    }}
-                  >
                     <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
                       <Button variant="success">รายละเอียดเพิ่มเติม</Button>
                     </Link>

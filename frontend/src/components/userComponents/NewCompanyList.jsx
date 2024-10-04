@@ -23,29 +23,28 @@ const NewCompanyList = () => {
 
   const [status, setStatus] = useState(null);
 
-
   const handleNext = () => {
     if (currentPage < Math.ceil(jobList.length / postsPerPage)) {
       setCurrentPage(currentPage + 1);
     }
-    setStatus(true)
+    setStatus(true);
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
-    setStatus(true)
+    setStatus(true);
   };
 
   useEffect(() => {
-    if(status != null){
+    if (status != null) {
       window.scrollTo({
         top: 680,
         behavior: "smooth",
       });
     }
-    setStatus(null)
+    setStatus(null);
   }, [status]);
 
   const [selectedJobId, setSelectedJobId] = useState(null);
@@ -72,8 +71,8 @@ const NewCompanyList = () => {
   }, [userLocation, jobField]);
 
   useEffect(() => {
-    if(currentPosts.length == 0){
-      setCurrentPage(0)
+    if (currentPosts.length == 0) {
+      setCurrentPage(0);
     }
   }, [currentPosts]);
 
@@ -89,11 +88,11 @@ const NewCompanyList = () => {
         if (response.status == 200) {
           setJobList(
             response.data.filter((job) => {
-              const sevenDaysAgo = Date.now() - 604800000; // 7 วัน
+              const sevenDaysAgo = Date.now() - 691200000; // 7 วัน
               return Number(job.time_stamp) >= sevenDaysAgo;
             })
           );
-        setCurrentPage(1);
+          setCurrentPage(1);
         }
       } catch (err) {
         console.log(err);
@@ -126,147 +125,228 @@ const NewCompanyList = () => {
     }
   };
 
+  const millisToDays = (millis) => {
+    const millisPerDay = 24 * 60 * 60 * 1000; 
+    const today = Date.now(); 
+    const pastDate = millis; 
+    const diffInMillis = today - pastDate; 
+    const diffInDays = Math.floor(diffInMillis / millisPerDay);
+    return diffInDays;
+  }
+
   return (
     <>
-    <Container>
-      <Row>
-        <Col md={6}>
-          {currentPosts.map((job) => (
-            <Card
-              key={job._id}
-              className={`mb-4 ${isAnimating ? "fade-in-from-bottom" : ""}`}
-              style={{
-                ...cardStyle,
-                boxShadow: `0 0px 10px ${
-                  selectedJobId === job._id
-                    ? getMatchColor(job.matchPercentage)
-                    : "white"
-                }`,
-              }}
-              onClick={() => handleJobClick(job)}
-            >
-              <Alert text="New!" />
-              <span
-                style={{
-                  ...matchStyle,
-                  backgroundColor: getMatchColor(job.matchPercentage),
-                  boxShadow: `0 4px 15px ${getMatchColor(job.matchPercentage)}`,
-                }}
-              >
-                Match {job.matchPercentage}%
-              </span>
-              <Card.Body>
-                <Card.Title style={titleStyle}>{job.Position}</Card.Title>
-                <Card.Subtitle style={locationStyle}>
-                  {job.Location}
-                </Card.Subtitle>
-                <Card.Subtitle style={companyStyle}>
-                  เงินเดือน : {job.Salary}
-                </Card.Subtitle>
-                <Card.Text style={ellipsisStyle}>
-                  <span style={{ fontWeight: "bold", color: "#3F4447" }}>
-                    JobDescription :
-                  </span>{" "}
-                  {job.JobDescription}
-                </Card.Text>
-                <Card.Text>
-                  โพสต์เมื่อ :{" "}
-                  {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
-                </Card.Text>
-              </Card.Body>
-            </Card>
-          ))}
-
-          {currentPosts.length == 0 && (
-            <div style={{ marginTop: "10px" }}>
-              <div>
-                <img
-                  src="../../public/PleaseSelectFiled.png"
-                  style={{ width: "300px" }}
-                />
-              </div>
-              <div style={{ height: "50px" }}></div>
-              <span
-                style={{
-                  color: "#6c757d",
-                  fontSize: "24px",
-                  marginLeft: "90px",
-                }}
-              >
-                ไม่เจอผลลัพธ์
-              </span>
+      {jobList.length == 0 ? (
+        <>
+          <div style={{ marginTop: "10px" }}>
+            <div>
+              <img
+                src="../../public/PleaseSelectFiled.png"
+                style={{ width: "300px" }}
+              />
             </div>
-          )}
-        </Col>
-
-        <Col
-          md={6}
-          style={{ position: "sticky", top: "80px", height: "fit-content" }}
-        >
-          {selectedJob ? (
-            <Card
+            <div style={{ height: "50px" }}></div>
+            <span
               style={{
-                ...selectCardStyle,
-                boxShadow: `0 0px 10px ${getMatchColor(
-                  selectedJob.matchPercentage
-                )}`,
+                color: "#6c757d",
+                fontSize: "24px",
+                marginLeft: "30px",
               }}
             >
-              <Card.Body>
-                <Card.Title>{selectedJob.Position}</Card.Title>
-                <Card.Subtitle style={locationStyle}>
-                  {selectedJob.Location}
-                </Card.Subtitle>
-                <Card.Subtitle style={companyStyle}>
-                  เงินเดือน : {selectedJob.Salary}
-                </Card.Subtitle>
-                <Card.Text>
-                  <span style={{ fontWeight: "bold", color: "#3F4447" }}>
-                    JobDescription :
-                  </span>{" "}
-                  {selectedJob.JobDescription}
-                </Card.Text>
-                <Card.Text>
-                  โพสต์เมื่อ :{" "}
-                  {moment(Number(selectedJob.time_stamp)).format("DD-MM-YYYY")}
-                </Card.Text>
-                <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
-                  <Button variant="success">รายละเอียดเพิ่มเติม</Button>
-                </Link>
-              </Card.Body>
-            </Card>
-          ) :(
-            <>
-            { currentPosts.length != 0 &&<div style={{ textAlign: "center", paddingTop: "50%" }}>
-            <span style={{ color: "#6c757d", fontSize: "24px" }}>
-              กรุณาเลือกงาน...
+              ไม่เจอโพสต์ที่ Match กับคุณ
             </span>
-          </div>}
-            </>
-          )}
-        </Col>
-      </Row>
+          </div>
+        </>
+      ) : (
+        <Container>
+          <Row>
+            <Col md={6}>
+              {currentPosts.map((job) => (
+                <Card
+                  key={job._id}
+                  className={`mb-4 ${isAnimating ? "fade-in-from-bottom" : ""}`}
+                  style={{
+                    ...cardStyle,
+                    boxShadow: `0 0px 10px ${
+                      selectedJobId === job._id
+                        ? getMatchColor(job.matchPercentage)
+                        : "white"
+                    }`,
+                  }}
+                  onClick={() => handleJobClick(job)}
+                >
+                  <span
+                    style={{
+                      ...matchStyle,
+                      backgroundColor: getMatchColor(job.matchPercentage),
+                      boxShadow: `0 4px 15px ${getMatchColor(
+                        job.matchPercentage
+                      )}`,
+                    }}
+                  >
+                    Match {job.matchPercentage}%
+                  </span>
+                  <Alert text= {millisToDays(job.time_stamp)+" วันที่ผ่านมา!"} />
 
-      <div style={SlideNavigation}>
-        <button
-          style={NavigationButton}
-          onClick={handlePrev}
-          disabled={currentPage === 1}
-        >
-          {"<"}
-        </button>
-        <span>
-          Page {currentPage} of {Math.ceil(jobList.length / postsPerPage)}
-        </span>
-        <button
-          style={NavigationButton}
-          onClick={handleNext}
-          disabled={currentPage === Math.ceil(jobList.length / postsPerPage)}
-        >
-          {">"}
-        </button>
-      </div>
-    </Container>
+                  <Card.Body>
+                    <Card.Title style={titleStyle}>{job.Position}</Card.Title>
+                    <div style={{ display: "flex" }}>
+                      <Card.Subtitle style={locationStyle}>
+                        {job.userId.companyName},&nbsp;
+                      </Card.Subtitle>
+                      <Card.Subtitle style={locationStyle}>
+                        {job.Location}
+                      </Card.Subtitle>
+                    </div>
+                    <Card.Subtitle style={companyStyle}>
+                      เงินเดือน : {job.Salary}
+                    </Card.Subtitle>
+                    <Card.Text style={ellipsisStyle}>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        JobDescription :
+                      </span>{" "}
+                      {job.JobDescription}
+                    </Card.Text>
+                    <Card.Text>
+                      โพสต์เมื่อ :{" "}
+                      {moment(Number(job.time_stamp)).format("DD-MM-YYYY")}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              ))}
+            </Col>
+
+            <Col
+              md={6}
+              style={{ position: "sticky", top: "80px", height: "fit-content" }}
+            >
+              {selectedJob ? (
+                <Card
+                  style={{
+                    ...selectCardStyle,
+                    boxShadow: `0 0px 10px ${getMatchColor(
+                      selectedJob.matchPercentage
+                    )}`,
+                  }}
+                >
+                  <span
+                    style={{
+                      ...matchStyle,
+                      backgroundColor: getMatchColor(
+                        selectedJob.matchPercentage
+                      ),
+                      boxShadow: `0 4px 15px ${getMatchColor(
+                        selectedJob.matchPercentage
+                      )}`,
+                    }}
+                  >
+                    Match {selectedJob.matchPercentage}%
+                  </span>
+                  <Card.Body
+                    style={{
+                      maxHeight: "500px",
+                      overflowY: "auto",
+                      marginTop: "20px",
+                    }}
+                  >
+                    <Card.Title>{selectedJob.Position}</Card.Title>
+                    <Card.Subtitle style={locationStyle}>
+                      {selectedJob.Location}
+                    </Card.Subtitle>
+                    <Card.Subtitle style={companyStyle}>
+                      เงินเดือน : {selectedJob.Salary}
+                    </Card.Subtitle>
+                    <Card.Text>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        JobDescription : <br />
+                      </span>
+                      {selectedJob.JobDescription.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
+                    </Card.Text>
+
+                    <Card.Text>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Qualifications : <br />
+                      </span>
+                      {selectedJob.Qualifications.split("\n").map(
+                        (line, index) => (
+                          <React.Fragment key={index}>
+                            {line}
+                            <br />
+                          </React.Fragment>
+                        )
+                      )}
+                    </Card.Text>
+
+                    <Card.Text>
+                      <span style={{ fontWeight: "bold", color: "#3F4447" }}>
+                        Experience : <br />
+                      </span>
+                      {selectedJob.Experience.split("\n").map((line, index) => (
+                        <React.Fragment key={index}>
+                          {line}
+                          <br />
+                        </React.Fragment>
+                      ))}
+                    </Card.Text>
+                  </Card.Body>
+                  <div
+                    style={{
+                      marginTop: "20px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Card.Text>
+                      โพสต์เมื่อ :{" "}
+                      {moment(Number(selectedJob.time_stamp)).format(
+                        "DD-MM-YYYY"
+                      )}
+                    </Card.Text>
+                    <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
+                      <Button variant="success">รายละเอียดเพิ่มเติม</Button>
+                    </Link>
+                  </div>
+                </Card>
+              ) : (
+                <div style={{ textAlign: "center", paddingTop: "50%" }}>
+                  <span style={{ color: "#6c757d", fontSize: "24px" }}>
+                    กรุณาเลือกงาน...
+                  </span>
+                </div>
+              )}
+            </Col>
+          </Row>
+
+          <div style={SlideNavigation}>
+            <button
+              style={NavigationButton}
+              onClick={handlePrev}
+              disabled={currentPage === 1}
+            >
+              {"<"}
+            </button>
+            <span>
+              Page {currentPage} of {Math.ceil(jobList.length / postsPerPage)}
+            </span>
+            <button
+              style={NavigationButton}
+              onClick={handleNext}
+              disabled={
+                currentPage === Math.ceil(jobList.length / postsPerPage)
+              }
+            >
+              {">"}
+            </button>
+          </div>
+        </Container>
+      )}
     </>
   );
 };

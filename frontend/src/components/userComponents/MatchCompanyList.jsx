@@ -15,7 +15,6 @@ const MatchCompanyList = () => {
   const [jobList, setJobList] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [notFound, setNotFound] = useState(false);
 
   const [userLocation, setUserLocation] = useState(null);
   const [jobField, setJobField] = useState(null);
@@ -207,9 +206,20 @@ const MatchCompanyList = () => {
                     )}`,
                   }}
                 >
-                  <Card.Body
-                    style={{ maxHeight: "541px", overflowY: "auto" }}
+                  <span
+                    style={{
+                      ...matchStyle,
+                      backgroundColor: getMatchColor(
+                        selectedJob.matchPercentage
+                      ),
+                      boxShadow: `0 4px 15px ${getMatchColor(
+                        selectedJob.matchPercentage
+                      )}`,
+                    }}
                   >
+                    Match {selectedJob.matchPercentage}%
+                  </span>
+                  <Card.Body style={{ maxHeight: "500px", overflowY: "auto" ,marginTop: '20px'}}>
                     <Card.Title>{selectedJob.Position}</Card.Title>
                     <Card.Subtitle style={locationStyle}>
                       {selectedJob.Location}
@@ -256,16 +266,24 @@ const MatchCompanyList = () => {
                         </React.Fragment>
                       ))}
                     </Card.Text>
+                  </Card.Body>
+                  <div
+                    style={{
+                      marginTop: "20px",
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
                     <Card.Text>
                       โพสต์เมื่อ :{" "}
                       {moment(Number(selectedJob.time_stamp)).format(
                         "DD-MM-YYYY"
                       )}
                     </Card.Text>
-                  </Card.Body>
-                  <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
+                    <Link to={`/userJobApplication?idPost=${selectedJob._id}`}>
                       <Button variant="success">รายละเอียดเพิ่มเติม</Button>
                     </Link>
+                  </div>
                 </Card>
               ) : (
                 <div style={{ textAlign: "center", paddingTop: "50%" }}>
