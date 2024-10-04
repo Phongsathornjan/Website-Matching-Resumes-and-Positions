@@ -142,7 +142,6 @@ const UserCompanyList = () => {
                   <Card.Body
                     style={{
                       maxHeight: "541px",
-                      overflowY: "hidden",
                       overflowY: "auto",
                       marginTop: "4px",
                     }}
