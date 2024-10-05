@@ -24,7 +24,11 @@ const getPostBySearch = require('./services/post/getPostBySearch');
 const applyJobPost = require('./services/post/applyJobPost')
 const getPostDetail = require('./services/post/getPostDetail')
 const getAppliedJob = require('./services/post/getAppliedJob')
+
 const getMostMatchPost = require('./services/post/postMatch/getMostMatchPost')
+const getMostMatchUser = require('./services/post/postMatch/getMostMatchUser')
+
+
 
 //User
 const updateJobField = require('./services/users/updateJobField')
@@ -142,6 +146,11 @@ app.get("/getAppliedJob/:userId", async (req, res) => {
 //getMostMatchPost
 app.get("/getMostMatchPost/:Location/:WorkField/:userId", async (req, res) => {
     return getMostMatchPost(req,res)
+});
+
+//getMostMatchUser
+app.get("/getMostMatchUser/:IdPost", async (req, res) => {
+    return getMostMatchUser(req,res)
 });
 
 

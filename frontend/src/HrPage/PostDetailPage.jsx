@@ -50,65 +50,75 @@ const PostDetailPage = () => {
           <div style={spinnerStyle}></div>
         </center>
       ) : (
-        <div className="container" style={Fade}>
-          <section className="mb-5 w-75">
-            <h5>
-              <strong>Full Descriptions</strong>
-            </h5>
-            <div className="card mt-3 p-4">
-              <h4>
-                <strong>Position : {jobDetail.Position}</strong>
-              </h4>
-              <p>สถานที่ทำงาน : </p>
-              <p>เงินเดือน : {jobDetail.Salary} </p>
-              <div className="mb-3">
-                <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
-                  JobDescription : <br />
+        <>
+          {jobDetail.length != 0 && (
+            <div className="container" style={Fade}>
+              <section className="mb-5 w-75">
+                <h5>
+                  <strong>Full Descriptions</strong>
                 </h5>
-                {jobDetail.JobDescription.split("\n").map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </div>
+                <div className="card mt-3 p-4">
+                  <h4>
+                    <strong>Position : {jobDetail.Position}</strong>
+                  </h4>
+                  <p>สถานที่ทำงาน : </p>
+                  <p>เงินเดือน : {jobDetail.Salary} </p>
+                  <div className="mb-3">
+                    <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
+                      JobDescription : <br />
+                    </h5>
+                    {jobDetail.JobDescription.split("\n").map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </div>
 
-              <div className="mb-3">
-                <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
-                  Qualifications : <br />
-                </h5>
-                {jobDetail.Qualifications.split("\n").map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </div>
+                  <div className="mb-3">
+                    <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
+                      Qualifications : <br />
+                    </h5>
+                    {jobDetail.Qualifications.split("\n").map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </div>
 
-              <div className="mb-3">
-                <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
-                  Experience : <br />
-                </h5>
-                {jobDetail.Experience.split("\n").map((line, index) => (
-                  <React.Fragment key={index}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </div>
-              <h5>
-                <strong>Working</strong>
-              </h5>
-              <p className="mb-1">Working Location : {jobDetail.Location}</p>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
-                <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
-                <Link to={"/InsidePost"}>
-                  <button className="btn btn-success">คัดเลือกผู้สมัคร</button>
-                </Link>
-              </div>
+                  <div className="mb-3">
+                    <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
+                      Experience : <br />
+                    </h5>
+                    {jobDetail.Experience.split("\n").map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </div>
+                  <h5>
+                    <strong>Working</strong>
+                  </h5>
+                  <p className="mb-1">
+                    Working Location : {jobDetail.Location}
+                  </p>
+                  <div
+                    style={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
+                    <Link to={"/InsidePost"}>
+                      <button className="btn btn-success">
+                        คัดเลือกผู้สมัคร
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+              </section>
             </div>
-          </section>
-        </div>
+          )}
+        </>
       )}
     </>
   );
