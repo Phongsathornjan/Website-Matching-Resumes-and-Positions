@@ -61,28 +61,49 @@ const PostDetailPage = () => {
               </h4>
               <p>สถานที่ทำงาน : </p>
               <p>เงินเดือน : {jobDetail.Salary} </p>
-              <h5>
-                <strong>JobDescription : </strong>
-              </h5>
-              <div className="mt-2 mb-3">{jobDetail.JobDescription}</div>
-              <h5>
-                <strong>Qualifications : </strong>
-              </h5>
-              <div className="mt-1 mb-3">{jobDetail.Qualifications}</div>
-              <h5>
-                <strong>Experience : </strong>
-              </h5>
-              <div className="mb-3">{jobDetail.Experience}</div>
+              <div className="mb-3">
+                <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
+                  JobDescription : <br />
+                </h5>
+                {jobDetail.JobDescription.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+
+              <div className="mb-3">
+                <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
+                  Qualifications : <br />
+                </h5>
+                {jobDetail.Qualifications.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+
+              <div className="mb-3">
+                <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
+                  Experience : <br />
+                </h5>
+                {jobDetail.Experience.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
               <h5>
                 <strong>Working</strong>
               </h5>
               <p className="mb-1">Working Location : {jobDetail.Location}</p>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
-                <Link to={'/InsidePost'}>
-                  <button className="btn btn-success">
-                    คัดเลือกผู้สมัคร
-                  </button>
+                <Link to={"/InsidePost"}>
+                  <button className="btn btn-success">คัดเลือกผู้สมัคร</button>
                 </Link>
               </div>
             </div>
@@ -94,16 +115,16 @@ const PostDetailPage = () => {
 };
 
 const Fade = {
-  animation: 'fadeInFromBottom 1s ease-in',
+  animation: "fadeInFromBottom 1s ease-in",
 };
 
 const spinnerStyle = {
-  border: '4px solid rgba(0, 0, 0, 0.1)',
-  width: '36px',
-  height: '36px',
-  borderRadius: '50%',
-  borderLeftColor: '#09f',
-  animation: 'spin 1s ease infinite'
+  border: "4px solid rgba(0, 0, 0, 0.1)",
+  width: "36px",
+  height: "36px",
+  borderRadius: "50%",
+  borderLeftColor: "#09f",
+  animation: "spin 1s ease infinite",
 };
 
 const globalStyle = `
