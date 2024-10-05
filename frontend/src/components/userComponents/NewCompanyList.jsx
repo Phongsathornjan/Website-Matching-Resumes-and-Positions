@@ -88,7 +88,7 @@ const NewCompanyList = () => {
         if (response.status == 200) {
           setJobList(
             response.data.filter((job) => {
-              const sevenDaysAgo = Date.now() - 691200000; // 7 วัน
+              const sevenDaysAgo = Date.now() - 604800000; // 7 วัน
               return Number(job.time_stamp) >= sevenDaysAgo;
             })
           );

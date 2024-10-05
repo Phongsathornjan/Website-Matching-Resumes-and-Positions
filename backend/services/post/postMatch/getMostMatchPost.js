@@ -1,7 +1,7 @@
 const Post = require("../../../model/post");
 const Resume = require("../../../model/resume");
 
-const natural = require("natural");
+const TfIdf = require("../../../class/Tfidf");
 
 const getMostMatchPost = async (req, res) => {
   const { userId, Location, WorkField } = req.params;
@@ -35,12 +35,12 @@ const getMostMatchPost = async (req, res) => {
     const userKeyword =  `${userData[0].keyword}`+` ${userData[0].Experience}`;
 
     //tfIDF
-    const tfidf = new natural.TfIdf();
+    const tfidf = new TfIdf();
     postKeyword.forEach((i) => tfidf.addDocument(i));
 
     const results = [];
     tfidf.tfidfs(userKeyword, (i, measure) => {
-      results.push({ postKeywordIndex: i, similarity: measure+37});
+      results.push({ postKeywordIndex: i, similarity: measure});
     });
 
     results.sort((a, b) => b.similarity - a.similarity);
@@ -50,15 +50,15 @@ const getMostMatchPost = async (req, res) => {
     // });
 
     // console.log("UserKeyword : "+userKeyword);
-    // console.log("PostKeyword : "+postKeyword[53]);
+    // console.log("PostKeyword : "+postKeyword[52]);
 
 
     // กรองผลลัพธ์ที่มีเปอร์เซ็นต์มากกว่า 50%
     const filteredResults = results
-      .filter(result => result.similarity > 70)
+      .filter(result => result.similarity > 60)
       .map(result => ({
         ...posts[result.postKeywordIndex]._doc,
-        matchPercentage: (result.similarity).toFixed(2) // เพิ่มฟิลด์เปอร์เซ็นต์ match
+        matchPercentage: (result.similarity).toFixed(2)
       }));
 
     if (filteredResults.length === 0) {
