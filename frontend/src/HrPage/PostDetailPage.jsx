@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 import HRNavbar from "../components/navbar/HRNavbar";
+import InsidePost from "./InsidePost";
 
 const PostDetailPage = () => {
   const { idPost } = useParams();
 
   const [isLoading, setIsLoading] = useState(false);
   const [jobDetail, setJobDetail] = useState([]);
+
+  const [appState, setAppState] = useState(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -35,10 +38,13 @@ const PostDetailPage = () => {
       );
       setIsLoading(false);
       setJobDetail(response.data);
-      console.log(response.data);
     } catch (err) {
       console.log(err);
     }
+  };
+
+  const findCandidateButton = () => {
+    setAppState("findCandidate");
   };
 
   return (
@@ -108,11 +114,12 @@ const PostDetailPage = () => {
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
-                    <Link to={"/InsidePost"}>
-                      <button className="btn btn-success">
-                        คัดเลือกผู้สมัคร
-                      </button>
-                    </Link>
+                    <button
+                      className="btn btn-success"
+                      onClick={findCandidateButton}
+                    >
+                      คัดเลือกผู้สมัคร
+                    </button>
                   </div>
                 </div>
               </section>
@@ -120,6 +127,7 @@ const PostDetailPage = () => {
           )}
         </>
       )}
+      {appState == "findCandidate" && <InsidePost idPost={idPost}></InsidePost>}
     </>
   );
 };

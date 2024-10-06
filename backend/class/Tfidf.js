@@ -41,7 +41,7 @@ class TfIdf {
         const maxSimilarity = Math.max(...results.map(result => result.tfidfScore));
 
         // ตรวจสอบว่ามีความตรงกันหรือไม่
-        const hasMatch = maxSimilarity > 0.4; // ถ้ามีเอกสารที่มีค่า TF-IDF มากกว่า 0 หมายความว่ามีความตรงกัน
+        const hasMatch = maxSimilarity > 0; // ถ้ามีเอกสารที่มีค่า TF-IDF มากกว่า 0 หมายความว่ามีความตรงกัน
 
         // Normalize ค่า similarity โดยเทียบกับ maxSimilarity
         results.forEach(result => {
