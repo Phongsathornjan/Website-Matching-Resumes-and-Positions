@@ -35,7 +35,7 @@ const router = createBrowserRouter([
     element: <CreatePostPage></CreatePostPage>
   },
   {
-    path: "/SendEmail",
+    path: "/SendEmail/:userId/:PostId",
     element: <SendEmailPage></SendEmailPage>
   },
   {

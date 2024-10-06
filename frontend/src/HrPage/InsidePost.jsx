@@ -1,12 +1,43 @@
 import React, { useEffect, useState } from "react";
-import getMatchColor from "../components/userComponents/getMatchColor";
 import axios from "axios";
+import { Button } from "react-bootstrap";
+import { FaUser } from "react-icons/fa6";
+import { MdOtherHouses } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
+
+import StatusCard from "../components/StatusCard";
+import getMatchColor from "../components/userComponents/getMatchColor";
 
 const InsidePost = (idPost) => {
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(false);
+  const [appState, setAppState] = useState("inPost");
+  const [color1, setColor1] = useState("#B7E4B0");
+  const [color2, setColor2] = useState("#fff");
 
   const [candidates, setCandidates] = useState([]);
   const [selectedCandidates, setSelectedCandidates] = useState(null);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 10;
+  const totalPages = Math.ceil(candidates.length / postsPerPage);
+
+  const setState = () => {
+    if (appState == "inPost") {
+      setAppState("outPost");
+      setColor2("#f2d5ff");
+      setColor1("#fff");
+    } else if (appState == "outPost") {
+      setAppState("inPost");
+      setColor2("#fff");
+      setColor1("#B7E4B0");
+    }
+  };
+
+  const appointmentButton = (userId) =>{
+    navigate(`/SendEmail/${userId}/${idPost.idPost}`);
+  }
 
   const getMatchUser = async () => {
     try {
@@ -14,7 +45,6 @@ const InsidePost = (idPost) => {
       const response = await axios.get(
         `http://localhost:4001/getMostMatchUser/${idPost.idPost}`
       );
-      console.log(response.data);
       setCandidates(response.data);
     } catch (e) {
       setIsLoading(false);
@@ -36,10 +66,30 @@ const InsidePost = (idPost) => {
     });
   }, [candidates]);
 
+  const handlePrev = () => {
+    setCurrentPage((prev) => Math.max(prev - 1, 1));
+    window.scrollTo({
+      top: 1000,
+      behavior: "smooth",
+    });
+  };
+
+  const handleNext = () => {
+    setCurrentPage((prev) => Math.min(prev + 1, totalPages));
+    window.scrollTo({
+      top: 1000,
+      behavior: "smooth",
+    });
+  };
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentCandidates = candidates.slice(indexOfFirstPost, indexOfLastPost);
+
   return (
     <>
       <div style={{ height: "100px" }}></div>
-      <div style={pageContainer}>
+      <div style={{ padding: "20px" }}>
         <section style={searchSection}>
           <h2>หาผู้สมัครที่คุณต้องการ</h2>
           <div style={{ height: "20px" }}></div>
@@ -49,10 +99,39 @@ const InsidePost = (idPost) => {
             style={searchInput}
           />
         </section>
+        <div
+          style={{
+            display: "flex",
+            width: "400px",
+            justifyContent: "space-between",
+          }}
+        >
+          <div onClick={setState}>
+            <StatusCard
+              title="ผู้สมัคร"
+              color={color1}
+              icon={<FaUser />}
+              iconAndTextColor="#009933"
+            />
+          </div>
+          <div onClick={setState}>
+            <StatusCard
+              title="หาจากนอกโพสต์"
+              color={color2}
+              icon={<MdOtherHouses />}
+              iconAndTextColor="#9d8ee1"
+            />
+          </div>
+        </div>
         <div style={{ height: "20px" }}></div>
-        <h3 style={{ marginLeft: "80px" }}>รายชื่อผู้สมัคร</h3>
+        <h3>
+          รายชื่อผู้สมัคร : จากทั้งหมด{" "}
+          <span style={{ color: "green" }}>{candidates.length} คน</span>
+        </h3>
         {isLoading ? (
-          <center style={spinnerStyle}></center>
+          <>
+            <center style={spinnerStyle}></center>
+          </>
         ) : (
           <>
             {candidates.length == 0 ? (
@@ -77,76 +156,98 @@ const InsidePost = (idPost) => {
                 </div>
               </center>
             ) : (
-              <section style={candidatesSection}>
-                <div style={candidatesList}>
-                  {candidates.map((candidate, index) => (
+              <>
+                <section style={candidatesSection}>
+                  <div style={candidatesList}>
+                    {currentCandidates.map((candidate, index) => (
+                      <div
+                        key={index}
+                        style={{
+                          ...candidateCard,
+                          boxShadow: `0 0px 10px ${
+                            selectedCandidates == candidate
+                              ? getMatchColor(candidate.matchPercentage)
+                              : "white"
+                          }`,
+                        }}
+                        onClick={() => {
+                          setSelectedCandidates(null);
+                          setTimeout(() => setSelectedCandidates(candidate), 0);
+                        }}
+                      >
+                        <div style={candidateDetails}>
+                          <p>
+                            <strong>Name : </strong>{" "}
+                            {candidate.userId.first_name}{" "}
+                            {candidate.userId.last_name}
+                          </p>
+                          <p>
+                            <strong>Email : </strong> {candidate.userId.email}{" "}
+                          </p>
+                          <p>
+                            <strong>Skill:</strong> {candidate.keyword}
+                          </p>
+                        </div>
+                        <div style={candidateActions}>
+                          <span
+                            style={{
+                              ...matchBadge,
+                              backgroundColor: getMatchColor(
+                                candidate.matchPercentage
+                              ),
+                              boxShadow: `0 4px 15px ${getMatchColor(
+                                candidate.matchPercentage
+                              )}`,
+                            }}
+                          >
+                            Match {candidate.matchPercentage}%
+                          </span>
+                          <Button variant="success" onClick={() => appointmentButton(candidate.userId._id)} style={{width: '200px'}}>
+                            นัดสัมภาษณ์
+                          </Button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedCandidates && (
                     <div
-                      key={index}
                       style={{
-                        ...candidateCard,
-                        boxShadow: `0 0px 10px ${
-                          selectedCandidates==
-                          candidate
-                            ? getMatchColor(candidate.matchPercentage)
-                            : "white"
-                        }`,
-                      }}
-                      onClick={() => {
-                        setSelectedCandidates(null);
-                        setTimeout(() => setSelectedCandidates(candidate), 0);
+                        ...resumePreview,
+                        boxShadow: `0 0px 10px ${getMatchColor(
+                          selectedCandidates.matchPercentage
+                        )}`,
                       }}
                     >
-                      <div style={candidateDetails}>
-                        <p>
-                          <strong>Name : </strong> {candidate.userId.first_name}{" "}
-                          {candidate.userId.last_name} {""}
-                          <strong>Email : </strong> {candidate.userId.email}{" "}
-                          {""}
-                        </p>
-                        <p>
-                          <strong>Skill:</strong> {candidate.keyword}
-                        </p>
-                      </div>
-                      <div style={candidateActions}>
-                        <span
-                          style={{
-                            ...matchBadge,
-                            backgroundColor: getMatchColor(
-                              candidate.matchPercentage
-                            ),
-                            boxShadow: `0 4px 15px ${getMatchColor(
-                              candidate.matchPercentage
-                            )}`,
-                          }}
-                        >
-                          Match {candidate.matchPercentage}%
-                        </span>
-                        <button style={interviewButton}>
-                          Interview appointment
-                        </button>
-                      </div>
+                      <center style={PDFStyle}>
+                        <img
+                          src={`../../public/Resume/${selectedCandidates.userId._id}-1.jpg`}
+                          width={660}
+                          height={932}
+                        />
+                      </center>
                     </div>
-                  ))}
-                </div>
-                {selectedCandidates && (
-                  <div
-                    style={{
-                      ...resumePreview,
-                      boxShadow: `0 0px 10px ${getMatchColor(
-                        selectedCandidates.matchPercentage
-                      )}`,
-                    }}
+                  )}
+                </section>
+                <div style={SlideNavigation}>
+                  <button
+                    style={NavigationButton}
+                    onClick={handlePrev}
+                    disabled={currentPage === 1}
                   >
-                    <center style={PDFStyle}>
-                      <img
-                        src={`../../public/Resume/${selectedCandidates.userId._id}-1.jpg`}
-                        width={556}
-                        height={787}
-                      />
-                    </center>
+                    {"<"}
+                  </button>
+                  <div>
+                    Page {currentPage} of {totalPages}
                   </div>
-                )}
-              </section>
+                  <button
+                    style={NavigationButton}
+                    onClick={handleNext}
+                    disabled={currentPage === totalPages}
+                  >
+                    {">"}
+                  </button>
+                </div>
+              </>
             )}
           </>
         )}
@@ -155,22 +256,17 @@ const InsidePost = (idPost) => {
   );
 };
 
-// {isLoading ? (
-//   <center style={spinnerStyle}></center>
-// ) : (
-
 const PDFStyle = {
+  maxHeight: "650px",
+  overflowY: "auto",
   padding: "10px",
   animation: "fadeInFromBottom 0.6s ease-in",
 };
 
-const pageContainer = {
-  padding: "20px",
-};
 const searchSection = {
-  margin: "20px 0",
-  textAlign: "center",
+  margin: "0",
 };
+
 const searchInput = {
   width: "60%",
   padding: "10px",
@@ -186,7 +282,6 @@ const candidatesSection = {
 };
 const candidatesList = {
   width: "50%",
-  marginLeft: "75px",
   animation: "fadeInFromBottom 1.5s ease-in",
 };
 const candidateCard = {
@@ -210,15 +305,7 @@ const candidateActions = {
   minWidth: "150px",
   marginLeft: "15px",
 };
-const interviewButton = {
-  padding: "10px 15px",
-  backgroundColor: "#65BDE7",
-  color: "#fff",
-  border: "none",
-  borderRadius: "8px",
-  cursor: "pointer",
-  width: "100%",
-};
+
 const matchBadge = {
   padding: "5px 10px",
   color: "#fff",
@@ -229,8 +316,10 @@ const matchBadge = {
   marginBottom: "25px",
 };
 const resumePreview = {
-  height: "800px",
-  width: "800px",
+  position: "sticky",
+  top: "65px",
+  height: "670px",
+  width: "700px",
   borderRadius: "20px",
   animation: "fadeInFromBottom 0.6s ease-in",
   boxShadow: "0 2px 4px rgba(0, 0, 0, 0.3)",
@@ -240,15 +329,39 @@ const spinnerStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "80vh", // ปรับความสูงเพื่อให้อยู่กลางจอ
+  height: "80vh",
 };
 
 const noApplicantsStyle = {
   display: "flex",
   justifyContent: "center",
   alignItems: "center",
-  height: "80vh", // ปรับความสูงเพื่อให้อยู่กลางจอ
-  flexDirection: "column", // จัดวางเนื้อหาเป็น column
+  height: "80vh",
+  flexDirection: "column",
+};
+
+const NavigationButton = {
+  backgroundColor: "#fff",
+  width: "40px",
+  height: "40px",
+  borderRadius: "50%",
+  boxShadow: "0px 1px 5px 0px rgba(0, 0, 0, 0.3)",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+  cursor: "pointer",
+  userSelect: "none",
+  border: "none",
+  margin: "0 10px",
+  position: "relative",
+};
+
+const SlideNavigation = {
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  marginTop: "20px",
+  position: "relative",
 };
 
 export default InsidePost;

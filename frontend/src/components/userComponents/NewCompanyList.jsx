@@ -182,10 +182,10 @@ const NewCompanyList = () => {
                   style={{
                     color: "#6c757d",
                     fontSize: "24px",
-                    marginLeft: "30px",
+                    marginLeft: "25px",
                   }}
                 >
-                  ไม่เจอโพสต์ที่ Match กับคุณ
+                  ไม่เจอโพสต์ที่ Match กับในคุณ 7 วันล่าสุด
                 </span>
               </div>
             </>
