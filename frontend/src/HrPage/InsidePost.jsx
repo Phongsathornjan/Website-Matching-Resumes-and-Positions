@@ -11,6 +11,7 @@ import getMatchColor from "../components/userComponents/getMatchColor";
 const InsidePost = (idPost) => {
   const navigate = useNavigate();
 
+  const [title, setTitle] = useState('รายชื่อผู้สมัคร : ทั้งหมด ')
   const [isLoading, setIsLoading] = useState(false);
   const [appState, setAppState] = useState("inPost");
   const [color1, setColor1] = useState("#B7E4B0");
@@ -23,15 +24,31 @@ const InsidePost = (idPost) => {
   const postsPerPage = 10;
   const totalPages = Math.ceil(candidates.length / postsPerPage);
 
+  useEffect(() => {
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = globalStyle;
+    document.head.appendChild(styleSheet);
+
+    // Cleanup on component unmount
+    return () => {
+      document.head.removeChild(styleSheet);
+    };
+  }, []);
+
   const setState = () => {
     if (appState == "inPost") {
       setAppState("outPost");
       setColor2("#f2d5ff");
       setColor1("#fff");
+      setTitle("เจอคนที่ Match กับงานของคุณ : ทั้งหมด ")
+      getMatchUserOutPost()
     } else if (appState == "outPost") {
       setAppState("inPost");
       setColor2("#fff");
       setColor1("#B7E4B0");
+      setTitle("รายชื่อผู้สมัคร : ทั้งหมด ")
+      getMatchUser()
     }
   };
 
@@ -44,6 +61,20 @@ const InsidePost = (idPost) => {
       setIsLoading(true);
       const response = await axios.get(
         `http://localhost:4001/getMostMatchUser/${idPost.idPost}`
+      );
+      setCandidates(response.data);
+    } catch (e) {
+      setIsLoading(false);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const getMatchUserOutPost = async () => {
+    try {
+      setIsLoading(true);
+      const response = await axios.get(
+        `http://localhost:4001/getMostMatchFromOutPost/${idPost.idPost}`
       );
       setCandidates(response.data);
     } catch (e) {
@@ -116,7 +147,7 @@ const InsidePost = (idPost) => {
           </div>
           <div onClick={setState}>
             <StatusCard
-              title="หาจากนอกโพสต์"
+              title="สรรหาจากนอกโพสต์"
               color={color2}
               icon={<MdOtherHouses />}
               iconAndTextColor="#9d8ee1"
@@ -125,12 +156,14 @@ const InsidePost = (idPost) => {
         </div>
         <div style={{ height: "20px" }}></div>
         <h3>
-          รายชื่อผู้สมัคร : จากทั้งหมด{" "}
+          {title}
           <span style={{ color: "green" }}>{candidates.length} คน</span>
         </h3>
         {isLoading ? (
           <>
-            <center style={spinnerStyle}></center>
+            <div style={{height: '200px'}}></div>
+            <center><div style={spinnerStyle}></div></center>
+            <div style={{height: '400px'}}></div>
           </>
         ) : (
           <>
@@ -335,10 +368,13 @@ const resumePreview = {
 };
 
 const spinnerStyle = {
-  display: "flex",
-  justifyContent: "center",
-  alignItems: "center",
-  height: "80vh",
+  border: '4px solid rgba(0, 0, 0, 0.1)',
+  width: '36px',
+  height: '36px',
+  borderRadius: '50%',
+  borderLeftColor: '#09f',
+  animation: 'spin 1s ease infinite',
+  marginBottom: '30px'
 };
 
 const noApplicantsStyle = {
@@ -372,5 +408,28 @@ const SlideNavigation = {
   marginTop: "20px",
   position: "relative",
 };
+
+const globalStyle = `
+@keyframes fadeInFromBottom {
+  0% {
+    opacity: 0;
+    transform: translateY(20px); 
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0); 
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+`;
 
 export default InsidePost;
