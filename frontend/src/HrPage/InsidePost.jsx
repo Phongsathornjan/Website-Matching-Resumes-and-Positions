@@ -35,9 +35,9 @@ const InsidePost = (idPost) => {
     }
   };
 
-  const appointmentButton = (userId) =>{
+  const appointmentButton = (userId) => {
     navigate(`/SendEmail/${userId}/${idPost.idPost}`);
-  }
+  };
 
   const getMatchUser = async () => {
     try {
@@ -185,6 +185,9 @@ const InsidePost = (idPost) => {
                             <strong>Email : </strong> {candidate.userId.email}{" "}
                           </p>
                           <p>
+                            <strong>Experience:</strong> {candidate.Experience}
+                          </p>
+                          <p>
                             <strong>Skill:</strong> {candidate.keyword}
                           </p>
                         </div>
@@ -202,7 +205,13 @@ const InsidePost = (idPost) => {
                           >
                             Match {candidate.matchPercentage}%
                           </span>
-                          <Button variant="success" onClick={() => appointmentButton(candidate.userId._id)} style={{width: '200px'}}>
+                          <Button
+                            variant="success"
+                            onClick={() =>
+                              appointmentButton(candidate.userId._id)
+                            }
+                            style={{ width: "200px" }}
+                          >
                             นัดสัมภาษณ์
                           </Button>
                         </div>

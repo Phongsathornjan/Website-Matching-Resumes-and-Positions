@@ -27,7 +27,7 @@ const getAppliedJob = require('./services/post/getAppliedJob')
 
 const getMostMatchPost = require('./services/post/postMatch/getMostMatchPost')
 const getMostMatchUser = require('./services/post/postMatch/getMostMatchUser')
-
+const getMostMatchFromOutPost = require('./services/post/postMatch/getMostMatchFromOutPost')
 
 
 //User
@@ -152,6 +152,12 @@ app.get("/getMostMatchPost/:Location/:WorkField/:userId", async (req, res) => {
 app.get("/getMostMatchUser/:IdPost", async (req, res) => {
     return getMostMatchUser(req,res)
 });
+
+//getMostMatchFromOutPost
+app.get("/getMostMatchFromOutPost/:IdPost", async (req, res) => {
+    return getMostMatchFromOutPost(req,res)
+});
+
 
 
 
