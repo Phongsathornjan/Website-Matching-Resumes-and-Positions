@@ -75,7 +75,7 @@ const getMostMatchFromOutPost = async (req, res) => {
     });
 
     const results = [];
-    tfidf.tfidfs(postKeyword, (i, measure) => {
+    tfidf.computeSimilarities(postKeyword, (i, measure) => {
       results.push({ userKeywordIndex: i, similarity: measure });
     });
     results.sort((a, b) => b.similarity - a.similarity);

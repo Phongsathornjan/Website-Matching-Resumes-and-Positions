@@ -69,7 +69,7 @@ const getMostMatchUser = async (req, res) => {
       });
     
       const results = []
-      tfidf.tfidfs(postKeyword, (i, measure) => {
+      tfidf.computeSimilarities(postKeyword, (i, measure) => {
         results.push({ userKeywordIndex: i, similarity: measure});
       });
       results.sort((a, b) => b.similarity - a.similarity);
@@ -88,6 +88,7 @@ const getMostMatchUser = async (req, res) => {
     
       return res.status(200).json(finalResults);
   }catch(err){
+    console.log(err)
     return res.status(400).json({message : "Internal server error"});
   }
 };
