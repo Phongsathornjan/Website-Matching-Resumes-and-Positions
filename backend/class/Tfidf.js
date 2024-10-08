@@ -1,10 +1,14 @@
 class TfIdf {
     constructor() {
         this.documents = [];
+        this.stopwords = ['the', 'is', 'in', 'and', 'a', 'of']; // กำหนด stopwords ที่จะไม่ใช้ในการคำนวณ
     }
 
     tokenize(text) {
-        return text.toLowerCase().match(/\b\w+\b/g);
+        // แยกคำออก และกรอง stopwords ออก
+        return text.toLowerCase()
+                   .match(/\b\w+\b/g)
+                   .filter(token => !this.stopwords.includes(token));
     }
 
     addDocument(doc) {
