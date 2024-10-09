@@ -49,7 +49,7 @@ const getMostMatchPost = async (req, res) => {
               // ตรวจสอบว่า experienceSimilarity เป็น 0 หรือไม่
               const weightedSimilarity = (experienceSimilarity === 0)
                   ? keywordSimilarity * 1 // ให้น้ำหนักที่ keyword 100%
-                  : (keywordSimilarity * 0.5) + (experienceSimilarity * 0.5); // ให้น้ำหนัก 50%
+                  : (keywordSimilarity * 0.8) + (experienceSimilarity * 0.2); // ให้น้ำหนัก 50%
   
               results.push({ postKeywordIndex: i, similarity: weightedSimilarity });
           }
