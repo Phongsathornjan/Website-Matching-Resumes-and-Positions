@@ -29,20 +29,33 @@ const getMostMatchPost = async (req, res) => {
       });
     }
 
-    const postKeyword = posts.map(
-      (post) => `${post.keyword}` + ` ${post.KeyExperience}`
-    );
-    const userKeyword =  `${userData[0].keyword}`+` ${userData[0].Experience}`;
+    const postKeyword = posts.map((data) => data.keyword);
+    const postExperience = posts.map((data) => data.Experience);
+
+    const userKeyword = userData[0].keyword;
+    const userExperience = userData[0].Experience;
+
 
     //tfIDF
-    const tfidf = new TfIdf();
-    postKeyword.forEach((i) => tfidf.addDocument(i));
+    const tfidfKeywords = new TfIdf();
+    const tfidfExperiences = new TfIdf();
+    postKeyword.forEach((keyword) => tfidfKeywords.addDocument(keyword));
+    postExperience.forEach((experience) => tfidfExperiences.addDocument(experience));
 
     const results = [];
-    tfidf.tfidfs(userKeyword, (i, measure) => {
-      results.push({ postKeywordIndex: i, similarity: measure});
-    });
-
+    tfidfKeywords.computeSimilarities(userKeyword, (i, keywordSimilarity) => {
+      tfidfExperiences.computeSimilarities(userExperience, (j, experienceSimilarity) => {
+          if (i === j) {
+              // ตรวจสอบว่า experienceSimilarity เป็น 0 หรือไม่
+              const weightedSimilarity = (experienceSimilarity === 0)
+                  ? keywordSimilarity * 1 // ให้น้ำหนักที่ keyword 100%
+                  : (keywordSimilarity * 0.5) + (experienceSimilarity * 0.5); // ให้น้ำหนัก 50%
+  
+              results.push({ postKeywordIndex: i, similarity: weightedSimilarity });
+          }
+      });
+  });
+  
     results.sort((a, b) => b.similarity - a.similarity);
     
     // results.forEach(result => {
@@ -55,7 +68,7 @@ const getMostMatchPost = async (req, res) => {
 
     // กรองผลลัพธ์ที่มีเปอร์เซ็นต์มากกว่า 50%
     const filteredResults = results
-      .filter(result => result.similarity > 60)
+      .filter(result => result.similarity > 10)
       .map(result => ({
         ...posts[result.postKeywordIndex]._doc,
         matchPercentage: (result.similarity).toFixed(2)

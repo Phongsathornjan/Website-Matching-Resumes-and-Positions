@@ -57,22 +57,35 @@ const getMostMatchUser = async (req, res) => {
         ).populate('userId','-companyDetail -companyName -password -role -appliedJobs -postedJobs -jobField');
       }
     
-      userKeyword = userData.map(
-        (data) => `${data.keyword} + ${data.Experience}`
-      );
+      const userKeywords = userData.map((data) => data.keyword);
+      const userExperiences = userData.map((data) => data.Experience);
     
-      postKeyword = `${posts[0].keyword}` + ` ${posts[0].KeyExperience}`;
+      const postKeyword = posts[0].keyword;
+      const postExperience = posts[0].KeyExperience;
     
-      const tfidf = new TfIdf();
-      userKeyword.forEach((i) => {
-        tfidf.addDocument(i);
+      const tfidfKeywords = new TfIdf();
+      const tfidfExperiences = new TfIdf();
+
+      userKeywords.forEach((keyword) => tfidfKeywords.addDocument(keyword));
+      userExperiences.forEach((experience) => tfidfExperiences.addDocument(experience));
+    
+      const results = [];
+
+    // คำนวณ Cosine Similarity สำหรับ Keyword และ Experience แยกกัน
+    tfidfKeywords.computeSimilarities(postKeyword, (i, keywordSimilarity) => {
+      tfidfExperiences.computeSimilarities(postExperience, (j, experienceSimilarity) => {
+          if (i === j) {
+              // ตรวจสอบว่า experienceSimilarity เป็น 0 หรือไม่
+              const weightedSimilarity = (experienceSimilarity === 0) 
+                  ? keywordSimilarity * 1 // ให้น้ำหนักที่ keyword 100%
+                  : (keywordSimilarity * 0.8) + (experienceSimilarity * 0.2); // ให้น้ำหนัก 50%
+  
+              results.push({ userKeywordIndex: i, similarity: weightedSimilarity });
+          }
       });
-    
-      const results = []
-      tfidf.computeSimilarities(postKeyword, (i, measure) => {
-        results.push({ userKeywordIndex: i, similarity: measure});
-      });
-      results.sort((a, b) => b.similarity - a.similarity);
+  });
+  
+    results.sort((a, b) => b.similarity - a.similarity);
     
         // results.forEach(result => {
         //     console.log(`userKeyword ${result.userKeywordIndex} มีความคล้ายคลึง: ${result.similarity.toFixed(2)}%`);
@@ -81,10 +94,10 @@ const getMostMatchUser = async (req, res) => {
         // console.log("UserKeyword : "+userKeyword[18]);
         // console.log("PostKeyword : "+postKeyword);
     
-        const finalResults = results.map(results => ({
-            ...userData[results.userKeywordIndex]._doc,
-            matchPercentage: (results.similarity).toFixed(2)
-        }))
+        const finalResults = results.map(result => ({
+          ...userData[result.userKeywordIndex]._doc,
+          matchPercentage: result.similarity.toFixed(2)
+        }));
     
       return res.status(200).json(finalResults);
   }catch(err){

@@ -1,15 +1,36 @@
 class TfIdf {
     constructor() {
         this.documents = [];
-        this.stopwords = ['the', 'is', 'in', 'and', 'a', 'of']; // กำหนด stopwords ที่จะไม่ใช้ในการคำนวณ
+        this.stopwords = [
+            'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'aren\'t', 'as', 'at', 
+            'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 
+            'can\'t', 'cannot', 'could', 'couldn\'t', 
+            'did', 'didn\'t', 'do', 'does', 'doesn\'t', 'doing', 'don\'t', 'down', 'during', 
+            'each', 'few', 'for', 'from', 'further', 
+            'had', 'hadn\'t', 'has', 'hasn\'t', 'have', 'haven\'t', 'having', 'he', 'he\'d', 'he\'ll', 'he\'s', 'her', 'here', 'here\'s', 
+            'hers', 'herself', 'him', 'himself', 'his', 'how', 'how\'s', 
+            'i', 'i\'d', 'i\'ll', 'i\'m', 'i\'ve', 'if', 'in', 'into', 'is', 'isn\'t', 'it', 'it\'s', 'its', 'itself', 
+            'let\'s', 'me', 'more', 'most', 'mustn\'t', 'my', 'myself', 
+            'no', 'nor', 'not', 
+            'of', 'off', 'on', 'once', 'only', 'or', 'other', 'ought', 'our', 'ours', 'ourselves', 'out', 'over', 'own', 
+            'same', 'shan\'t', 'she', 'she\'d', 'she\'ll', 'she\'s', 'should', 'shouldn\'t', 'so', 'some', 'such', 
+            'than', 'that', 'that\'s', 'the', 'their', 'theirs', 'them', 'themselves', 'then', 'there', 'there\'s', 'these', 'they', 
+            'they\'d', 'they\'ll', 'they\'re', 'they\'ve', 'this', 'those', 'through', 'to', 'too', 
+            'under', 'until', 'up', 'very', 
+            'was', 'wasn\'t', 'we', 'we\'d', 'we\'ll', 'we\'re', 'we\'ve', 'were', 'weren\'t', 'what', 'what\'s', 'when', 'when\'s', 
+            'where', 'where\'s', 'which', 'while', 'who', 'who\'s', 'whom', 'why', 'why\'s', 
+            'with', 'won\'t', 'would', 'wouldn\'t', 'you', 'you\'d', 'you\'ll', 'you\'re', 'you\'ve', 'your', 'yours', 'yourself', 'yourselves'
+            ]; // กำหนด stopwords ที่จะไม่ใช้ในการคำนวณ
     }
 
     tokenize(text) {
-        // แยกคำออก และกรอง stopwords ออก
+        // ถ้า text เป็น null, undefined, string ว่าง หรือ "-" ให้ return เป็น array ว่าง
+        if (!text || text === "" || text === "-") return []; 
         return text.toLowerCase()
                    .match(/\b\w+\b/g)
                    .filter(token => !this.stopwords.includes(token));
     }
+    
 
     addDocument(doc) {
         this.documents.push(doc);
@@ -26,8 +47,15 @@ class TfIdf {
         const dotProduct = vecA.reduce((sum, value, index) => sum + value * vecB[index], 0);
         const magnitudeA = Math.sqrt(vecA.reduce((sum, value) => sum + value * value, 0));
         const magnitudeB = Math.sqrt(vecB.reduce((sum, value) => sum + value * value, 0));
+    
+        // ตรวจสอบว่าค่ามากกว่า 0 ก่อนทำการหาร
+        if (magnitudeA === 0 || magnitudeB === 0) {
+            return 0; // เปลี่ยนเป็น 0 ถ้า magnitude เป็น 0
+        }
+    
         return dotProduct / (magnitudeA * magnitudeB);
     }
+    
 
     computeSimilarities(query, callback) {
         const queryVector = this.getWordVector(query);
@@ -40,13 +68,10 @@ class TfIdf {
             results.push({ docIndex, similarity });
         });
 
-        // หาค่าความคล้ายคลึงสูงสุด
-        const maxSimilarity = Math.max(...results.map(result => result.similarity));
-
         // Normalize ค่า similarity โดยเทียบกับ maxSimilarity
+        // ส่งผลลัพธ์โดยไม่ normalize
         results.forEach(result => {
-            const normalizedSimilarity = maxSimilarity > 0 ? (result.similarity / maxSimilarity) * 100 : 0; 
-            callback(result.docIndex, normalizedSimilarity);
+            callback(result.docIndex, result.similarity * 100); // แสดงค่า similarity เป็นเปอร์เซ็นต์
         });
     }
 }
