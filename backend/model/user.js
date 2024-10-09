@@ -27,4 +27,16 @@ const userSchema = new mongoose.Schema({
     companyDetail: { type: String, default: null}
 })
 
+userSchema.index({
+    first_name: 'text',
+    last_name: 'text',
+    companyName: 'text',
+    companyDetail: 'text',
+}, {
+    weights: {
+        first_name: 10,
+        last_name: 5
+    }
+});
+
 module.exports = mongoose.model('users',userSchema);

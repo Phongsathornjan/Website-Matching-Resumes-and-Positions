@@ -34,41 +34,37 @@ class TfIdf {
         this.documents.push(doc);
     }
 
-    termFrequency(term, doc) {
+    getWordVector(doc) {
         const tokens = this.tokenize(doc);
-        const termCount = tokens.filter(token => token === term).length;
-        return termCount / tokens.length;
+        const uniqueWords = Array.from(new Set(this.documents.flatMap(this.tokenize.bind(this)))); // หาคำที่เป็นเอกลักษณ์ในทุกเอกสาร
+        return uniqueWords.map(uniqueWord => (tokens.includes(uniqueWord) ? 1 : 0));
+    }
+    
+
+    cosineSimilarity(vecA, vecB) {
+        const dotProduct = vecA.reduce((sum, value, index) => sum + value * vecB[index], 0);
+        const magnitudeA = Math.sqrt(vecA.reduce((sum, value) => sum + value * value, 0));
+        const magnitudeB = Math.sqrt(vecB.reduce((sum, value) => sum + value * value, 0));
+        return dotProduct / (magnitudeA * magnitudeB);
     }
 
-    inverseDocumentFrequency(term) {
-        const numDocsWithTerm = this.documents.filter(doc => this.tokenize(doc).includes(term)).length;
-        return Math.log(this.documents.length / (numDocsWithTerm || 1));
-    }
-
-    tfidfs(query, callback) {
-        const queryTerms = this.tokenize(query);
+    computeSimilarities(query, callback) {
+        const queryVector = this.getWordVector(query);
         const results = [];
 
-        // คำนวณ TF-IDF สำหรับแต่ละเอกสาร
+        // คำนวณ Cosine Similarity สำหรับแต่ละเอกสาร
         this.documents.forEach((doc, docIndex) => {
-            let tfidfScore = 0;
-            queryTerms.forEach(term => {
-                const tf = this.termFrequency(term, doc);
-                const idf = this.inverseDocumentFrequency(term);
-                tfidfScore += tf * idf;
-            });
-            results.push({ docIndex, tfidfScore });
+            const docVector = this.getWordVector(doc);
+            const similarity = this.cosineSimilarity(queryVector, docVector);
+            results.push({ docIndex, similarity });
         });
 
         // หาค่าความคล้ายคลึงสูงสุด
-        const maxSimilarity = Math.max(...results.map(result => result.tfidfScore));
-
-        // ตรวจสอบว่ามีความตรงกันหรือไม่
-        const hasMatch = maxSimilarity > 0; // ถ้ามีเอกสารที่มีค่า TF-IDF มากกว่า 0 หมายความว่ามีความตรงกัน
+        const maxSimilarity = Math.max(...results.map(result => result.similarity));
 
         // Normalize ค่า similarity โดยเทียบกับ maxSimilarity
         results.forEach(result => {
-            const normalizedSimilarity = hasMatch ? (result.tfidfScore / maxSimilarity) * 100 : 0; 
+            const normalizedSimilarity = maxSimilarity > 0 ? (result.similarity / maxSimilarity) * 100 : 0; 
             callback(result.docIndex, normalizedSimilarity);
         });
     }

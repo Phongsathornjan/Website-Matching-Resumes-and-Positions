@@ -6,4 +6,14 @@ const resumeSchema = new mongoose.Schema({
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
 });
 
+resumeSchema.index({
+        Experience: 'text',
+        keyword: 'text',
+    }, {
+        weights: {
+            Experience: 5,   
+            keyword: 5      
+        }
+    });
+
 module.exports = mongoose.model('Resume', resumeSchema);

@@ -42,12 +42,14 @@ const InsidePost = (idPost) => {
       setColor2("#f2d5ff");
       setColor1("#fff");
       setTitle("เจอคนที่ Match กับงานของคุณ : ทั้งหมด ")
+      setCurrentPage(1)
       getMatchUserOutPost()
     } else if (appState == "outPost") {
       setAppState("inPost");
       setColor2("#fff");
       setColor1("#B7E4B0");
       setTitle("รายชื่อผู้สมัคร : ทั้งหมด ")
+      setCurrentPage(1)
       getMatchUser()
     }
   };
@@ -76,6 +78,7 @@ const InsidePost = (idPost) => {
       const response = await axios.get(
         `http://localhost:4001/getMostMatchFromOutPost/${idPost.idPost}`
       );
+      console.log(response.data)
       setCandidates(response.data);
     } catch (e) {
       setIsLoading(false);
