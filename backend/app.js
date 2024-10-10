@@ -29,6 +29,9 @@ const getMostMatchPost = require('./services/post/postMatch/getMostMatchPost')
 const getMostMatchUser = require('./services/post/postMatch/getMostMatchUser')
 const getMostMatchFromOutPost = require('./services/post/postMatch/getMostMatchFromOutPost')
 
+//Appointment
+const getHrAppointment = require('./services/appointment/getHrAppointment')
+const MakeAppointment = require('./services/appointment/MakeAppointment')
 
 //User
 const updateJobField = require('./services/users/updateJobField')
@@ -157,8 +160,25 @@ app.get("/getMostMatchUser/:IdPost", async (req, res) => {
 app.get("/getMostMatchFromOutPost/:IdPost", async (req, res) => {
     return getMostMatchFromOutPost(req,res)
 });
-  
 
+
+
+
+
+
+
+//Appointment
+//getHrAppointment
+app.get("/getHrAppointment/:userId/:DateTime", async (req, res) => {
+    return getHrAppointment(req,res)
+});
+
+//MakeAppointment
+app.post("/makeAppointment/:userId/:idPost", async (req, res) => {
+    return MakeAppointment(req,res)
+});
+
+  
 
 
 //Email

@@ -98,9 +98,7 @@ const HrJobPost = () => {
                     <Link to={`/PostDetail/${job._id}`}>
                       <Button variant="success">รายละเอียด</Button>
                     </Link>
-                    <Link to={'/InsidePost'}>
-                    <Button variant="success">คัดเลือกผู้สมัคร</Button>
-                    </Link>
+                    <Button variant="primary">ปิดรับสมัคร</Button>
                   </div>
                 </div>
               </Card.Body>
