@@ -103,9 +103,21 @@ const SendEmailPage = () => {
         const response = await axios.post(
           `http://localhost:4001/makeAppointment/${userId}/${PostId}`,
           {
-            Date1: new Date(selectedDate1).toLocaleDateString(),
-            Date2: new Date(selectedDate2).toLocaleDateString(),
-            Date3: new Date(selectedDate3).toLocaleDateString(),
+            Date1: new Date(selectedDate1).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }),
+            Date2: new Date(selectedDate2).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }),
+            Date3: new Date(selectedDate3).toLocaleDateString('en-GB', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            }),
             Time1: selectedTime1,
             Time2: selectedTime2,
             Time3: selectedTime3,
