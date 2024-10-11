@@ -26,7 +26,7 @@ const getAppliedJob = async (req,res) => {
           $addFields: {
             hasInterview: {  
               $cond: {
-                if: { $gt: [{ $size: { $filter: { input: "$applicants", cond: { $eq: ["$$this.status", "interview"] } } } }, 0] },
+                if: { $gt: [{ $size: { $filter: { input: "$applicants", cond: { $eq: ["$$this.status", "SelectAppointment"] } } } }, 0] },
                 then: 1,
                 else: 0
               }
@@ -48,6 +48,7 @@ const getAppliedJob = async (req,res) => {
             JobDescription: 1,
             "applicants.status": 1,
             "applicants.time_stamp": 1,
+            "applicants.SelectAppointment":1,
             "CompanyData.companyName": 1,         
             "CompanyData.companyLocation": 1,
             "CompanyData.companyDetail": 1

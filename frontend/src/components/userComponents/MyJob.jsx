@@ -4,15 +4,83 @@ import { Card, Button } from "react-bootstrap";
 import Alert from "../Alert";
 import MyCalendar from "./InterViewCalendar";
 import axios from "axios";
-import moment from 'moment'
+import moment from "moment";
 
+import swal from "sweetalert";
 const MyJob = () => {
+  const MakeAppointment = async (applicants, companyData, position) => {
+    swal({
+      content: {
+        element: "div",
+        attributes: {
+          innerHTML: `
+            <h4>นัดหมายสัมภาษณ์</h4>
+            <h5>บริษัท ${companyData.companyName}</h5>
+            <h5>ตำแหน่ง : ${position}</h5>
+            <h5>โดยบริษัทมี 3 ช่วงเวลาให้เลือกดังนี้</h5>
+            <div id="appointment-buttons" style="display: flex; flex-direction: column; gap: 10px;">
+              <center>
+              <button id="day1-button" style="width: 300px; padding: 10px; background-color: #80bfff; color: white; border: none; border-radius: 5px; margin:10px">
+                ${applicants.SelectAppointment.Date1} ${applicants.SelectAppointment.Time1}
+              </button>
+              </center>
+              <center>
+              <button id="day2-button" style="width: 300px; padding: 10px; background-color: #80bfff; color: white; border: none; border-radius: 5px; margin-bottom:10px">
+                ${applicants.SelectAppointment.Date2} ${applicants.SelectAppointment.Time2}
+              </button>
+              </center>
+              <center>
+              <button id="day3-button" style="width: 300px; padding: 10px; background-color: #80bfff; color: white; border: none; border-radius: 5px; margin-bottom:10px">
+                ${applicants.SelectAppointment.Date3} ${applicants.SelectAppointment.Time3}
+              </button>
+              </center>
+              <div style="display: flex; justify-content: center; margin-top: 10px;">
+              <button id="cancel-button" style="padding: 10px; background-color: #f44336; color: white; border: none; border-radius: 5px;">
+                ยกเลิก
+              </button>
+              </div>
+            </div>
+          `,
+        },
+      },
+      icon: "info",
+      buttons: false,
+    });
+
+    document.getElementById("day1-button").onclick = () => {
+      console.log(
+        `${applicants.SelectAppointment.Date1} ${applicants.SelectAppointment.Time1}`
+      );
+      swal.close();
+    };
+
+    document.getElementById("day2-button").onclick = () => {
+      console.log(
+        `${applicants.SelectAppointment.Date2} ${applicants.SelectAppointment.Time2}`
+      );
+      swal.close();
+    };
+
+    document.getElementById("day3-button").onclick = () => {
+      console.log(
+        `${applicants.SelectAppointment.Date3} ${applicants.SelectAppointment.Time3}`
+      );
+      swal.close();
+    };
+
+  document.getElementById('cancel-button').onclick = () => {
+    swal.close();
+  };
+  
+  };
+
   const getAppliedJob = async () => {
     const userId = localStorage.getItem("id_user");
     try {
       const response = await axios.get(
         `http://localhost:4001/getAppliedJob/${userId}`
       );
+      console.log(response.data);
       setJobApplyList(response.data);
     } catch (err) {
       console.log(err);
@@ -103,7 +171,9 @@ const MyJob = () => {
                     justifyContent: "space-between",
                   }}
                 >
-                  {job.applicants[0].status == "interview" && <Alert text="สัมภาษณ์!" />}
+                  {job.applicants[0].status == "SelectAppointment" && (
+                    <Alert text="สัมภาษณ์!" />
+                  )}
                   <div>
                     <Card.Title style={titleStyle}>{job.Position}</Card.Title>
                     <Card.Subtitle style={companyNameStyle}>
@@ -117,7 +187,10 @@ const MyJob = () => {
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Card.Text style={postedTextStyle}>
-                      สมัครเมื่อ {moment(Number(job.applicants[0].time_stamp)).format('DD-MM-YYYY')} 
+                      สมัครเมื่อ{" "}
+                      {moment(Number(job.applicants[0].time_stamp)).format(
+                        "DD-MM-YYYY"
+                      )}
                     </Card.Text>
                     <div
                       style={{
@@ -125,12 +198,20 @@ const MyJob = () => {
                         justifyContent: "space-between",
                       }}
                     >
-                      {job.applicants[0].status === "interview" && (
-                        <Link to={"#"}>
-                          <Button variant="danger" style={interviewButtonStyle}>
-                            นัดสัมภาษณ์
-                          </Button>
-                        </Link>
+                      {job.applicants[0].status === "SelectAppointment" && (
+                        <Button
+                          variant="danger"
+                          style={interviewButtonStyle}
+                          onClick={() =>
+                            MakeAppointment(
+                              job.applicants[0],
+                              job.CompanyData[0],
+                              job.Position
+                            )
+                          }
+                        >
+                          นัดสัมภาษณ์
+                        </Button>
                       )}
                       <Link to={`/userJobApplication?idPost=${job._id}`}>
                         <Button variant="success" style={detailButtonStyle}>
@@ -232,7 +313,6 @@ const interviewButtonStyle = {
   padding: "8px 20px",
   fontSize: "14px",
   marginRight: "30px",
-  backgroundColor: "red",
 };
 
 const NavigationButton = {
