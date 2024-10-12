@@ -61,6 +61,7 @@ const SendEmailPage = () => {
   const [selectedTime2, setSelectedTime2] = React.useState("");
   const [selectedTime3, setSelectedTime3] = React.useState("");
   const [interviewFormat, setInterviewFormat] = React.useState("");
+  const [InterviewVer, setInterviewVer] = React.useState("");
 
   const [activeDateField, setActiveDateField] = React.useState(null);
 
@@ -123,6 +124,7 @@ const SendEmailPage = () => {
             Time3: selectedTime3,
             InterviewType: "OnLine",
             MeetingLink: "zoom.com",
+            InterviewVer: InterviewVer
           }
         );
         swal({
@@ -257,6 +259,20 @@ const SendEmailPage = () => {
                     </option>
                   ))}
                 </select>
+              </div>
+            </div>
+
+            <div style={fullRowStyle}>
+              <div style={inputWrapperStyle}>
+                <label style={labelStyle}>ผู้สัมภาษณ์ : </label>
+                <input
+                  type="text"
+                  placeholder="Example : person1@gmail.com, person2@gmail.com"
+                  style={inputStyle}
+                  onChange={(e) => {
+                    setInterviewVer(e.target.value);
+                  }}
+                />
               </div>
             </div>
 

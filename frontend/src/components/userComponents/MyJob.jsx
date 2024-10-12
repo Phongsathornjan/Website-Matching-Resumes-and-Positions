@@ -8,35 +8,44 @@ import moment from "moment";
 
 import swal from "sweetalert";
 const MyJob = () => {
-  const MakeAppointment = async (applicants, companyData, position) => {
+  const [isLoading, setIsLoading] = useState(null);
+
+  const [applicant, setApplicant] = useState(null);
+  const [selectDateStatus, setSelectDateStatus] = useState(false);
+
+  const MakeAppointment = async (post, applicants, companyData, position) => {
     swal({
       content: {
         element: "div",
         attributes: {
           innerHTML: `
             <h4>นัดหมายสัมภาษณ์</h4>
-            <h5>บริษัท ${companyData.companyName}</h5>
-            <h5>ตำแหน่ง : ${position}</h5>
+            <h5>บริษัท ${post.CompanyData[0].companyName}</h5>
+            <h5>ตำแหน่ง : ${post.Position}</h5>
             <h5>โดยบริษัทมี 3 ช่วงเวลาให้เลือกดังนี้</h5>
             <div id="appointment-buttons" style="display: flex; flex-direction: column; gap: 10px;">
               <center>
               <button id="day1-button" style="width: 300px; padding: 10px; background-color: #80bfff; color: white; border: none; border-radius: 5px; margin:10px">
-                ${applicants.SelectAppointment.Date1} ${applicants.SelectAppointment.Time1}
+                ${post.applicants[0].SelectAppointment.Date1} ${post.applicants[0].SelectAppointment.Time1}
               </button>
               </center>
               <center>
               <button id="day2-button" style="width: 300px; padding: 10px; background-color: #80bfff; color: white; border: none; border-radius: 5px; margin-bottom:10px">
-                ${applicants.SelectAppointment.Date2} ${applicants.SelectAppointment.Time2}
+                ${post.applicants[0].SelectAppointment.Date2} ${post.applicants[0].SelectAppointment.Time2}
               </button>
               </center>
               <center>
               <button id="day3-button" style="width: 300px; padding: 10px; background-color: #80bfff; color: white; border: none; border-radius: 5px; margin-bottom:10px">
-                ${applicants.SelectAppointment.Date3} ${applicants.SelectAppointment.Time3}
+                ${post.applicants[0].SelectAppointment.Date3} ${post.applicants[0].SelectAppointment.Time3}
               </button>
               </center>
               <div style="display: flex; justify-content: center; margin-top: 10px;">
               <button id="cancel-button" style="padding: 10px; background-color: #f44336; color: white; border: none; border-radius: 5px;">
                 ยกเลิก
+              </button>
+              <div style="width: 20px"></div>
+              <button id="confirm-button" style="padding: 10px; background-color: #ccc; color: white; border: none; border-radius: 5px;" disabled>
+                OK
               </button>
               </div>
             </div>
@@ -48,42 +57,96 @@ const MyJob = () => {
     });
 
     document.getElementById("day1-button").onclick = () => {
-      console.log(
-        `${applicants.SelectAppointment.Date1} ${applicants.SelectAppointment.Time1}`
-      );
-      swal.close();
+      setApplicant({
+        applicantsID: post.applicants[0].applicantsID,
+        userId: post.applicants[0].userId,
+        HrId: post.userId,
+        Date: post.applicants[0].SelectAppointment.Date1,
+        Time: post.applicants[0].SelectAppointment.Time1,
+        InterviewType: post.applicants[0].SelectAppointment.InterviewType,
+        MeetingLink: post.applicants[0].SelectAppointment.MeetingLink,
+        InterviewVer: post.applicants[0].SelectAppointment.InterviewVer,
+        Position: post.Position,
+        PostId: post._id,
+      });
+      document.getElementById("day1-button").style.backgroundColor = "#66ff99";
+      document.getElementById("day2-button").style.backgroundColor = "#80bfff";
+      document.getElementById("day3-button").style.backgroundColor = "#80bfff";
+      document.getElementById("confirm-button").disabled = false;
+      document.getElementById("confirm-button").style.backgroundColor =
+        "#66ff99";
     };
 
     document.getElementById("day2-button").onclick = () => {
-      console.log(
-        `${applicants.SelectAppointment.Date2} ${applicants.SelectAppointment.Time2}`
-      );
-      swal.close();
+      setApplicant({
+        applicantsID: post.applicants[0].applicantsID,
+        userId: post.applicants[0].userId,
+        HrId: post.userId,
+        Date: post.applicants[0].SelectAppointment.Date2,
+        Time: post.applicants[0].SelectAppointment.Time2,
+        InterviewType: post.applicants[0].SelectAppointment.InterviewType,
+        MeetingLink: post.applicants[0].SelectAppointment.MeetingLink,
+        InterviewVer: "8",
+        Position: post.Position,
+        PostId: post._id,
+      });
+      document.getElementById("day1-button").style.backgroundColor = "#80bfff";
+      document.getElementById("day2-button").style.backgroundColor = "#66ff99";
+      document.getElementById("day3-button").style.backgroundColor = "#80bfff";
+      document.getElementById("confirm-button").disabled = false;
+      document.getElementById("confirm-button").style.backgroundColor =
+        "#66ff99";
     };
 
     document.getElementById("day3-button").onclick = () => {
-      console.log(
-        `${applicants.SelectAppointment.Date3} ${applicants.SelectAppointment.Time3}`
-      );
+      setApplicant({
+        applicantsID: post.applicants[0].applicantsID,
+        userId: post.applicants[0].userId,
+        HrId: post.userId,
+        Date: post.applicants[0].SelectAppointment.Date3,
+        Time: post.applicants[0].SelectAppointment.Time3,
+        InterviewType: post.applicants[0].SelectAppointment.InterviewType,
+        MeetingLink: post.applicants[0].SelectAppointment.MeetingLink,
+        InterviewVer: "8",
+        Position: post.Position,
+        PostId: post._id,
+      });
+      document.getElementById("day1-button").style.backgroundColor = "#80bfff";
+      document.getElementById("day2-button").style.backgroundColor = "#80bfff";
+      document.getElementById("day3-button").style.backgroundColor = "#66ff99";
+      document.getElementById("confirm-button").disabled = false;
+      document.getElementById("confirm-button").style.backgroundColor =
+        "#66ff99";
+    };
+
+    document.getElementById("cancel-button").onclick = () => {
       swal.close();
     };
 
-  document.getElementById('cancel-button').onclick = () => {
-    swal.close();
+    document.getElementById("confirm-button").onclick = () => {
+      swal.close();
+      setSelectDateStatus(true);
+    };
   };
-  
-  };
+
+  useEffect(() => {
+    if (applicant != null && selectDateStatus) {
+      CreateAppointment(applicant);
+    }
+  }, [applicant, selectDateStatus]);
 
   const getAppliedJob = async () => {
     const userId = localStorage.getItem("id_user");
     try {
+      setIsLoading(true);
       const response = await axios.get(
         `http://localhost:4001/getAppliedJob/${userId}`
       );
-      console.log(response.data);
       setJobApplyList(response.data);
+      setIsLoading(false);
     } catch (err) {
       console.log(err);
+      setIsLoading(false);
     }
   };
 
@@ -124,6 +187,21 @@ const MyJob = () => {
     setTotalPages(Math.ceil(jobApplyList.length / jobsPerPage));
   }, [jobApplyList]);
 
+  const CreateAppointment = async (applicant) => {
+    console.log(applicant);
+    try {
+      const response = await axios.post(
+        "http://localhost:4001/CreateInterviewAppointment",
+        applicant
+      );
+      swal("สำเร็จ", "นัดสัมภาษณ์เรียบร้อย!", "success");
+      window.location.reload();
+    } catch (err) {
+      console.log(err);
+      swal("Oops!", `Internal server error : ${err}`, "error");
+    }
+  };
+
   useEffect(() => {
     getAppliedJob();
 
@@ -140,110 +218,131 @@ const MyJob = () => {
 
   return (
     <div style={ContainerStyle}>
-      {jobApplyList.length == 0 ? (
+      {isLoading ? (
         <>
           <div style={applyHistoryStyle}>
             <h1>งานที่สมัครแล้ว</h1>
-            <div>
-              <img
-                src="../../public/PleaseSelectFiled.png"
-                style={{ marginTop: "20px", width: "200px" }}
-              />
-            </div>
-            <div style={{ marginTop: "20px" }}>
-              <h4 style={{ color: "#828282" }}>
-                คุณยังไม่มีงานที่สมัคร สมัครเลย <a href="">ที่นี่</a>
-              </h4>
+            <div style={{ marginTop: "150px" }}>
+              <center>
+                <div style={spinnerStyle}></div>
+              </center>
             </div>
           </div>
         </>
       ) : (
-        <div style={applyHistoryStyle}>
-          <h1>งานที่สมัครแล้ว</h1>
-          <div style={{ marginTop: "20px" }}>
-            {currentJobs.map((job) => (
-              <Card key={job._id} className={`mb-3`} style={cardStyle}>
-                <Card.Body
-                  style={{
-                    position: "relative",
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  {job.applicants[0].status == "SelectAppointment" && (
-                    <Alert text="สัมภาษณ์!" />
-                  )}
-                  <div>
-                    <Card.Title style={titleStyle}>{job.Position}</Card.Title>
-                    <Card.Subtitle style={companyNameStyle}>
-                      {job.companyName}
-                    </Card.Subtitle>
-                    <Card.Subtitle style={LocationStyle}>
-                      {job.Location}
-                    </Card.Subtitle>
-                  </div>
-                  <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Card.Text style={postedTextStyle}>
-                      สมัครเมื่อ{" "}
-                      {moment(Number(job.applicants[0].time_stamp)).format(
-                        "DD-MM-YYYY"
-                      )}
-                    </Card.Text>
-                    <div
+        <>
+          {jobApplyList.length == 0 ? (
+            <>
+              <div style={applyHistoryStyle}>
+                <h1>งานที่สมัครแล้ว</h1>
+                <div>
+                  <img
+                    src="../../public/PleaseSelectFiled.png"
+                    style={{ marginTop: "20px", width: "200px" }}
+                  />
+                </div>
+                <div style={{ marginTop: "20px" }}>
+                  <h4 style={{ color: "#828282" }}>
+                    คุณยังไม่มีงานที่สมัคร สมัครเลย <a href="">ที่นี่</a>
+                  </h4>
+                </div>
+              </div>
+            </>
+          ) : (
+            <div style={applyHistoryStyle}>
+              <h1>งานที่สมัครแล้ว</h1>
+              <div style={{ marginTop: "20px" }}>
+                {currentJobs.map((job) => (
+                  <Card key={job._id} className={`mb-3`} style={cardStyle}>
+                    <Card.Body
                       style={{
+                        position: "relative",
                         display: "flex",
+                        flexDirection: "column",
                         justifyContent: "space-between",
                       }}
                     >
-                      {job.applicants[0].status === "SelectAppointment" && (
-                        <Button
-                          variant="danger"
-                          style={interviewButtonStyle}
-                          onClick={() =>
-                            MakeAppointment(
-                              job.applicants[0],
-                              job.CompanyData[0],
-                              job.Position
-                            )
-                          }
-                        >
-                          นัดสัมภาษณ์
-                        </Button>
+                      {job.applicants[0].status == "SelectAppointment" && (
+                        <Alert text="สัมภาษณ์!" />
                       )}
-                      <Link to={`/userJobApplication?idPost=${job._id}`}>
-                        <Button variant="success" style={detailButtonStyle}>
-                          ดูโพส
-                        </Button>
-                      </Link>
-                    </div>
-                  </div>
-                </Card.Body>
-              </Card>
-            ))}
-          </div>
-          <div style={SlideNavigation}>
-            <button
-              style={NavigationButton}
-              onClick={handlePrev}
-              disabled={currentPage === 1}
-            >
-              {"<"}
-            </button>
-            <div>
-              Page {currentPage} of {totalPages}
+                      <div>
+                        <Card.Title style={titleStyle}>
+                          {job.Position}
+                        </Card.Title>
+                        <Card.Subtitle style={companyNameStyle}>
+                          {job.companyName}
+                        </Card.Subtitle>
+                        <Card.Subtitle style={LocationStyle}>
+                          {job.Location}
+                        </Card.Subtitle>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
+                        <Card.Text style={postedTextStyle}>
+                          สมัครเมื่อ{" "}
+                          {moment(Number(job.applicants[0].time_stamp)).format(
+                            "DD-MM-YYYY"
+                          )}
+                        </Card.Text>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        >
+                          {job.applicants[0].status === "SelectAppointment" && (
+                            <Button
+                              variant="danger"
+                              style={interviewButtonStyle}
+                              onClick={() =>
+                                MakeAppointment(
+                                  job,
+                                  job.applicants[0],
+                                  job.CompanyData[0],
+                                  job.Position
+                                )
+                              }
+                            >
+                              นัดสัมภาษณ์
+                            </Button>
+                          )}
+                          <Link to={`/userJobApplication?idPost=${job._id}`}>
+                            <Button variant="success" style={detailButtonStyle}>
+                              ดูโพส
+                            </Button>
+                          </Link>
+                        </div>
+                      </div>
+                    </Card.Body>
+                  </Card>
+                ))}
+              </div>
+              <div style={SlideNavigation}>
+                <button
+                  style={NavigationButton}
+                  onClick={handlePrev}
+                  disabled={currentPage === 1}
+                >
+                  {"<"}
+                </button>
+                <div>
+                  Page {currentPage} of {totalPages}
+                </div>
+                <button
+                  style={NavigationButton}
+                  onClick={handleNext}
+                  disabled={currentPage === totalPages}
+                >
+                  {">"}
+                </button>
+              </div>
             </div>
-            <button
-              style={NavigationButton}
-              onClick={handleNext}
-              disabled={currentPage === totalPages}
-            >
-              {">"}
-            </button>
-          </div>
-        </div>
+          )}
+        </>
       )}
       <div style={interviewMenuStyle}>
         <h1>นัดสัมภาษณ์งานของฉัน</h1>
@@ -339,6 +438,16 @@ const SlideNavigation = {
   position: "relative",
 };
 
+const spinnerStyle = {
+  border: "4px solid rgba(0, 0, 0, 0.1)",
+  width: "36px",
+  height: "36px",
+  borderRadius: "50%",
+  borderLeftColor: "#09f",
+  animation: "spin 1s ease infinite",
+  marginBottom: "30px",
+};
+
 const globalStyle = `
 @keyframes fadeInFromBottom {
   0% {
@@ -351,6 +460,14 @@ const globalStyle = `
   }
 }
 
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 `;
 
 export default MyJob;

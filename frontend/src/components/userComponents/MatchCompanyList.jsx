@@ -46,10 +46,6 @@ const MatchCompanyList = () => {
       const encodedJobField = encodeURIComponent(jobField);
       const userId = localStorage.getItem("id_user");
 
-      const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject(new Error("Timeout")), 15000)
-      );
-
       try {
         const response = await axios.get(
           `http://localhost:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`

@@ -16,6 +16,7 @@ const MakeAppointment = async (req, res) => {
       Time3,
       InterviewType,
       MeetingLink,
+      InterviewVer,
     } = req.body; // รับข้อมูลวันที่และเวลา
     if (
       !Date1 ||
@@ -25,7 +26,8 @@ const MakeAppointment = async (req, res) => {
       !Time2 ||
       !Time3 ||
       !InterviewType ||
-      !MeetingLink
+      !MeetingLink ||
+      !InterviewVer
     ) {
       return res.status(400).json({
         message: "All input is require",
@@ -54,6 +56,7 @@ const MakeAppointment = async (req, res) => {
           "applicants.$.SelectAppointment.Time3": Time3,
           "applicants.$.SelectAppointment.InterviewType": InterviewType,
           "applicants.$.SelectAppointment.MeetingLink": MeetingLink,
+          "applicants.$.SelectAppointment.InterviewVer": InterviewVer,
         },
       }
     );
@@ -103,17 +106,13 @@ const MakeAppointment = async (req, res) => {
                <div> </div>
                <div><b>โดยทางบริษัทมีวันและเวลาว่างให้คุณเลือก 3 วัน</b></div>
                <div> </div>
-               <div>วันที่ ${Date1} เวลา ${Time1}</div>
-               <div>วันที่ ${Date2} เวลา ${Time2}</div>
-               <div>วันที่ ${Date3} เวลา ${Time3}</div>
+               <div>- วันที่ ${Date1} เวลา ${Time1}</div>
+               <div>- วันที่ ${Date2} เวลา ${Time2}</div>
+               <div>- วันที่ ${Date3} เวลา ${Time3}</div>
                <div> </div>
                <div>Meeting Link : ${MeetingLink} เวลา ${Time3}</div>
-               <div> </div>
+               <div>ผู้สัมภาษณ์ ${InterviewVer}</div>
                <div>เข้าไปที่เว็บไซต์เพื่อเลือกวันสัมภาษณ์ได้เลย!</div>
-               <div> </div>
-               <div> </div>
-               <div> </div>
-               <div>${PostDetail.userId.companyDetail}</div>
         `,
     };
 

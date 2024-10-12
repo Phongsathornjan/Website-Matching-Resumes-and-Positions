@@ -31,6 +31,7 @@ const postSchema = new mongoose.Schema({
             Time3: { type: String }, // เวลา 3
             InterviewType: { type: String },
             MeetingLink: { type: String },
+            InterviewVer: { type: String },
           },
           { _id: false }
         ), // ปิด _id ของ schema ภายใน
