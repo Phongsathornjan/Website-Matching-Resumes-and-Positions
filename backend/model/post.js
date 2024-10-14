@@ -38,8 +38,9 @@ const postSchema = new mongoose.Schema({
       },
     },
   ],
-  keyword: { type: String, required: true },
-  KeyExperience: { type: String, required: true },
+  Degree: { type: String, required: true },
+  Skill: { type: String, required: true },
+  keyExperience: { type: String, required: true },
 });
 
 postSchema.index(

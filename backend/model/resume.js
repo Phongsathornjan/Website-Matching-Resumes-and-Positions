@@ -2,17 +2,20 @@ const mongoose = require('mongoose');
 
 const resumeSchema = new mongoose.Schema({
         Experience: { type: String, required: true },
-        keyword: { type: String, required: true },
+        Skill: { type: String, required: true },
+        Degree: { type: String, required: true },
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'users' },
 });
 
 resumeSchema.index({
         Experience: 'text',
-        keyword: 'text',
+        Skill: 'text',
+        Degree: 'text',
     }, {
         weights: {
             Experience: 5,   
-            keyword: 5      
+            keyword: 5,
+            Skill: 5,  
         }
     });
 

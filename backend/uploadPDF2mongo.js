@@ -43,7 +43,9 @@ const uploadData2Mongo = async (userId,data) =>{
             { userId: userId },
             { $set: {
                 Experience:  data.Output[0].Experience,
-                keyword:       data.Output[0].keyword,
+                Skill:       data.Output[0].Skill,
+                Degree:      data.Output[0].Degree,
+                
                 userId:      userId,
             } },
             { new: true, upsert: true }
