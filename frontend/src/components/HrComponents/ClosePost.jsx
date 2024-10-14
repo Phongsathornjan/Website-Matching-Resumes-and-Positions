@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import moment from "moment";
 
-const HrJobPost = () => {
+const ClosePost = () => {
   const [jobList, setJobList] = useState([]);
   const jobsPerPage = 6; // จำนวนงานต่อหน้า
   const [currentPage, setCurrentPage] = useState(1);
@@ -34,8 +34,9 @@ const HrJobPost = () => {
     const userId = localStorage.getItem("id_user");
     try {
       const response = await axios.get(
-        `http://localhost:4001/getPost/${userId}`
+        `http://localhost:4001/getClosePost/${userId}`
       );
+      console.log(response.data)
       setJobList(response.data);
       setIsLoading(false)
     } catch (err) {
@@ -86,50 +87,47 @@ const HrJobPost = () => {
         }
       }
     });
-    
   };
 
-  const ClosePost = async (idPost) =>{
-    swal({
-      title: "Are you sure?",
-      text: "ต้องการปิดรับสมัครใช่ไหม ?",
-      icon: "warning",
-      buttons: {
-        cancel: {
-          text: "Cancel",
-          value: null,
-          visible: true,
-          className: "",
-          closeModal: true,
-        },
-        confirm: {
-          text: "Yes",
-          value: true,
-          visible: true,
-          className: "",
-          closeModal: false,
-        },
-      },
-      dangerMode: true,
-    })
-    .then(async (willClose) => {
-      if (willClose) {
-        try {
-          const response = await axios.patch(`http://localhost:4001/closePost/${idPost}`);
-          swal({
-            title: "OK!",
-            text: "ปิดรับสมัครเรียบร้อย",
-            icon: "success",
-          }).then(() => {
-            window.location.reload();
-          });
-        } catch (err) {
-          console.log(err);
-          swal("Oops!", "Something went wrong!", "error");
-        }
-      }
-    });
-    
+  const OpenPost = async (idPost) =>{
+        swal({
+          title: "Are you sure ?",
+          text: "ต้องการเปิดรับสมัครใช่ไหม ?",
+          icon: "success",
+          buttons: {
+            cancel: {
+              text: "Cancel",
+              value: null,
+              visible: true,
+              className: "",
+              closeModal: true,
+            },
+            confirm: {
+              text: "Yes",
+              value: true,
+              visible: true,
+              className: "",
+              closeModal: false,
+            },
+          },
+        }).then(async(willDelete) => {
+          if(willDelete){
+            try{
+              const response = await axios.patch(`http://localhost:4001/openPost/${idPost}`)
+              swal({
+                title: "OK!",
+                text: "เปิดรับสมัครเรียบร้อย",
+                icon: "success",
+              }).then(() => {
+                getPost()
+              });
+            }catch(err){
+              console.log(err);
+              swal("Oops!", "Something went wrong!", "error");
+            }
+          }
+        });
+      
   }
 
   useEffect(() => {
@@ -169,9 +167,8 @@ const HrJobPost = () => {
             <center>
               <div style={{ animation: "fadeInFromBottom 0.6s ease-in" }}>
                 <div
-                  style={{ fontSize: "20px", color: "gray", marginTop: "80px" }}
+                  style={{marginTop: "80px" }}
                 >
-                  คุณยังไม่มีโพสต์รับสมัคร สามารถสร้างได้เลยตอนนี้
                 </div>
                 <img
                   src="../../../public/PleaseSelectFiled.png"
@@ -232,7 +229,7 @@ const HrJobPost = () => {
                         <Link to={`/PostDetail/${job._id}`}>
                           <Button variant="success">รายละเอียด</Button>
                         </Link>
-                        <Button variant="primary" onClick={()=>ClosePost(job._id)}>ปิดรับสมัคร</Button>
+                        <Button variant="primary" onClick={()=>OpenPost(job._id)}>เปิดรับสมัคร</Button>
                       </div>
                     </div>
                   </Card.Body>
@@ -272,6 +269,7 @@ const ellipsisStyle = {
 };
 
 const cardStyle = {
+  color: 'gray',
   width: "1000px",
   borderRadius: "20px",
   animation: "fadeInFromBottom 0.6s ease-in",
@@ -337,4 +335,4 @@ const globalStyle = `
 }  
 `;
 
-export default HrJobPost;
+export default ClosePost;

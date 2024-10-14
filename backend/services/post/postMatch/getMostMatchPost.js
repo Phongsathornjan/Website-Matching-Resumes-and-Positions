@@ -12,7 +12,7 @@ const getMostMatchPost = async (req, res) => {
     }
 
     const posts = await Post.find(
-      { Location: Location, WorkField: WorkField },
+      { Location: Location, WorkField: WorkField ,status: "open"},
       { applicants: 0, WorkField: 0 }
   ).populate('userId', 'companyDetail companyName');
   

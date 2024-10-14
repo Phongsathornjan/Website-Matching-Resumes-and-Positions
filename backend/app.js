@@ -24,6 +24,9 @@ const getPostBySearch = require('./services/post/getPostBySearch');
 const applyJobPost = require('./services/post/applyJobPost')
 const getPostDetail = require('./services/post/getPostDetail')
 const getAppliedJob = require('./services/post/getAppliedJob')
+const closePost = require('./services/post/closePost')
+const getClosePost = require('./services/post/getClosePost')
+const openPost = require('./services/post/openPost')
 
 const getMostMatchPost = require('./services/post/postMatch/getMostMatchPost')
 const getMostMatchUser = require('./services/post/postMatch/getMostMatchUser')
@@ -162,6 +165,20 @@ app.get("/getMostMatchFromOutPost/:IdPost", async (req, res) => {
     return getMostMatchFromOutPost(req,res)
 });
 
+//closePost
+app.patch("/closePost/:idPost", async (req, res) => {
+    return closePost(req,res)
+});
+
+//getClosePost
+app.get("/getClosePost/:userId", async (req, res) => {
+    return getClosePost(req,res)
+});
+
+//openPost
+app.patch("/openPost/:idPost", async (req, res) => {
+    return openPost(req,res)
+});
 
 
 

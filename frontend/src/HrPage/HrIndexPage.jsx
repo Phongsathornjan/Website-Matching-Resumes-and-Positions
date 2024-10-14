@@ -6,6 +6,7 @@ import HRNavbar from './../components/navbar/HRNavbar';
 import HrSidebar from '../components/HrComponents/HrSidebar';
 import HrJobPost from '../components/HrComponents/HrJobPost';
 import HrInterview from '../components/HrComponents/HrInterview';
+import ClosePost from '../components/HrComponents/ClosePost'
 
 const HrIndexPage = () => {
     const navigate = useNavigate();
@@ -51,7 +52,9 @@ const HrIndexPage = () => {
                     <HrSidebar activeState={activeState} onSidebarClick={handleSidebarClick} />
                 </div>
                 <div style={contentStyle}>
-                    {activeState === 'job' ? <HrJobPost /> : <HrInterview />}
+                    {activeState === 'job' && <HrJobPost />}
+                    {activeState === 'interview' && <HrInterview />}
+                    {activeState === 'close' && <ClosePost />}
                 </div>
             </div>
         </>
