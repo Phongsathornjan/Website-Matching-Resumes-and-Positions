@@ -107,7 +107,7 @@ const MyJob = () => {
         Time: post.applicants[0].SelectAppointment.Time3,
         InterviewType: post.applicants[0].SelectAppointment.InterviewType,
         MeetingLink: post.applicants[0].SelectAppointment.MeetingLink,
-        InterviewVer: "8",
+        InterviewVer: post.applicants[0].SelectAppointment.InterviewVer,
         Position: post.Position,
         PostId: post._id,
       });
@@ -145,7 +145,7 @@ const MyJob = () => {
       setJobApplyList(response.data);
       setIsLoading(false);
     } catch (err) {
-      console.log(err);
+      swal("Oops!", `Internal server error : ${err}`, "error");
       setIsLoading(false);
     }
   };
@@ -195,7 +195,7 @@ const MyJob = () => {
         applicant
       );
       swal("สำเร็จ", "นัดสัมภาษณ์เรียบร้อย!", "success");
-      window.location.reload();
+      getAppliedJob();
     } catch (err) {
       console.log(err);
       swal("Oops!", `Internal server error : ${err}`, "error");

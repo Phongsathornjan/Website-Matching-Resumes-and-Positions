@@ -6,6 +6,7 @@ import SendEmailPage from './HrPage/SendEmailPage.jsx';
 import HrIndexPage from './HrPage/HrIndexPage';
 import PostDetailPage from './HrPage/PostDetailPage.jsx';
 import InsidePost from './HrPage/InsidePost.jsx';
+import ResumePage from './HrPage/ResumePage.jsx';
 
 import IndexPage from './nonUserPage/IndexPage.jsx';
 import SignUpPage from './nonUserPage/SignUpPage.jsx';
@@ -97,6 +98,10 @@ const router = createBrowserRouter([
   {
     path: "/SelectJobFieldPage", 
     element: <SelectJobField></SelectJobField>
+  },
+  {
+    path: "/Resume/:userId", 
+    element: <ResumePage></ResumePage>
   }
 ]);
 

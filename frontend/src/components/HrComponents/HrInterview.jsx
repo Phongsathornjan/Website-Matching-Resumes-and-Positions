@@ -1,12 +1,13 @@
-import React, { useState,useEffect } from 'react';
-import DatePicker from 'react-datepicker';
-import { format } from 'date-fns';
-import { Card, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import DatePicker from "react-datepicker";
+import { format, parse } from 'date-fns';
+import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import axios from "axios";
 
 function AppointmentsPage() {
-
   useEffect(() => {
+    getAppointment();
     // เพิ่ม global animation style
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
@@ -19,90 +20,121 @@ function AppointmentsPage() {
     };
   }, []);
 
-
   const [selectedDate, setSelectedDate] = useState(new Date());
-
-  const appointments = [
-    {title: "ตำแหน่ง .....", date: new Date(2024, 8, 15),time: '8:00 - 10:00', MeetingLink : '-',Interviewer: 'Phongsathornjanjamsai@gmail.com , passakorn@gmail.com'},
-    {title: "ตำแหน่ง .....", date: new Date(2024, 8, 16),time: '13:00 - 14:00', MeetingLink : 'onsite',Interviewer: 'Phongsathornjanjamsai@gmail.com , passakorn@gmail.com'},
-    {title: "ตำแหน่ง .....", date: new Date(2024, 8, 16),time: '8:00 - 10:00', MeetingLink : '-',Interviewer: 'Phongsathornjanjamsai@gmail.com , passakorn@gmail.com'},
-    {title: "ตำแหน่ง .....", date: new Date(2024, 8, 17),time: '13:00 - 14:00', MeetingLink : '-',Interviewer: 'Phongsathornjanjamsai@gmail.com , passakorn@gmail.com'},
-    {title: "ตำแหน่ง .....", date: new Date(2024, 8, 17),time: '12:00 - 13:00', MeetingLink : '-',Interviewer: 'Phongsathornjanjamsai@gmail.com , passakorn@gmail.com'},
-  ];
+  const [appointments, setAppointments] = useState([]);
 
   const handleDateChange = (date) => {
-    setSelectedDate(date)
+    setSelectedDate(date);
+  };
+
+  const filteredData = appointments.filter((appointments) => {
+    if (appointments.Date) {
+      const appointmentsDate = parse(
+        appointments.Date,
+        "dd/MM/yyyy",
+        new Date()
+      );
+      return (
+        format(appointmentsDate, "yyyy-MM-dd") ===
+        format(new Date(selectedDate), "yyyy-MM-dd")
+      );
+    }
+    return false;
+  });
+
+  const getAppointment = async () => {
+    try {
+      const userId = localStorage.getItem("id_user");
+      if (userId) {
+        const response = await axios.get(
+          `http://localhost:4001/getAppointmentById/${userId}`
+        );
+        setAppointments(response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const openResumePage = (userId) => {
+    window.open(`/Resume/${userId}`, '_blank')
   }
 
-  const filteredData = appointments.filter(
-    (appointments) => format(appointments.date, 'yyyy-MM-dd') === format(selectedDate, 'yyyy-MM-dd')
-  );
-
-
   return (
-    <div style={{animation: 'fadeInFromBottom 0.6s ease-in'}}>
+    <div style={{ animation: "fadeInFromBottom 0.6s ease-in" }}>
       <center>
         <div>
           <DatePicker
-          selected={selectedDate}
-          onChange={handleDateChange}
-          inline
-          dateFormat="MMMM d, yyyy"
+            selected={selectedDate}
+            onChange={handleDateChange}
+            inline
+            dateFormat="MMMM d, yyyy"
           />
         </div>
       </center>
-      <div style={{height: "20px"}}></div>
+      <div style={{ height: "20px" }}></div>
       {filteredData.length > 0 ? (
-          filteredData.map((appointments) => (
-            <Card
-              key={appointments.time}
-              style={cardStyle}
-            >
-              <Card.Body>
-              <Card.Title style={ellipsisStyle}>{appointments.title}</Card.Title>
-              <Card.Text style={ellipsisStyle}>วันที่ {format(appointments.date, 'd MMM yyyy')} เวลา : {appointments.time}</Card.Text>
-              <Card.Text style={ellipsisStyle}>ผู้สัมภาษณ์ : {appointments.Interviewer}</Card.Text>
-              <div style={{display: 'flex',justifyContent: 'space-between'}}>
-                <Card.Text style={ellipsisStyle}>Meeting Link : {appointments.MeetingLink}</Card.Text>
-                <div style={{width: '350px',display: 'flex'}}>
-                <Link to={'#'}>
-                  <Button variant="primary" style={ButtonStyle}>Resume</Button>
-                </Link>
-                <div style={{width: '50px'}}></div>
-                <Link to={'#'}>
-                  <Button variant="success" style={ButtonStyle}>More Appointment</Button>
-                </Link>
-                </div>
+        filteredData.map((appointments) => (
+          <Card key={appointments._id} style={cardStyle}>
+            <Card.Body>
+              <Card.Title style={ellipsisStyle}>
+                {appointments.PostId.Position}
+              </Card.Title>
+              <Card.Text style={ellipsisStyle}>
+                วันที่{" "}
+                {format(
+                  parse(appointments.Date, "dd/MM/yyyy", new Date()),
+                  "d MMM yyyy"
+                )}{" "}
+                เวลา : {appointments.Time}
+              </Card.Text>
+              <Card.Text style={ellipsisStyle}>
+                ผู้สมัคร : {appointments.userId.first_name} {appointments.userId.last_name}
+              </Card.Text>
+              <Card.Text style={ellipsisStyle}>
+                Email ผู้สมัคร : {appointments.userId.email}
+              </Card.Text>
+              <Card.Text style={ellipsisStyle}>
+                ผู้สัมภาษณ์ : {appointments.InterviewVer}
+              </Card.Text>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <Card.Text style={ellipsisStyle}>
+                  Meeting Link : {appointments.MeetingLink}
+                </Card.Text>
+                  <Button variant="primary" style={ButtonStyle} onClick={()=>openResumePage(appointments.userId._id)}>
+                    Resume
+                  </Button>
               </div>
-              </Card.Body>
-            </Card>
-          ))
-        ) : (
-          <center>
-            <p style={{fontSize: '20px',color: 'gray',marginTop: '25px'}}>ไม่มีนัดสัมภาษณ์งานในวันนี้</p>  
-          </center>
-        )}
+            </Card.Body>
+          </Card>
+        ))
+      ) : (
+        <center>
+          <p style={{ fontSize: "20px", color: "gray", marginTop: "25px" }}>
+            ไม่มีนัดสัมภาษณ์งานในวันนี้
+          </p>
+        </center>
+      )}
     </div>
   );
 }
 
 const ellipsisStyle = {
-  whiteSpace: 'nowrap',
-  overflow: 'hidden',        
-  textOverflow: 'ellipsis'     
+  whiteSpace: "nowrap",
+  overflow: "hidden",
+  textOverflow: "ellipsis",
 };
 
-
 const cardStyle = {
-  width: '1000px',
-  borderRadius: '20px',
-  animation: 'fadeInFromBottom 0.6s ease-in',
-  marginBottom: '15px'
+  width: "1000px",
+  borderRadius: "20px",
+  animation: "fadeInFromBottom 0.6s ease-in",
+  marginBottom: "15px",
 };
 
 const ButtonStyle = {
-  padding: '8px 20px',
-  fontSize: '14px',
+  padding: "8px 20px",
+  fontSize: "14px",
 };
 
 const globalStyle = `

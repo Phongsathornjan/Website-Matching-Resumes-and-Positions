@@ -122,8 +122,8 @@ const SendEmailPage = () => {
             Time1: selectedTime1,
             Time2: selectedTime2,
             Time3: selectedTime3,
-            InterviewType: "OnLine",
-            MeetingLink: "zoom.com",
+            InterviewType: interviewFormat,
+            MeetingLink: MeetingLink,
             InterviewVer: InterviewVer
           }
         );

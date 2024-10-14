@@ -30,9 +30,9 @@ const getMostMatchUser = require('./services/post/postMatch/getMostMatchUser')
 const getMostMatchFromOutPost = require('./services/post/postMatch/getMostMatchFromOutPost')
 
 //Appointment
-const getHrAppointment = require('./services/appointment/getHrAppointment')
 const MakeAppointment = require('./services/appointment/MakeAppointment')
 const CreateInterviewAppointment = require('./services/appointment/CreateInterviewAppointment')
+const getAppointmentById = require('./services/appointment/getAppointmentById')
 
 //User
 const updateJobField = require('./services/users/updateJobField')
@@ -169,11 +169,6 @@ app.get("/getMostMatchFromOutPost/:IdPost", async (req, res) => {
 
 
 //Appointment
-//getHrAppointment
-app.get("/getHrAppointment/:userId/:DateTime", async (req, res) => {
-    return getHrAppointment(req,res)
-});
-
 //MakeAppointment
 app.post("/makeAppointment/:userId/:idPost", async (req, res) => {
     return MakeAppointment(req,res)
@@ -183,6 +178,12 @@ app.post("/makeAppointment/:userId/:idPost", async (req, res) => {
 app.post("/CreateInterviewAppointment", async (req, res) => {
     return CreateInterviewAppointment(req,res)
 })
+
+//getAppointmentById
+app.get("/getAppointmentById/:userId", async (req, res) => {
+    return getAppointmentById(req,res)
+})
+
 
   
 

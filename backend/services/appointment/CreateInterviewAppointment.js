@@ -32,7 +32,7 @@ const CreateInterviewAppointment = async (req, res) => {
             InterviewType: InterviewType,
             MeetingLink: MeetingLink,
             InterviewVer: InterviewVer,
-            Position: Position
+            PostId: PostId
           })
 
           await Post.updateOne(

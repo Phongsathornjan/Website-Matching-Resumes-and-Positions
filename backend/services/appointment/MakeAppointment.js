@@ -109,7 +109,7 @@ const MakeAppointment = async (req, res) => {
                <div>- วันที่ ${Date1} เวลา ${Time1}</div>
                <div>- วันที่ ${Date2} เวลา ${Time2}</div>
                <div>- วันที่ ${Date3} เวลา ${Time3}</div>
-               <div> </div>
+               <div> สัมภาษณ์แบบ ${InterviewType}</div>
                <div>Meeting Link : ${MeetingLink} เวลา ${Time3}</div>
                <div>ผู้สัมภาษณ์ ${InterviewVer}</div>
                <div>เข้าไปที่เว็บไซต์เพื่อเลือกวันสัมภาษณ์ได้เลย!</div>
