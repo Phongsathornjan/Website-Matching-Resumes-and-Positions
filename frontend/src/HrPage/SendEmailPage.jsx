@@ -1,17 +1,45 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import HRNavbar from "../components/navbar/HRNavbar";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import swal from "sweetalert";
+import { parse, isSameDay, format } from "date-fns";
 
 const SendEmailPage = () => {
   const navigate = useNavigate();
 
   const { userId, PostId } = useParams();
+  const [interviewData, setInterviewData] = useState([]);
+  const [filteredInterviewData, setFilteredInterviewData] = useState([]);
+  const [SelectedDate, setSelectedDate] = useState([]);
+
+  const getAppointment = async () => {
+    try {
+      const HrId = localStorage.getItem("id_user");
+      if (HrId) {
+        const response = await axios.get(
+          `http://localhost:4001/getAppointmentById/${HrId}`
+        );
+        setInterviewData(response.data);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const filterInterviewData = (selectedDate) => {
+    if (!selectedDate) return [];
+
+    return interviewData.filter((interview) => {
+      const interviewDate = parse(interview.Date, "dd/MM/yyyy", new Date());
+      return isSameDay(interviewDate, selectedDate); // ตรวจสอบว่าตรงกับวันที่ที่เลือก
+    });
+  };
 
   useEffect(() => {
+    getAppointment();
     window.scrollTo(0, 0);
 
     //load animation
@@ -82,10 +110,15 @@ const SendEmailPage = () => {
   ];
 
   const handleDateChange = (date) => {
+    setSelectedDate(date);
     if (activeDateField === "date1") setSelectedDate1(date);
     if (activeDateField === "date2") setSelectedDate2(date);
     if (activeDateField === "date3") setSelectedDate3(date);
   };
+
+  useEffect(() => {
+    setFilteredInterviewData(filterInterviewData(SelectedDate));
+  }, [interviewData, SelectedDate]);
 
   const handleSendAppointment = async () => {
     try {
@@ -104,39 +137,39 @@ const SendEmailPage = () => {
         const response = await axios.post(
           `http://localhost:4001/makeAppointment/${userId}/${PostId}`,
           {
-            Date1: new Date(selectedDate1).toLocaleDateString('en-GB', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric'
+            Date1: new Date(selectedDate1).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
             }),
-            Date2: new Date(selectedDate2).toLocaleDateString('en-GB', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric'
+            Date2: new Date(selectedDate2).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
             }),
-            Date3: new Date(selectedDate3).toLocaleDateString('en-GB', {
-              day: '2-digit',
-              month: '2-digit',
-              year: 'numeric'
+            Date3: new Date(selectedDate3).toLocaleDateString("en-GB", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
             }),
             Time1: selectedTime1,
             Time2: selectedTime2,
             Time3: selectedTime3,
             InterviewType: interviewFormat,
             MeetingLink: MeetingLink,
-            InterviewVer: InterviewVer
+            InterviewVer: InterviewVer,
           }
         );
         swal({
           title: "DONE!",
           text: "สร้างนัดหมายเรียบร้อย",
-          icon: "success"
+          icon: "success",
         }).then(() => {
           navigate(`/PostDetail/${PostId}`);
         });
       }
     } catch (err) {
-      console.log(e)
+      console.log(e);
       swal("Oops!", "Internal server error", "error");
     }
   };
@@ -347,6 +380,29 @@ const SendEmailPage = () => {
                 </div>
               )}
             />
+            <div>
+              {filteredInterviewData.length > 0 ? (
+                filteredInterviewData.map((interview) => (
+                  <div key={interview.Time} style={listStyle}>
+                    <h5 style={{ color: "black" }}>
+                      {interview.PostId.Position}
+                    </h5>
+                    <p>ผู้สัมภาษณ์ {interview.InterviewVer}</p>
+
+                    <p>
+                      วันที่{" "}
+                      {format(
+                        parse(interview.Date, "dd/MM/yyyy", new Date()),
+                        "d MMM yyyy"
+                      )}{" "}
+                      เวลา: {interview.Time}
+                    </p>
+                  </div>
+                ))
+              ) : (
+                <p>ไม่มีนัดสัมภาษณ์งานในวันนี้</p>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -357,15 +413,6 @@ const SendEmailPage = () => {
 const containerStyle = {
   margin: "40px",
   marginTop: "100px",
-};
-
-const titleStyle = {
-  color: "#3769B4",
-  fontFamily: "Trirong",
-  fontSize: "48px",
-  fontWeight: "bold",
-  marginBottom: "30px",
-  animation: "fadeInFromBottom 0.5s ease-in",
 };
 
 const formAndCalendarStyle = {
@@ -418,6 +465,17 @@ const inputStyle = {
   borderRadius: "4px",
 };
 
+const listStyle = {
+  padding: "10px",
+  backgroundColor: "#fff",
+  marginBottom: "10px",
+  border: "solid 1px",
+  borderRadius: "12px",
+  boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+  width: "440px",
+  animation: "fadeInFromBottom 0.5s ease-in",
+};
+
 const dropdownStyle = {
   width: "100%",
   padding: "8px",
@@ -438,7 +496,6 @@ const buttonStyle = {
 };
 
 const calendarWrapperStyle = {
-  display: "flex",
   justifyContent: "center",
   width: "40%",
   padding: "10px",
