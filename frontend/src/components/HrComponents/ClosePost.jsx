@@ -36,11 +36,11 @@ const ClosePost = () => {
       const response = await axios.get(
         `http://localhost:4001/getClosePost/${userId}`
       );
-      console.log(response.data)
       setJobList(response.data);
       setIsLoading(false)
     } catch (err) {
       console.log(err);
+      setJobList([]);
       setIsLoading(false)
     }
   }
@@ -79,7 +79,7 @@ const ClosePost = () => {
             text: "ลบโพสต์เรียบร้อย",
             icon: "success",
           }).then(() => {
-            window.location.reload();
+            getPost()
           });
         } catch (err) {
           console.log(err);

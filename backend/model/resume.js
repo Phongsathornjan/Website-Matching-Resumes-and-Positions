@@ -14,7 +14,7 @@ resumeSchema.index({
     }, {
         weights: {
             Experience: 5,   
-            keyword: 5,
+            Degree: 5,
             Skill: 5,  
         }
     });

@@ -27,6 +27,7 @@ const getAppliedJob = require('./services/post/getAppliedJob')
 const closePost = require('./services/post/closePost')
 const getClosePost = require('./services/post/getClosePost')
 const openPost = require('./services/post/openPost')
+const getUserInPostBySearch = require('./services/post/getUserInPostBySearch')
 
 const getMostMatchPost = require('./services/post/postMatch/getMostMatchPost')
 const getMostMatchUser = require('./services/post/postMatch/getMostMatchUser')
@@ -178,6 +179,11 @@ app.get("/getClosePost/:userId", async (req, res) => {
 //openPost
 app.patch("/openPost/:idPost", async (req, res) => {
     return openPost(req,res)
+});
+
+//getUserInPostBySearch
+app.get("/getUserInPostBySearch/:IdPost/:textSearch", async (req, res) => {
+    return getUserInPostBySearch(req,res)
 });
 
 

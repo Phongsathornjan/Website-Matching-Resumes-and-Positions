@@ -11,7 +11,7 @@ import getMatchColor from "../components/userComponents/getMatchColor";
 const InsidePost = (idPost) => {
   const navigate = useNavigate();
 
-  const [title, setTitle] = useState('รายชื่อผู้สมัคร : ทั้งหมด ')
+  const [title, setTitle] = useState("รายชื่อผู้สมัคร : ทั้งหมด ");
   const [isLoading, setIsLoading] = useState(false);
   const [appState, setAppState] = useState("inPost");
   const [color1, setColor1] = useState("#B7E4B0");
@@ -19,6 +19,8 @@ const InsidePost = (idPost) => {
 
   const [candidates, setCandidates] = useState([]);
   const [selectedCandidates, setSelectedCandidates] = useState(null);
+
+  const [search, setSearch] = useState(null);
 
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 10;
@@ -36,22 +38,22 @@ const InsidePost = (idPost) => {
     };
   }, []);
 
-  const setState = () => {
-    if (appState == "inPost") {
-      setAppState("outPost");
-      setColor2("#f2d5ff");
-      setColor1("#fff");
-      setTitle("เจอคนที่ Match กับงานของคุณ : ทั้งหมด ")
-      setCurrentPage(1)
-      getMatchUserOutPost()
-    } else if (appState == "outPost") {
-      setAppState("inPost");
-      setColor2("#fff");
-      setColor1("#B7E4B0");
-      setTitle("รายชื่อผู้สมัคร : ทั้งหมด ")
-      setCurrentPage(1)
-      getMatchUser()
-    }
+  const MatchUser = () => {
+    setAppState("inPost");
+    setColor2("#fff");
+    setColor1("#B7E4B0");
+    setTitle("รายชื่อผู้สมัคร : ทั้งหมด ");
+    setCurrentPage(1);
+    getMatchUser();
+  };
+
+  const MatchUserOutPost = () => {
+    setAppState("outPost");
+    setColor2("#f2d5ff");
+    setColor1("#fff");
+    setTitle("เจอคนที่ Match กับงานของคุณ : ทั้งหมด ");
+    setCurrentPage(1);
+    getMatchUserOutPost();
   };
 
   const appointmentButton = (userId) => {
@@ -78,7 +80,6 @@ const InsidePost = (idPost) => {
       const response = await axios.get(
         `http://localhost:4001/getMostMatchFromOutPost/${idPost.idPost}`
       );
-      console.log(response.data)
       setCandidates(response.data);
     } catch (e) {
       setIsLoading(false);
@@ -116,6 +117,18 @@ const InsidePost = (idPost) => {
     });
   };
 
+  const HandleSearchButton = async () => {
+    try {
+      const encodedTextSearch = encodeURIComponent(search);
+      const response = await axios.get(
+        `http://localhost:4001/getUserInPostBySearch/${idPost.idPost}/${encodedTextSearch}`
+      );
+      setCandidates(response.data);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentCandidates = candidates.slice(indexOfFirstPost, indexOfLastPost);
@@ -131,7 +144,16 @@ const InsidePost = (idPost) => {
             type="text"
             placeholder="Find candidates who ...... ? "
             style={searchInput}
+            onChange={(e) => setSearch(e.target.value)}
           />
+          <Button
+            variant="btn"
+            id="button-addon2"
+            style={buttonStyle}
+            onClick={HandleSearchButton}
+          >
+            หาผู้สมัคร
+          </Button>
         </section>
         <div
           style={{
@@ -140,7 +162,7 @@ const InsidePost = (idPost) => {
             justifyContent: "space-between",
           }}
         >
-          <div onClick={setState}>
+          <div onClick={MatchUser}>
             <StatusCard
               title="ผู้สมัคร"
               color={color1}
@@ -148,7 +170,7 @@ const InsidePost = (idPost) => {
               iconAndTextColor="#009933"
             />
           </div>
-          <div onClick={setState}>
+          <div onClick={MatchUserOutPost}>
             <StatusCard
               title="สรรหาจากนอกโพสต์"
               color={color2}
@@ -164,9 +186,11 @@ const InsidePost = (idPost) => {
         </h3>
         {isLoading ? (
           <>
-            <div style={{height: '200px'}}></div>
-            <center><div style={spinnerStyle}></div></center>
-            <div style={{height: '400px'}}></div>
+            <div style={{ height: "200px" }}></div>
+            <center>
+              <div style={spinnerStyle}></div>
+            </center>
+            <div style={{ height: "400px" }}></div>
           </>
         ) : (
           <>
@@ -219,9 +243,6 @@ const InsidePost = (idPost) => {
                           </p>
                           <p>
                             <strong>Email : </strong> {candidate.userId.email}{" "}
-                          </p>
-                          <p>
-                            <strong>Experience:</strong> {candidate.Experience}
                           </p>
                           <p>
                             <strong>Skill:</strong> {candidate.keyword}
@@ -313,11 +334,12 @@ const searchSection = {
 };
 
 const searchInput = {
-  width: "60%",
+  width: "39%",
   padding: "10px",
   borderRadius: "8px",
   border: "1px solid #ccc",
   marginBottom: "20px",
+  marginRight: "10px",
 };
 
 const candidatesSection = {
@@ -371,13 +393,20 @@ const resumePreview = {
 };
 
 const spinnerStyle = {
-  border: '4px solid rgba(0, 0, 0, 0.1)',
-  width: '36px',
-  height: '36px',
-  borderRadius: '50%',
-  borderLeftColor: '#09f',
-  animation: 'spin 1s ease infinite',
-  marginBottom: '30px'
+  border: "4px solid rgba(0, 0, 0, 0.1)",
+  width: "36px",
+  height: "36px",
+  borderRadius: "50%",
+  borderLeftColor: "#09f",
+  animation: "spin 1s ease infinite",
+  marginBottom: "30px",
+};
+
+const buttonStyle = {
+  width: "10%",
+  backgroundColor: "#3769B4",
+  color: "#fff",
+  height: "38px",
 };
 
 const noApplicantsStyle = {
