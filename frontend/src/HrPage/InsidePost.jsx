@@ -137,24 +137,28 @@ const InsidePost = (idPost) => {
     <>
       <div style={{ height: "100px" }}></div>
       <div style={{ padding: "20px" }}>
-        <section style={searchSection}>
-          <h2>หาผู้สมัครที่คุณต้องการ</h2>
-          <div style={{ height: "20px" }}></div>
-          <input
-            type="text"
-            placeholder="Find candidates who ...... ? "
-            style={searchInput}
-            onChange={(e) => setSearch(e.target.value)}
-          />
-          <Button
-            variant="btn"
-            id="button-addon2"
-            style={buttonStyle}
-            onClick={HandleSearchButton}
-          >
-            หาผู้สมัคร
-          </Button>
-        </section>
+        {appState == "inPost" && (
+          <>
+            <section style={searchSection}>
+              <h2>หาผู้สมัครที่คุณต้องการ</h2>
+              <div style={{ height: "20px" }}></div>
+              <input
+                type="text"
+                placeholder="Find candidates who ...... ? "
+                style={searchInput}
+                onChange={(e) => setSearch(e.target.value)}
+              />
+              <Button
+                variant="btn"
+                id="button-addon2"
+                style={buttonStyle}
+                onClick={HandleSearchButton}
+              >
+                หาผู้สมัคร
+              </Button>
+            </section>
+          </>
+        )}
         <div
           style={{
             display: "flex",
