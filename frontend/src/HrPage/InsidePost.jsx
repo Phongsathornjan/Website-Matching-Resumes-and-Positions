@@ -251,6 +251,9 @@ const InsidePost = (idPost) => {
                           <p>
                             <strong>Skill:</strong> {candidate.Skill}
                           </p>
+                          <p>
+                            <strong>Experience:</strong> {candidate.Experience}
+                          </p>
                         </div>
                         <div style={candidateActions}>
                           <span

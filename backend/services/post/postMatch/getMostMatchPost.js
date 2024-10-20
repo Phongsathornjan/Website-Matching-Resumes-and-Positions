@@ -12,10 +12,10 @@ const getMostMatchPost = async (req, res) => {
     }
 
     const posts = await Post.find(
-      { Location: Location, WorkField: WorkField ,status: "open"},
+      { Location: Location, WorkField: WorkField, status: "open" },
       { applicants: 0, WorkField: 0 }
-  ).populate('userId', 'companyDetail companyName');
-  
+    ).populate("userId", "companyDetail companyName");
+
     if (posts.length == 0) {
       return res.status(204).json({
         message: "Not found post",
@@ -29,49 +29,68 @@ const getMostMatchPost = async (req, res) => {
       });
     }
 
-    const postKeyword = posts.map((data) => data.keyword);
-    const postExperience = posts.map((data) => data.Experience);
+    const postSkill = posts.map((data) => data.Skill);
+    const postExperience = posts.map((data) => data.keyExperience);
+    const postDegree = posts.map((data) => data.Degree);
 
-    const userKeyword = userData[0].keyword;
+    const userSkill = userData[0].Skill;
     const userExperience = userData[0].Experience;
+    const userDegree = userData[0].Degree;
 
-
-    //tfIDF
-    const tfidfKeywords = new TfIdf();
+    // tfIDF สำหรับแต่ละส่วน
+    const tfidfSkill = new TfIdf();
     const tfidfExperiences = new TfIdf();
-    postKeyword.forEach((keyword) => tfidfKeywords.addDocument(keyword));
-    postExperience.forEach((experience) => tfidfExperiences.addDocument(experience));
+    const tfidfDegree = new TfIdf();
+
+    // เพิ่มข้อมูลสำหรับการคำนวณ similarity
+    postSkill.forEach((Skill) => tfidfSkill.addDocument(Skill));
+    postExperience.forEach((experience) =>
+      tfidfExperiences.addDocument(experience)
+    );
+    postDegree.forEach((degree) => tfidfDegree.addDocument(degree));
 
     const results = [];
-    tfidfKeywords.computeSimilarities(userKeyword, (i, keywordSimilarity) => {
-      tfidfExperiences.computeSimilarities(userExperience, (j, experienceSimilarity) => {
-          if (i === j) {
-              // ตรวจสอบว่า experienceSimilarity เป็น 0 หรือไม่
-              const weightedSimilarity = (experienceSimilarity === 0)
-                  ? keywordSimilarity * 1 // ให้น้ำหนักที่ keyword 100%
-                  : (keywordSimilarity * 0.8) + (experienceSimilarity * 0.2); // ให้น้ำหนัก 50%
-  
-              results.push({ postKeywordIndex: i, similarity: weightedSimilarity });
-          }
-      });
-  });
-  
+
+    // คำนวณ similarity สำหรับ Skill, Experience และ Degree
+    tfidfSkill.computeSimilarities(userSkill, (i, SkillSimilarity) => {
+      tfidfExperiences.computeSimilarities(
+        userExperience,
+        (j, experienceSimilarity) => {
+          tfidfDegree.computeSimilarities(userDegree, (k, degreeSimilarity) => {
+            if (i === j && i === k) {
+              // ตรวจสอบให้แน่ใจว่าตรงกันทั้งสามค่า
+              // คำนวณ Weighted Similarity โดย Skill 40%, Experience 40%, และ Degree 20%
+              const weightedSimilarity =
+                SkillSimilarity * 0.4 +
+                experienceSimilarity * 0.4 +
+                degreeSimilarity * 0.2;
+
+              // เก็บผลลัพธ์
+              results.push({
+                postSkillIndex: i,
+                similarity: weightedSimilarity,
+              });
+            }
+          });
+        }
+      );
+    });
+
     results.sort((a, b) => b.similarity - a.similarity);
-    
+
     // results.forEach(result => {
-    //     console.log(`postKeyword ${result.postKeywordIndex} มีความคล้ายคลึง: ${result.similarity.toFixed(2)}%`);
+    //     console.log(`postSkill ${result.postSkillIndex} มีความคล้ายคลึง: ${result.similarity.toFixed(2)}%`);
     // });
 
-    // console.log("UserKeyword : "+userKeyword);
-    // console.log("PostKeyword : "+postKeyword[52]);
-
+    // console.log("UserSkill : "+userSkill);
+    // console.log("PostSkill : "+postSkill[52]);
 
     // กรองผลลัพธ์ที่มีเปอร์เซ็นต์มากกว่า 50%
     const filteredResults = results
-      .filter(result => result.similarity > 10)
-      .map(result => ({
-        ...posts[result.postKeywordIndex]._doc,
-        matchPercentage: (result.similarity).toFixed(2)
+      .filter((result) => result.similarity > 10)
+      .map((result) => ({
+        ...posts[result.postSkillIndex]._doc,
+        matchPercentage: result.similarity.toFixed(2),
       }));
 
     if (filteredResults.length === 0) {
@@ -80,7 +99,7 @@ const getMostMatchPost = async (req, res) => {
       });
     }
 
-    return res.status(200).json(filteredResults)
+    return res.status(200).json(filteredResults);
   } catch (err) {
     console.log(err);
     return res.status(500).json({

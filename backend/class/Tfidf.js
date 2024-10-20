@@ -64,7 +64,7 @@ class TfIdf {
 
     computeSimilarities(query, callback) {
         // เช็คว่าถ้า query หรือเอกสารใน documents เป็น "-"
-        if (query === '-' || this.documents.some(doc => doc === '-')) {
+        if (query === '-') {
             // ส่งค่า similarity เป็น 100% ทันที
             this.documents.forEach((doc, docIndex) => {
                 callback(docIndex, 100); // ค่า similarity 100%
