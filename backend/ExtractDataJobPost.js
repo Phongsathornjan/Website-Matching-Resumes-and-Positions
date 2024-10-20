@@ -17,11 +17,9 @@ const connectToChatGPT = async (Job_Description,apiEndpoint, apiKey) => {
                         Your task is to compose and extract keywords and required experience from the Job Post following my instructions.
                         I will use your response to match between Job requirements and user Data. to Recommend Most relevant job.
                         ***Key information***
-                        1. "Skill": (Get all types of skills like hard skills, soft skills, technical skills, and tools used in the job in JobDescription , Qualifications / Requirement ,Experience).
-                            - if not IT job you can extract keywords skill from JobDescription , Qualifications / Requirement ,Experience or about skill using in job.
-                            - If you have experience with the programs you use, experience in a specific field, knowledge of ..... , Understanding of ......... , Familiarity with ......... 
-                            , Experinece with  ..... , Experinece in  ..... , Strong in  .....  
+                        1. "Skill": (Get all types of skills by Highlight on hard skills, technical skills, and tools used in the job in JobDescription , Qualifications / Requirement ,Experience).
                             Put in skill without these words: knowledge of , Understanding of , Familiarity with , Experinece in , Experinece with , Strong in
+                            Example Data : [English, Python, Java, HTML/CSS, PHP, Typescript, Javascript, NodeJs(Express), React, dart(Flutter), MySQL, NoSQL(MongoDB, Firebase), Git, Postman, Power BI]
                         2. "Degree": (Get all types of Degree From those who are currently studying or who have recently graduated, I would like to answer with a degree and field of study).
                             (Example: Bachelor's degree in Computer Science , Computer Engineer)
                             - Use this format: ".....'s degree in ......." and another if have. If none, use "-".  

@@ -24,12 +24,17 @@ class TfIdf {
     }
 
     tokenize(text) {
-        // ถ้า text เป็น null, undefined, string ว่าง หรือ "-" ให้ return เป็น array ว่าง
-        if (!text || text === "" || text === "-") return []; 
+    
+        // ตรวจสอบว่า text เป็น string ก่อน tokenize
+        if (typeof text !== 'string') {
+            return [];
+        }
+    
         return text.toLowerCase()
                    .match(/\b\w+\b/g)
-                   .filter(token => !this.stopwords.includes(token));
+                   ?.filter(token => !this.stopwords.includes(token)) || [];
     }
+    
     
 
     addDocument(doc) {
@@ -58,22 +63,31 @@ class TfIdf {
     
 
     computeSimilarities(query, callback) {
+        // เช็คว่าถ้า query หรือเอกสารใน documents เป็น "-"
+        if (query === '-' || this.documents.some(doc => doc === '-')) {
+            // ส่งค่า similarity เป็น 100% ทันที
+            this.documents.forEach((doc, docIndex) => {
+                callback(docIndex, 100); // ค่า similarity 100%
+            });
+            return; // ออกจากฟังก์ชันไม่ต้องคำนวณต่อ
+        }
+    
         const queryVector = this.getWordVector(query);
         const results = [];
-
+    
         // คำนวณ Cosine Similarity สำหรับแต่ละเอกสาร
         this.documents.forEach((doc, docIndex) => {
             const docVector = this.getWordVector(doc);
             const similarity = this.cosineSimilarity(queryVector, docVector);
             results.push({ docIndex, similarity });
         });
-
-        // Normalize ค่า similarity โดยเทียบกับ maxSimilarity
+    
         // ส่งผลลัพธ์โดยไม่ normalize
         results.forEach(result => {
             callback(result.docIndex, result.similarity * 100); // แสดงค่า similarity เป็นเปอร์เซ็นต์
         });
     }
+    
 }
 
 module.exports = TfIdf;

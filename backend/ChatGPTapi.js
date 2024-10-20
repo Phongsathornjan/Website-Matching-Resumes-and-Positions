@@ -23,6 +23,7 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                         
                             ***Key information***
                             1. "Skill": (Get all types of skills like hard skills, soft skills, technical skills, and tools used in the job).
+                                Example Data : [English, Python, Java, HTML/CSS, PHP, Typescript, Javascript, NodeJs(Express), React, dart(Flutter), MySQL, NoSQL(MongoDB, Firebase), Git, Postman, Power BI]
                             2. "Degree": (From those who are currently studying or who have recently graduated, I would like to answer with a degree and field of study).
                                 (Example: Bachelor's degree in Computer Science)  
                                 - Use this format: ".....'s degree in ......." for other. If none, use "-".

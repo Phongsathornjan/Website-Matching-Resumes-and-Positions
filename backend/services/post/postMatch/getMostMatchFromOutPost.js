@@ -18,8 +18,9 @@ const getMostMatchFromOutPost = async (req, res) => {
       },
       {
         $project: {
-          keyword: 1,
-          KeyExperience: 1,
+          Skill: 1,
+          keyExperience: 1,
+          Degree: 1,
           WorkField: 1,
           Location: 1,
           applicants: {
@@ -33,8 +34,9 @@ const getMostMatchFromOutPost = async (req, res) => {
       },
       {
         $project: {
-          keyword: 1,
-          KeyExperience: 1,
+          Skill: 1,
+          keyExperience: 1,
+          Degree: 1,
           WorkField: 1,
           Location: 1,
           applicantUserIds: {
@@ -53,59 +55,74 @@ const getMostMatchFromOutPost = async (req, res) => {
 
     const userData = await Resume.find({
       userId: { $nin: applicantUserIds }, // userId ที่ไม่อยู่ใน applicantUserIds
-    })
-      .populate({
-        path: "userId",
-        select: "-companyDetail -companyName -password -role -appliedJobs -postedJobs -jobField",
-        match: {
-          location: posts[0].Location,
-          jobField: posts[0].WorkField, 
-        },
-      });
+    }).populate({
+      path: "userId",
+      select:
+        "-companyDetail -companyName -password -role -appliedJobs -postedJobs -jobField",
+      match: {
+        location: posts[0].Location,
+        jobField: posts[0].WorkField,
+      },
+    });
 
-      const userKeywords = userData.map((data) => data.keyword);
-      const userExperiences = userData.map((data) => data.Experience);
-    
-      const postKeyword = posts[0].keyword;
-      const postExperience = posts[0].KeyExperience;
-    
-      const tfidfKeywords = new TfIdf();
-      const tfidfExperiences = new TfIdf();
+    const userSkill = userData.map((data) => data.Skill);
+    const userExperiences = userData.map((data) => data.Experience);
+    const userDegree = userData.map((data) => data.Degree);
 
-      userKeywords.forEach((keyword) => tfidfKeywords.addDocument(keyword));
-      userExperiences.forEach((experience) => tfidfExperiences.addDocument(experience));
-    
-      const results = [];
+    const postSkill = posts[0].Skill;
+    const postExperience = posts[0].keyExperience;
+    const postDegree = posts[0].Degree;
+
+    const tfidfSkill = new TfIdf();
+    const tfidfExperiences = new TfIdf();
+    const tfidfDegree = new TfIdf();
+
+    userSkill.forEach((Skill) => tfidfSkill.addDocument(Skill));
+    userExperiences.forEach((experience) =>
+      tfidfExperiences.addDocument(experience)
+    );
+    userDegree.forEach((degree) => tfidfDegree.addDocument(degree));
+
+    const results = [];
 
     // คำนวณ Cosine Similarity สำหรับ Keyword และ Experience แยกกัน
-    tfidfKeywords.computeSimilarities(postKeyword, (i, keywordSimilarity) => {
-      tfidfExperiences.computeSimilarities(postExperience, (j, experienceSimilarity) => {
-          if (i === j) {
-              // ตรวจสอบว่า experienceSimilarity เป็น 0 หรือไม่
-              const weightedSimilarity = (experienceSimilarity === 0)
-                  ? keywordSimilarity * 1 // ให้น้ำหนักที่ keyword 100%
-                  : (keywordSimilarity * 0.8) + (experienceSimilarity * 0.2); // ให้น้ำหนัก 50%
-  
-              results.push({ userKeywordIndex: i, similarity: weightedSimilarity });
-          }
-      });
-  });
-  
+    tfidfSkill.computeSimilarities(postSkill, (i, skillSimilarity) => {
+      tfidfExperiences.computeSimilarities(
+        postExperience,
+        (j, experienceSimilarity) => {
+          tfidfDegree.computeSimilarities(postDegree, (k, degreeSimilarity) => {
+            if (i === j && i === k) {
+              // คำนวณ Weighted Similarity โดยให้น้ำหนัก 50% สำหรับ Skill, 40% สำหรับ Experience, และ 10% สำหรับ Degree
+              const weightedSimilarity =
+                skillSimilarity * 0.4 +
+                experienceSimilarity * 0.4 +
+                degreeSimilarity * 0.2;
+
+              results.push({
+                userSkillIndex: i,
+                similarity: weightedSimilarity,
+              });
+            }
+          });
+        }
+      );
+    });
+
     results.sort((a, b) => b.similarity - a.similarity);
-    
-        // results.forEach(result => {
-        //     console.log(`userKeyword ${result.userKeywordIndex} มีความคล้ายคลึง: ${result.similarity.toFixed(2)}%`);
-        // });
-    
-        // console.log("UserKeyword : "+userKeyword[18]);
-        // console.log("PostKeyword : "+postKeyword);
-    
-        const finalResults = results.map(result => ({
-          ...userData[result.userKeywordIndex]._doc,
-          matchPercentage: result.similarity.toFixed(2)
-        }));
-    
-      return res.status(200).json(finalResults);
+
+    // results.forEach(result => {
+    //     console.log(`userKeyword ${result.userSkillIndex} มีความคล้ายคลึง: ${result.similarity.toFixed(2)}%`);
+    // });
+
+    // console.log("UserKeyword : "+userKeyword[18]);
+    // console.log("PostKeyword : "+postKeyword);
+
+    const finalResults = results.map((result) => ({
+      ...userData[result.userSkillIndex]._doc,
+      matchPercentage: result.similarity.toFixed(2),
+    }));
+
+    return res.status(200).json(finalResults);
   } catch (err) {
     return res.status(400).json({ message: "Internal server error" });
   }

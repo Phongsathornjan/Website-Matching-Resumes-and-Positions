@@ -249,7 +249,7 @@ const InsidePost = (idPost) => {
                             <strong>Email : </strong> {candidate.userId.email}{" "}
                           </p>
                           <p>
-                            <strong>Skill:</strong> {candidate.keyword}
+                            <strong>Skill:</strong> {candidate.Skill}
                           </p>
                         </div>
                         <div style={candidateActions}>
