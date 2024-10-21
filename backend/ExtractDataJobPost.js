@@ -17,8 +17,8 @@ const connectToChatGPT = async (Job_Description,apiEndpoint, apiKey) => {
                         Your task is to compose and extract keywords and required experience from the Job Post following my instructions.
                         I will use your response to match between Job requirements and user Data. to Recommend Most relevant job.
                         ***Key information***
-                        1. "Skill": (Get all types of skills by Highlight on hard skills, technical skills, and tools used in the job in JobDescription , Qualifications / Requirement ,Experience).
-                            Put in skill without these words: knowledge of , Understanding of , Familiarity with , Experinece in , Experinece with , Strong in
+                        1. "Skill": (Get all types of skills by Highlight on hard skills, technical skills, and tools used in the job in "JobDescription" , "Qualifications / Requirement" ,"Experience").
+                            Put in skill without these words: knowledge of , Understanding of , Familiarity with , Experinece in , Experinece with , Strong in . 
                             Example Data : [English, Python, Java, HTML/CSS, PHP, Typescript, Javascript, NodeJs(Express), React, dart(Flutter), MySQL, NoSQL(MongoDB, Firebase), Git, Postman, Power BI]
                         2. "Degree": (Get all types of Degree From those who are currently studying or who have recently graduated, I would like to answer with a degree and field of study).
                             (Example: Bachelor's degree in Computer Science , Computer Engineer)
@@ -27,8 +27,14 @@ const connectToChatGPT = async (Job_Description,apiEndpoint, apiKey) => {
                             - Only extract data that explicitly mentions a position and duration. Do not infer or make creative guesses about the position or the number of years.
                             - Use this format: "... year in {Position}".
                             - If no work experience is required, new graduates are welcome, or those with no experience are welcome, return "-" for "experience".
+                            - if it be ..... years of experience in position Use this format: "... year in {Position}" from "keyExperience"
+                            Put in keyExperience without these words: Junior , Senior. if has.                            
                             - if it be ..... years of experience in Skill , Tool , program. Use this format: "... year in {Position}" by use Position from Position input from post.
+                            Put in keyExperience without these words: Junior , Senior. if has.
                             - if experinece is newly Graduated or has related experience ...... years. you can return "-" for "experience".
+                            - If the experience is a range, such as "1-3 years in {Position}", answer with the lowest number, which will be "1 years in {Position}". 
+                            But if there is also 0 year, the answer will be "-". For example, for 0-3 years in {Position}, answer as "-".
+                            
                             - Combine all experiences into a single string for "Experience", all skills into a single string for "Skills", and all degrees into a single string for "Degree."
                         ***Role of you***
                         1. If data cannot be found as my instruction then you can response empty string for that field.
