@@ -60,6 +60,8 @@ const getMostMatchUser = async (req, res) => {
         "userId",
         "-companyDetail -companyName -password -role -appliedJobs -postedJobs -jobField"
       );
+    }else{
+      return res.status(200).json([]);
     }
 
     const userSkill = userData.map((data) => data.Skill);

@@ -32,74 +32,101 @@ const getMostMatchPost = async (req, res) => {
     const postSkill = posts.map((data) => data.Skill);
     const postExperience = posts.map((data) => data.keyExperience);
     const postDegree = posts.map((data) => data.Degree);
-
+    
     const userSkill = userData[0].Skill;
     const userExperience = userData[0].Experience;
     const userDegree = userData[0].Degree;
-
+    
     // tfIDF สำหรับแต่ละส่วน
     const tfidfSkill = new TfIdf();
     const tfidfExperiences = new TfIdf();
     const tfidfDegree = new TfIdf();
-
+    
     // เพิ่มข้อมูลสำหรับการคำนวณ similarity
     postSkill.forEach((Skill) => tfidfSkill.addDocument(Skill));
-    postExperience.forEach((experience) =>
-      tfidfExperiences.addDocument(experience)
-    );
+    postExperience.forEach((experience) => tfidfExperiences.addDocument(experience));
     postDegree.forEach((degree) => tfidfDegree.addDocument(degree));
-
-    const results = [];
-
-    // คำนวณ similarity สำหรับ Skill, Experience และ Degree
-    tfidfSkill.computeSimilarities(userSkill, (i, SkillSimilarity) => {
-      tfidfExperiences.computeSimilarities(
-        userExperience,
-        (j, experienceSimilarity) => {
-          tfidfDegree.computeSimilarities(userDegree, (k, degreeSimilarity) => {
-            if (i === j && i === k) {
-              // ตรวจสอบให้แน่ใจว่าตรงกันทั้งสามค่า
-              // คำนวณ Weighted Similarity โดย Skill 40%, Experience 40%, และ Degree 20%
-              const weightedSimilarity =
-                SkillSimilarity * 0.4 +
-                experienceSimilarity * 0.4 +
-                degreeSimilarity * 0.2;
-
-              // เก็บผลลัพธ์
-              results.push({
-                postSkillIndex: i,
-                similarity: weightedSimilarity,
-              });
-            }
-          });
-        }
-      );
-    });
-
-    results.sort((a, b) => b.similarity - a.similarity);
-
-    // results.forEach(result => {
-    //     console.log(`postSkill ${result.postSkillIndex} มีความคล้ายคลึง: ${result.similarity.toFixed(2)}%`);
-    // });
-
-    // console.log("UserSkill : "+userSkill);
-    // console.log("PostSkill : "+postSkill[52]);
-
-    // กรองผลลัพธ์ที่มีเปอร์เซ็นต์มากกว่า 50%
-    const filteredResults = results
-      .filter((result) => result.similarity > 10)
-      .map((result) => ({
-        ...posts[result.postSkillIndex]._doc,
-        matchPercentage: result.similarity.toFixed(2),
-      }));
-
-    if (filteredResults.length === 0) {
-      return res.status(204).json({
-        message: "No matching posts found",
+    
+    // ฟังก์ชันสำหรับคำนวณ similarity แต่ละส่วน
+    function computeSkillSimilarity(index) {
+      return new Promise((resolve) => {
+        tfidfSkill.computeSimilarities(userSkill, (i, SkillSimilarity) => {
+          if (i === index) {
+            resolve(SkillSimilarity);
+          }
+        });
       });
     }
-
-    return res.status(200).json(filteredResults);
+    
+    function computeExperienceSimilarity(index) {
+      return new Promise((resolve) => {
+        tfidfExperiences.computeSimilarities(userExperience, (j, experienceSimilarity) => {
+          if (j === index) {
+            resolve(experienceSimilarity);
+          }
+        });
+      });
+    }
+    
+    function computeDegreeSimilarity(index) {
+      return new Promise((resolve) => {
+        tfidfDegree.computeSimilarities(userDegree, (k, degreeSimilarity) => {
+          if (k === index) {
+            resolve(degreeSimilarity);
+          }
+        });
+      });
+    }
+    
+    // คำนวณ Skill, Experience และ Degree สำหรับแต่ละโพสต์
+    const results = [];
+    
+    const similarityPromises = posts.map((_, index) => {
+      return Promise.all([
+        computeSkillSimilarity(index),
+        computeExperienceSimilarity(index),
+        computeDegreeSimilarity(index),
+      ]).then(([SkillSimilarity, experienceSimilarity, degreeSimilarity]) => {
+        // คำนวณ Weighted Similarity โดย Skill 40%, Experience 40%, และ Degree 20%
+        const weightedSimilarity =
+          SkillSimilarity * 0.4 + experienceSimilarity * 0.4 + degreeSimilarity * 0.2;
+    
+        // เก็บผลลัพธ์สำหรับแต่ละโพสต์
+        results.push({
+          postSkillIndex: index,
+          similarity: weightedSimilarity,
+        });
+      });
+    });
+    
+    // รอให้การคำนวณทั้งหมดเสร็จสิ้นก่อนประมวลผลต่อ
+    Promise.all(similarityPromises)
+      .then(() => {
+        // จัดเรียงผลลัพธ์
+        results.sort((a, b) => b.similarity - a.similarity);
+    
+        // กรองผลลัพธ์ที่มีเปอร์เซ็นต์มากกว่า 10%
+        const filteredResults = results
+          .filter((result) => result.similarity > 10)
+          .map((result) => ({
+            ...posts[result.postSkillIndex]._doc,
+            matchPercentage: result.similarity.toFixed(2),
+          }));
+    
+        if (filteredResults.length === 0) {
+          return res.status(204).json({
+            message: "No matching posts found",
+          });
+        }
+    
+        return res.status(200).json(filteredResults);
+      })
+    
+      .catch((err) => {
+        console.error("Error computing similarities:", err);
+        return res.status(500).json({ error: "Internal Server Error" });
+      });
+    
   } catch (err) {
     console.log(err);
     return res.status(500).json({

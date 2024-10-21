@@ -77,9 +77,14 @@ class TfIdf {
     
         // คำนวณ Cosine Similarity สำหรับแต่ละเอกสาร
         this.documents.forEach((doc, docIndex) => {
-            const docVector = this.getWordVector(doc);
-            const similarity = this.cosineSimilarity(queryVector, docVector);
-            results.push({ docIndex, similarity });
+            if (query === '-' && this.documents[docIndex]) {
+                const similarity = 1
+                results.push({ docIndex, similarity });
+            }else{
+                const docVector = this.getWordVector(doc);
+                const similarity = this.cosineSimilarity(queryVector, docVector);
+                results.push({ docIndex, similarity });
+            }
         });
     
         // ส่งผลลัพธ์โดยไม่ normalize
