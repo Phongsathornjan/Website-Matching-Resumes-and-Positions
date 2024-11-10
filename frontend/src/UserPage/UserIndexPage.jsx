@@ -98,12 +98,16 @@ const Userindexpage = () => {
 
   const checkResume = async () => {
     const userId = localStorage.getItem("id_user");
-    const response = await axios.get(
-      `http://localhost:4001/checkValidResume/${userId}`
-    );
-    if (response.status == 200) {
-      setIsResume(true);
-    } else {
+    try{
+      const response = await axios.get(
+        `http://localhost:4001/checkValidResume/${userId}`
+      );
+      if (response.status == 200) {
+        setIsResume(true);
+      } else {
+        setIsResume(false);
+      }
+    }catch(e){
       setIsResume(false);
     }
   };
