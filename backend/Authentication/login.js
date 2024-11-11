@@ -12,7 +12,7 @@ const verifyLogin = async (req , res) => {
         //Validate user input
         if(!(email && password)){
             return res.status(400).json({
-                message: 'Please enter your Email and Password'
+                message: 'กรุณาใส่อีเมลและรหัสผ่าน'
             })
         }
 
@@ -22,7 +22,7 @@ const verifyLogin = async (req , res) => {
         const user = await User.findOne({email: email});
         if(!user){
             return res.status(400).json({
-                message: 'Invalid user or password'
+                message: 'รหัสผ่านไม่ถูกต้อง'
             })
         }
 
@@ -58,13 +58,14 @@ const verifyLogin = async (req , res) => {
             });
         }else{
             return res.status(400).json({
-                message: 'Invalid user or password'
+                message: 'รหัสผ่านไม่ถูกต้อง'
             })
         }
 
 
     } catch(err){
         console.log(err);
+        return res.status(400).json({err})
     }
 }
 

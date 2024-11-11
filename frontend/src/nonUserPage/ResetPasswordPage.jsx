@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import swal from "sweetalert";
 
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState(null);
   const [otp, setOtp] = useState(null);
-  const [error, setError] = useState(null);
   const [isLoad, setIsLoad] = useState(null);
 
   useEffect(() => {
@@ -29,10 +29,13 @@ const ResetPasswordPage = () => {
   },[otp])
 
   const sendOTP = async () => {
-    setError(null)
     setIsLoad(true)
-    if(!email){
-      setError('Please Enter your Email')
+    if(!email){        
+      swal(
+      "Oops!",
+      'กรุณาใส่อีเมลของคุณ',
+      "error"
+    );
       setIsLoad(false)
       return;
     }
@@ -45,8 +48,11 @@ const ResetPasswordPage = () => {
       navigate('/VerifyEmailPage', { state: { otp: otp,email: email } });
     }
     }catch(err){
-      console.log(err.response.data.message);
-      setError(err.response.data.message)
+      swal(
+        "Oops!",
+        `เกิดข้อผิดพลาด Error : ${err.response.data.message}`,
+        "error"
+      );
     }
     setIsLoad(false)
   }
@@ -72,13 +78,8 @@ const ResetPasswordPage = () => {
         </div>
         <h5 style={styles.ResetText}>RESET YOU PASSWORD</h5>
         <div style={{height: '25px'}}></div>
-        <p style={styles.Text}> Enter your user account's verified email address <br />and we will send you a password reset link to email.</p>
+        <p style={styles.Text}> ใส่ที่อยู่อีเมลของคุณ <br />เราจะส่งรหัส OTP ไปที่อีเมลของคุณเพื่อใช้ในการยืนยันตัวตน</p>
         {isLoad && <center><div style={spinnerStyle}></div></center>}
-        {error ? (
-          <><div className="alert alert-danger" style={animation} role="alert">{error}</div></>
-        ):(
-          <><div style={{height: '58px'}}></div></>
-        )}
         <form style={styles.form}>
           <div style={styles.formGroup}>
             <input

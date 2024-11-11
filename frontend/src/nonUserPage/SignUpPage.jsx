@@ -5,6 +5,7 @@ import Select from 'react-select';
 import axios from 'axios';
 import LocationOptions from '../components/LocationOptions.jsx';
 import { Link, useNavigate } from 'react-router-dom'
+import swal from "sweetalert";
 
 const SignUpPage = () => {
   const navigate = useNavigate();
@@ -14,7 +15,6 @@ const SignUpPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [location, setLocation] = useState('Bangkok');
-  const [error, setError] = useState('');
 
   const submit = async () => {
     try{
@@ -35,7 +35,11 @@ const SignUpPage = () => {
 
     }catch(err){
       if(err.response.status == 400){
-        setError(err.response.data.message);
+        swal(
+          "Oops!",
+          `${err.response.data.message}`,
+          "error"
+        );
       }
     }
   }
@@ -58,7 +62,6 @@ const SignUpPage = () => {
     <div style={SignUpStyle}>
         <h1 style={titleStyle}>Sign Up</h1>
         <p style={subheadingStyle}>Please fill in personal information.</p>
-        {error && <div className="alert alert-danger" role="alert">{error}</div>}
         <form style={formStyle}>
             <div style={formRowStyle}>
                 <input type="text" placeholder="Firstname" style={inputStyle} onChange={(e) => setFirstName(e.target.value)}/>

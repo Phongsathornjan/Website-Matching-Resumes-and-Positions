@@ -20,7 +20,7 @@ const verifyRegister = async (req , res) => {
         //validate user input
         if(!(email && password && first_name && last_name && location && role)){
             return res.status(400).json({
-                message: 'All input is require'
+                message: 'กรุณากรอกข้อมูลให้ครบ'
             })
         }
 
@@ -28,7 +28,7 @@ const verifyRegister = async (req , res) => {
         const Validate = await User.findOne({email: email});
             if(Validate){
                 return res.status(400).json({
-                    message: 'This email is already exits'
+                    message: 'อีเมลนี้มีผู้ใช้แล้ว'
                 })
             }
 

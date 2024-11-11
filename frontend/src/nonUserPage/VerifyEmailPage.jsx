@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
+import swal from "sweetalert";
 
-import Navbar from '../components/navbar/Navbar.jsx';
 import axios from 'axios';
 
 const VerifyEmailPage = () => {
@@ -10,7 +10,6 @@ const VerifyEmailPage = () => {
   const location = useLocation();
 
   const [status, setStatus] = useState(false);
-  const [sign, setSign] = useState(null);
   const [isLoad, setIsLoad] = useState(null);
 
   const [email, setEmail] = useState(location.state?.email);
@@ -32,13 +31,27 @@ const VerifyEmailPage = () => {
 
   const onClickButton = () => {
     setIsLoad(true)
-    console.log(otp)
+    if(inputOtp == null){
+      swal(
+        "Oops!",
+        `กรุณาใส่รหัส OTP`,
+        "error"
+      );
+    }
     if(otp == inputOtp){
+      swal({
+        title: "OTP ถูกต้อง",
+        text: "ใส่รหัสผ่านของคุณ",
+        icon: "success",
+      })
       setStatus(true)
-      setSign(null)
       setIsLoad(false)
     }else{
-      setSign("OTP ไม่ถูกต้อง")
+      swal(
+        "Oops!",
+        `รหัส OTP ไม่ถูกต้อง`,
+        "error"
+      );
       setIsLoad(false)
     }
   }
@@ -63,7 +76,6 @@ const VerifyEmailPage = () => {
         </div>
         <h5 style={styles.VerifyText}>Verify Email</h5>
         <p style={styles.Text}> We will send you a OTP to email. Please Enter OTP.</p>
-        {sign && <div className="alert alert-danger" role="alert">{sign}</div>}
         {isLoad && <center><div style={spinnerStyle}></div></center>}
         {status ? (
           <>

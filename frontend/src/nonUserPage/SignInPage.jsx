@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import swal from "sweetalert";
 
 import Navbar from '../components/navbar/Navbar.jsx';
 
@@ -68,9 +69,17 @@ const SignInPage = () => {
       }
     } catch (err) {
       if (err.response && err.response.status === 400) {
-        setError(err.response.data.message);
+        swal(
+          "Oops!",
+          `${err.response.data.message}`,
+          "error"
+        );
       } else {
-        setError('An unexpected error occurred. Please try again.');
+        swal(
+          "Oops!",
+          "Something Error",
+          "error"
+        );
       }
     }
   };
