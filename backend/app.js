@@ -10,6 +10,7 @@ const verifyRegister =require('./Authentication/register');
 const auth = require('./middleware/auth');
 const tokenDecoder = require('./Authentication/tokenDecoder');
 const resetPassword = require('./Authentication/resetPassword');
+const handleRegister = require('./Authentication/handleRegister')
 
 //Resume
 const checkValidResume = require('./checkValidResume');
@@ -84,6 +85,11 @@ app.get("/tokenDecoder/:token", async (req, res) => {
 
 app.patch("/resetPassword", async (req, res) => {
     return resetPassword(req,res)
+})
+
+//handleRegister
+app.post("/handleRegister", async (req, res) => {
+    return handleRegister(req, res);
 })
 
 

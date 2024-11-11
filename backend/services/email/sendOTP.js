@@ -19,13 +19,6 @@ const sendOTP = async (req, res) => {
             });
         }
 
-        const user = await User.findOne({email: LowerCaseEmail});
-        if(!user){
-            return res.status(400).json({
-                message: 'Not found user'
-            })
-        }
-
         // สร้าง transporter ที่จะใช้งานกับบริการส่งอีเมล (ใช้ App Password)
         let transporter = nodemailer.createTransport({
             service: 'gmail',
