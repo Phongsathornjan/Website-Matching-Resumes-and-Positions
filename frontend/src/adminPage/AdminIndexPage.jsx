@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom"
 import axios from 'axios';
 
 import AdminNavbar from "./AdminNavbar";
+import CreateUserPage from "./CreateUserPage";
 
 const AdminIndexPage = () => {
     const navigate = useNavigate();
@@ -35,10 +36,8 @@ const AdminIndexPage = () => {
 
     return(
         <>
-        <AdminNavbar></AdminNavbar>
-        <Link to="/CreateUser">
-            <button>Create User</button>
-        </Link>
+        <AdminNavbar/>
+        <CreateUserPage/>
         </>
     )
 }
