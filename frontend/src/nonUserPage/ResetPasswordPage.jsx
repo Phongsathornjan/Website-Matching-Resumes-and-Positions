@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-import Navbar from '../components/navbar/Navbar.jsx';
-
 const ResetPasswordPage = () => {
   const navigate = useNavigate();
 
@@ -66,7 +64,6 @@ const ResetPasswordPage = () => {
 
   return (
     <>
-    <Navbar></Navbar>
     <div style={styles.container}>
       <div style={styles.box}>
         <div style={styles.header}>

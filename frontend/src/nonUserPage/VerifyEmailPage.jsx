@@ -56,7 +56,6 @@ const VerifyEmailPage = () => {
 
   return (
     <>
-    <Navbar></Navbar>
     <div style={styles.container}>
       <div style={styles.box}>
         <div style={styles.header}>

@@ -199,6 +199,7 @@ const UserInformation = () => {
                 />
               )}
             </div>
+            <a href="/ResetPasswordPage">เปลี่ยนรหัสผ่าน</a>
             <div className="mt-5">
               <button className="btn btn-danger" onClick={handleEditButton}>
                 แก้ไขข้อมูล
