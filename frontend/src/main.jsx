@@ -7,6 +7,7 @@ import HrIndexPage from './HrPage/HrIndexPage';
 import PostDetailPage from './HrPage/PostDetailPage.jsx';
 import InsidePost from './HrPage/InsidePost.jsx';
 import ResumePage from './HrPage/ResumePage.jsx';
+import HrInformation from './HrPage/HrInformation.jsx';
 
 import IndexPage from './nonUserPage/IndexPage.jsx';
 import SignUpPage from './nonUserPage/SignUpPage.jsx';
@@ -102,6 +103,10 @@ const router = createBrowserRouter([
   {
     path: "/MyInformation", 
     element: <UserInformation></UserInformation>
+  },
+  {
+    path: "/HRInformation", 
+    element: <HrInformation></HrInformation>
   }
 ]);
 

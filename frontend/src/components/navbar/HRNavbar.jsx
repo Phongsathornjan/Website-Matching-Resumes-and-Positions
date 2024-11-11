@@ -21,7 +21,7 @@ const HRNavbar = () => {
             My Account
           </button>
           <ul className="dropdown-menu">
-            <Link to={'#'} style={linkStyle}>
+            <Link to={'/HRInformation'} style={linkStyle}>
               <li><p className="dropdown-item">ข้อมูลส่วนตัว</p></li>
             </Link>
               <li><p className="dropdown-item" onClick={SignOut}>Sign out</p></li>

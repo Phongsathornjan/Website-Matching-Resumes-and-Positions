@@ -40,6 +40,8 @@ const getAppointmentById = require('./services/appointment/getAppointmentById')
 
 //User
 const updateJobField = require('./services/users/updateJobField')
+const getInformation = require('./services/users/getInformation')
+const updateInformation = require('./services/users/updateInformation')
 
 //email
 const sendOTP = require('./services/email/sendOTP');
@@ -86,10 +88,19 @@ app.patch("/resetPassword", async (req, res) => {
 
 
 
+
 //User
 //Update JobField
 app.patch("/UpdateJobField/:userId/:jobField", async (req, res) => {
     return updateJobField(req,res)
+})
+
+app.get("/getInformation/:userId", async (req, res) => {
+    return getInformation(req,res)
+})
+
+app.patch("/updateInformation/:userId", async (req, res) => {
+    return updateInformation(req,res)
 })
 
 

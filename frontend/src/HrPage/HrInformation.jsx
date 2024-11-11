@@ -1,22 +1,14 @@
 import React, { useState, useEffect } from "react";
-import Select from "react-select";
-import LocationOptions from "../components/LocationOptions";
-import JobFieldOptions from "../components/Data/jobField";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import UserNavbar from "../components/navbar/UserNavbar.jsx";
+import HRNavbar from "../components/navbar/HRNavbar";
 import Swal from 'sweetalert2';
 
-const UserInformation = () => {
+const HrInformation = () => {
   const navigate = useNavigate();
-  const [first_name, setFirst_name] = useState("");
-  const [last_name, setLast_name] = useState("");
-  const [location, setLocation] = useState("");
-  const [jobField, setJobField] = useState("");
+  const [companyName, setCompanyName] = useState("");
+  const [companyDetail, setCompanyDetail] = useState("");
 
-
-  const [location4Display, setLocation4Display] = useState([]);
-  const [jobField4Display, setJobField4Display] = useState([]);
 
   const [editStatus, setEditStatus] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -29,22 +21,20 @@ const UserInformation = () => {
     const userId = localStorage.getItem("id_user");
     try{
       const response = await axios.patch(`http://localhost:4001/updateInformation/${userId}`,{
-        first_name,
-        last_name,
-        location,
-        jobField
+        companyName,
+        companyDetail,
       })
       if (response.status === 200) {
         Swal.fire({
-          title: 'สำเร็จ!',
-          text: 'ข้อมูลของคุณได้รับการอัพเดตแล้ว.',
-          icon: 'success',
-          confirmButtonText: 'ตกลง'
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.reload();
-          }
-        });        
+            title: 'สำเร็จ!',
+            text: 'ข้อมูลของคุณได้รับการอัพเดตแล้ว.',
+            icon: 'success',
+            confirmButtonText: 'ตกลง'
+          }).then((result) => {
+            if (result.isConfirmed) {
+              window.location.reload();
+            }
+          });          
       }
     }catch(e){
       console.log(e)
@@ -65,14 +55,9 @@ const UserInformation = () => {
         `http://localhost:4001/getInformation/${userId}`
       );
       if (response.status == 200) {
-        
-        setFirst_name(response.data.data.first_name);
-        setLast_name(response.data.data.last_name);
-        setLocation(response.data.data.location);
-        setJobField(response.data.data.jobField)
-
-        setLocation4Display({value: response.data.data.location, label: response.data.data.location});
-        setJobField4Display({value: response.data.data.jobField, label: response.data.data.jobField});
+        console.log(response)
+        setCompanyName(response.data.data.companyName);
+        setCompanyDetail(response.data.data.companyDetail);
       }
       setIsLoading(false);
     } catch (err) {
@@ -105,7 +90,7 @@ const UserInformation = () => {
         );
 
         if (response.status == 200) {
-          if (response.data.userData.role != "member") {
+          if (response.data.userData.role != "hr") {
             navigate("/SignIn");
           }
         } else {
@@ -134,7 +119,7 @@ const UserInformation = () => {
 
   return (
     <>
-      <UserNavbar></UserNavbar>
+      <HRNavbar/>
       <div className="container" style={{ marginTop: "100px" }}>
         <div className="card" style={fadeIn}>
           <div className="card-header">
@@ -142,62 +127,26 @@ const UserInformation = () => {
           </div>
           <div className="card-body m-5">
             <div className="d-flex mb-2">
-              <p>ชื่อจริง &nbsp;&nbsp;&nbsp;&nbsp;: </p>
-              {!editStatus && <p>&nbsp;&nbsp;&nbsp;{first_name}</p>}
+              <div style={{width: '140px'}}><p>ชื่อบริษัท &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </p></div>
+              {!editStatus && <p>{companyName}</p>}
               {isLoading && (
                 <center>
                   <div style={spinnerStyle}></div>
                 </center>
               )}
               {editStatus && (
-                <input value={first_name} className="ms-3" style={inputStyle} onChange={(e)=>setFirst_name(e.target.value)}></input>
+                <input value={companyName} className="ms-3" style={inputStyle} onChange={(e)=>setCompanyName(e.target.value)}></input>
               )}
             </div>
             <div className="d-flex mb-2">
-              <p>นามสกุล &nbsp;: </p>
-              {!editStatus && <p>&nbsp;&nbsp;&nbsp;{last_name}</p>}
+              <div style={{width: '140px'}}><p>รายละเอียด &nbsp;&nbsp;: </p></div>
+              {!editStatus && <p className="ms-2">{companyDetail}</p>}
               {isLoading && (
                 <center>
                   <div style={spinnerStyle}></div>
                 </center>
               )}
-              {editStatus && <input value={last_name} className="ms-3" style={inputStyle} onChange={(e)=>setLast_name(e.target.value)}></input>}
-            </div>
-            <div className="d-flex mb-2">
-              <p>จังหวัด &nbsp;&nbsp;&nbsp;: </p>
-              {!editStatus && <p>&nbsp;&nbsp;&nbsp;{location4Display.value}</p>}
-              {isLoading && (
-                <center>
-                  <div style={spinnerStyle}></div>
-                </center>
-              )}
-              {editStatus && (
-                <Select
-                  className="ms-3"
-                  options={LocationOptions}
-                  defaultValue={location4Display}
-                  styles={{ width: "100%" }}
-                  onChange={(e) => setLocation(e.value)}
-                />
-              )}
-            </div>
-            <div className="d-flex mb-2">
-              <p>สายงาน &nbsp;: </p>
-              {!editStatus && <p>&nbsp;&nbsp;&nbsp;{jobField4Display.value}</p>}
-              {isLoading && (
-                <center>
-                  <div style={spinnerStyle}></div>
-                </center>
-              )}
-              {editStatus && (
-                <Select
-                  className="ms-3"
-                  options={JobFieldOptions}
-                  defaultValue={jobField4Display}
-                  styles={{ width: "100%" }}
-                  onChange={(e) => setJobField(e.value)}
-                />
-              )}
+              {editStatus && <textarea value={companyDetail} className="ms-5" style={inputStyle} rows="4" cols="180" onChange={(e)=>setCompanyDetail(e.target.value)}></textarea>}
             </div>
             <div className="mt-5">
               <button className="btn btn-danger" onClick={handleEditButton}>
@@ -256,4 +205,4 @@ const inputStyle = {
   border: "1px solid rgba(128, 128, 128, 0.4)"
 }
 
-export default UserInformation;
+export default HrInformation;
