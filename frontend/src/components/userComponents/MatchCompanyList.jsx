@@ -6,6 +6,9 @@ import axios from "axios";
 import moment from "moment";
 import swal from "sweetalert";
 
+
+export let controller;
+
 const MatchCompanyList = () => {
   const navigate = useNavigate();
 
@@ -39,34 +42,45 @@ const MatchCompanyList = () => {
     setStatus(null);
   }, [status]);
 
-  const getMostMatchPost = async () => {
+  const getMostMatchPost = () => {
+    // ยกเลิกคำขอที่กำลังทำงานอยู่ก่อนหน้า (ถ้ามี)
+    if (controller) controller.abort();
+  
+    // สร้าง AbortController ใหม่
+    controller = new AbortController();
+    const { signal } = controller;
+  
     setIsLoading(true);
-    if (userLocation != null && jobField != null) {
+  
+    if (userLocation && jobField) {
       const encodedLocation = encodeURIComponent(userLocation);
       const encodedJobField = encodeURIComponent(jobField);
       const userId = localStorage.getItem("id_user");
-
-      try {
-        const response = await axios.get(
-          `http://localhost:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`
-        );
-        if (response.status == 200) {
-          setJobList(response.data);
-          setCurrentPage(1);
-        }
-      } catch (err) {
-        console.log(err);
-        setIsLoading(false);
-        if (err.message === "Timeout") {
-          swal("Oops!", "Lost connection", "error");
-        } else {
-          swal("Oops!", "Internal Server Error", "error");
-        }
-      } finally {
-        setIsLoading(false);
-      }
+  
+      axios
+        .get(`http://localhost:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`, {
+          signal,
+        })
+        .then((response) => {
+          if (response.status === 200) {
+            setJobList(response.data);
+            setCurrentPage(1);
+          }
+        })
+        .catch((err) => {
+          if (err.name === "CanceledError") {
+            console.log("Request canceled");
+          } else {
+            console.log(err);
+            swal("Oops!", err.message.includes("Timeout") ? "Lost connection" : "Internal Server Error", "error");
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   };
+  
 
   const getUserData = async () => {
     const token = localStorage.getItem("token");

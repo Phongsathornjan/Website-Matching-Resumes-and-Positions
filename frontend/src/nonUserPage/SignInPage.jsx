@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import swal from "sweetalert";
+import Swal from 'sweetalert2';
 
 import Navbar from '../components/navbar/Navbar.jsx';
 
@@ -55,7 +55,7 @@ const SignInPage = () => {
 
   const submit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior
-
+    showLoadingAlert()
     try {
       const response = await axios.post('http://localhost:4001/login', {
         email,
@@ -63,26 +63,40 @@ const SignInPage = () => {
       });
 
       if (response.status === 200) {
+        Swal.close();
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('id_user', response.data.id);
         navigate('/UserIndexPage');
       }
     } catch (err) {
+      Swal.close();
       if (err.response && err.response.status === 400) {
-        swal(
-          "Oops!",
-          `${err.response.data.message}`,
-          "error"
-        );
+        Swal.fire({
+          icon: 'error',                   
+          title: 'Oops!',                 
+          text: `${err.response.data.message}`,  
+        });
       } else {
-        swal(
-          "Oops!",
-          "Something Error",
-          "error"
-        );
+        Swal.fire({
+          icon: 'error',                   
+          title: 'Oops!',                 
+          text: 'Something Error',  
+        });
       }
     }
   };
+
+  function showLoadingAlert() {
+    Swal.fire({
+      title: 'Loading...',
+      text: 'กำลังเข้าสู่ระบบ...',
+      allowOutsideClick: false,      
+      didOpen: () => {
+        Swal.showLoading();          
+      },
+      showConfirmButton: false,      
+    });
+  }
 
   return (
     <>

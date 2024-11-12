@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import moment from "moment";
 
 import HRNavbar from "../components/navbar/HRNavbar";
 import InsidePost from "./InsidePost";
@@ -113,7 +114,7 @@ const PostDetailPage = () => {
                   <div
                     style={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <p className="mb-1">โพสต์เมื่อ : {jobDetail.time_stamp}</p>
+                    <p className="mb-1">โพสต์เมื่อ : {moment(Number(jobDetail.time_stamp)).format("DD-MM-YYYY")}</p>
                     <button
                       className="btn btn-success"
                       onClick={findCandidateButton}

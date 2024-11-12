@@ -17,7 +17,9 @@ import MatchCompanyList from "./../components/userComponents/MatchCompanyList";
 import NewCompanyList from "./../components/userComponents/NewCompanyList";
 import MyJob from "./../components/userComponents/MyJob";
 import Alert from "./../components/Alert";
+import Swal from 'sweetalert2';
 
+import { controller as getMostMatchPostController } from  '../components/userComponents/MatchCompanyList.jsx'
 import { careerFileContext } from "../context/careerFileContext";
 import { JobListUserContext } from "../context/JobListUserContext";
 import { Container } from "react-bootstrap";
@@ -113,20 +115,46 @@ const Userindexpage = () => {
   };
 
   const SearchPosts = async () => {
+    if (getMostMatchPostController) {
+      getMostMatchPostController.abort();
+    }
     setAllColorWhite();
+    showLoadingAlert()
     try {
-      const encodedTextSearch = encodeURIComponent(prompt);
+      let encodedTextSearch = null
+      if(prompt == ""){
+        encodedTextSearch = encodeURIComponent("null");
+      }else{
+        encodedTextSearch = encodeURIComponent(prompt);
+      }
       const encodedLocation = encodeURIComponent(location);
       const encodedJobField = encodeURIComponent(jobfield);
       const response = await axios.get(
         `http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`
       );
+      Swal.close();
       setJobList(response.data);
-      console.log(response.data);
     } catch (e) {
-      console.log(e);
+      Swal.close();
+      Swal.fire({
+        icon: 'error',                   
+        title: 'Oops!',                 
+        text: `${e.response.data.message}`,  
+      });
     }
   };
+
+  function showLoadingAlert() {
+    Swal.fire({
+      title: 'Loading...',
+      text: 'กำลังโหลดข้อมูล...',
+      allowOutsideClick: false,      
+      didOpen: () => {
+        Swal.showLoading();          
+      },
+      showConfirmButton: false,      
+    });
+  }
 
   const setAllColorWhite = () => {
     setColor1("#fff");
@@ -257,7 +285,6 @@ const Userindexpage = () => {
             style={{ ...statusStyle, position: "relative" }}
             onClick={() => onClickButton("#f2d5ff", "My Job")}
           >
-            <Alert text="New!" />
             <StatusCard
               title="My Job"
               count="0"
@@ -300,7 +327,6 @@ const Userindexpage = () => {
                   style={{ ...statusStyle, position: "relative" }}
                   onClick={() => onClickButton("#FEB3B7", "New Job")}
                 >
-                  <Alert text="New!" />
                   <StatusCard
                     title="7 วันล่าสุด"
                     color={color1}

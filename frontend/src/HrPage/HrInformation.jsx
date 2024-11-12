@@ -128,25 +128,25 @@ const HrInformation = () => {
           <div className="card-body m-5">
             <div className="d-flex mb-2">
               <div style={{width: '140px'}}><p>ชื่อบริษัท &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;: </p></div>
-              {!editStatus && <p>{companyName}</p>}
+              {!editStatus && <p style={{width: '1000px'}}>{companyName}</p>}
               {isLoading && (
                 <center>
                   <div style={spinnerStyle}></div>
                 </center>
               )}
               {editStatus && (
-                <input value={companyName} className="ms-3" style={inputStyle} onChange={(e)=>setCompanyName(e.target.value)}></input>
+                <input value={companyName} style={inputStyle} onChange={(e)=>setCompanyName(e.target.value)}></input>
               )}
             </div>
             <div className="d-flex mb-2">
               <div style={{width: '140px'}}><p>รายละเอียด &nbsp;&nbsp;: </p></div>
-              {!editStatus && <p className="ms-2">{companyDetail}</p>}
+              {!editStatus && <p style={{width: '1000px'}}>{companyDetail}</p>}
               {isLoading && (
                 <center>
                   <div style={spinnerStyle}></div>
                 </center>
               )}
-              {editStatus && <textarea value={companyDetail} className="ms-5" style={inputStyle} rows="4" cols="180" onChange={(e)=>setCompanyDetail(e.target.value)}></textarea>}
+              {editStatus && <textarea value={companyDetail} style={inputStyle} rows="4" cols="130" onChange={(e)=>setCompanyDetail(e.target.value)}></textarea>}
             </div>
             <a href="/ResetPasswordPage">เปลี่ยนรหัสผ่าน</a>
             <div className="mt-5">
