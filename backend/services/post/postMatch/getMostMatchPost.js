@@ -1,7 +1,7 @@
 const Post = require("../../../model/post");
 const Resume = require("../../../model/resume");
 
-const TfIdf = require("../../../class/Tfidf");
+const cosine = require("../../../class/cosine");
 
 const getMostMatchPost = async (req, res) => {
   const { userId, Location, WorkField } = req.params;
@@ -37,20 +37,20 @@ const getMostMatchPost = async (req, res) => {
     const userExperience = userData[0].Experience;
     const userDegree = userData[0].Degree;
     
-    // tfIDF สำหรับแต่ละส่วน
-    const tfidfSkill = new TfIdf();
-    const tfidfExperiences = new TfIdf();
-    const tfidfDegree = new TfIdf();
+    // cosine สำหรับแต่ละส่วน
+    const cosineSkill = new cosine();
+    const cosineExperiences = new cosine();
+    const cosineDegree = new cosine();
     
     // เพิ่มข้อมูลสำหรับการคำนวณ similarity
-    postSkill.forEach((Skill) => tfidfSkill.addDocument(Skill));
-    postExperience.forEach((experience) => tfidfExperiences.addDocument(experience));
-    postDegree.forEach((degree) => tfidfDegree.addDocument(degree));
+    postSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
+    postExperience.forEach((experience) => cosineExperiences.addDocument(experience));
+    postDegree.forEach((degree) => cosineDegree.addDocument(degree));
     
     // ฟังก์ชันสำหรับคำนวณ similarity แต่ละส่วน
     function computeSkillSimilarity(index) {
       return new Promise((resolve) => {
-        tfidfSkill.computeSimilarities(userSkill, (i, SkillSimilarity) => {
+        cosineSkill.computeSimilarities(userSkill, (i, SkillSimilarity) => {
           if (i === index) {
             resolve(SkillSimilarity);
           }
@@ -60,7 +60,7 @@ const getMostMatchPost = async (req, res) => {
     
     function computeExperienceSimilarity(index) {
       return new Promise((resolve) => {
-        tfidfExperiences.computeSimilarities(userExperience, (j, experienceSimilarity) => {
+        cosineExperiences.computeSimilarities(userExperience, (j, experienceSimilarity) => {
           if (j === index) {
             resolve(experienceSimilarity);
           }
@@ -70,7 +70,7 @@ const getMostMatchPost = async (req, res) => {
     
     function computeDegreeSimilarity(index) {
       return new Promise((resolve) => {
-        tfidfDegree.computeSimilarities(userDegree, (k, degreeSimilarity) => {
+        cosineDegree.computeSimilarities(userDegree, (k, degreeSimilarity) => {
           if (k === index) {
             resolve(degreeSimilarity);
           }

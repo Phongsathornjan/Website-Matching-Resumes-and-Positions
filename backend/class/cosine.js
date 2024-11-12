@@ -1,4 +1,4 @@
-class TfIdf {
+class cosine {
     constructor() {
         this.documents = [];
         this.stopwords = [
@@ -95,4 +95,4 @@ class TfIdf {
     
 }
 
-module.exports = TfIdf;
+module.exports = cosine;

@@ -2,7 +2,7 @@ const Post = require("../../../model/post");
 const Resume = require("../../../model/resume");
 const mongoose = require("mongoose");
 
-const TfIdf = require("../../../class/Tfidf");
+const cosine = require("../../../class/cosine");
 
 const getMostMatchFromOutPost = async (req, res) => {
   const { IdPost } = req.params;
@@ -73,14 +73,14 @@ const getMostMatchFromOutPost = async (req, res) => {
     const postExperience = posts[0].keyExperience;
     const postDegree = posts[0].Degree;
     
-    const tfidfSkill = new TfIdf();
-    const tfidfExperiences = new TfIdf();
-    const tfidfDegree = new TfIdf();
+    const cosineSkill = new cosine();
+    const cosineExperiences = new cosine();
+    const cosineDegree = new cosine();
     
     // เพิ่มข้อมูลลงใน tf-idf
-    userSkill.forEach((Skill) => tfidfSkill.addDocument(Skill));
-    userExperiences.forEach((experience) => tfidfExperiences.addDocument(experience));
-    userDegree.forEach((degree) => tfidfDegree.addDocument(degree));
+    userSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
+    userExperiences.forEach((experience) => cosineExperiences.addDocument(experience));
+    userDegree.forEach((degree) => cosineDegree.addDocument(degree));
     
     const results = [];
     
@@ -88,7 +88,7 @@ const getMostMatchFromOutPost = async (req, res) => {
     async function calculateSkillSimilarity() {
         return new Promise((resolve) => {
             const skillResults = [];
-            tfidfSkill.computeSimilarities(postSkill, (i, skillSimilarity) => {
+            cosineSkill.computeSimilarities(postSkill, (i, skillSimilarity) => {
                 skillResults.push({ userSkillIndex: i, skillSimilarity });
                 resolve(skillResults);
             });
@@ -98,7 +98,7 @@ const getMostMatchFromOutPost = async (req, res) => {
     async function calculateExperienceSimilarity() {
         return new Promise((resolve) => {
             const experienceResults = [];
-            tfidfExperiences.computeSimilarities(postExperience, (i, experienceSimilarity) => {
+            cosineExperiences.computeSimilarities(postExperience, (i, experienceSimilarity) => {
                 experienceResults.push({ userExperienceIndex: i, experienceSimilarity });
                 resolve(experienceResults);
             });
@@ -108,7 +108,7 @@ const getMostMatchFromOutPost = async (req, res) => {
     async function calculateDegreeSimilarity() {
         return new Promise((resolve) => {
             const degreeResults = [];
-            tfidfDegree.computeSimilarities(postDegree, (i, degreeSimilarity) => {
+            cosineDegree.computeSimilarities(postDegree, (i, degreeSimilarity) => {
                 degreeResults.push({ userDegreeIndex: i, degreeSimilarity });
                 resolve(degreeResults);
             });
