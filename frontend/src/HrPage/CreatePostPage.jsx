@@ -170,7 +170,7 @@ const CreatePostPage = () => {
           </div>
 
           <button type="submit" style={styles.button} onClick={handleButton}>
-            สร้างโพสค์
+            สร้างโพสต์
           </button>
         </div>
       </div>
