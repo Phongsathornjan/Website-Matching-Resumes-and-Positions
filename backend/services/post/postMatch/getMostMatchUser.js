@@ -83,16 +83,43 @@ const getMostMatchUser = async (req, res) => {
     
     const results = [];
     
-    // แยกการคำนวณ similarity ออกเป็น 3 ฟังก์ชัน
-    async function calculateSkillSimilarity() {
-        return new Promise((resolve) => {
-            const skillResults = [];
-            cosineSkill.computeSimilarities(postSkill, (i, skillSimilarity) => {
-                skillResults.push({ userSkillIndex: i, skillSimilarity });
-                resolve(skillResults);
-            });
-        });
-    }
+    function filterUserSkillByPostSkill(userSkillArray, postSkill) {
+      // แปลง postSkill ให้เป็นอาร์เรย์ถ้ามีค่าเดียว
+      const skillsArray = postSkill.split(',').map(skill => skill.trim().toLowerCase());
+  
+      // กรองเฉพาะคำที่มีบางส่วนตรงกันใน postSkill
+      return userSkillArray.filter((skill) =>
+          skillsArray.some((postSkillItem) =>
+              postSkillItem.toLowerCase().includes(skill.toLowerCase()) || skill.toLowerCase().includes(postSkillItem.toLowerCase())
+          )
+      );
+  }
+  
+  async function calculateSkillSimilarity() {
+      return new Promise((resolve) => {
+          const skillResults = [];
+  
+          // กรองคำใน userSkill ที่ตรงกับ postSkill
+          const filteredUserSkills = userSkill.map(skill => {
+              const userSkillArray = skill.split(',').map(skillItem => skillItem.trim().toLowerCase());
+              // console.log("postSkill => "+postSkill)
+              // console.log("userSkill => "+userSkillArray)
+              // console.log("filteredUserSkill => "+filterUserSkillByPostSkill(userSkillArray, postSkill).join(', '))
+              // console.log('---------------------------------------');
+              return filterUserSkillByPostSkill(userSkillArray, postSkill);
+          });
+  
+          // รวมทุกคำที่กรองแล้วมาเป็น string เดียว
+          const allFilteredSkills = filteredUserSkills.flat().join(', '); // รวมทุกคำที่กรองแล้วเป็น string
+  
+          // คำนวณ similarity สำหรับ allFilteredSkills
+          cosineSkill.computeSimilarities(allFilteredSkills, (i, skillSimilarity) => {
+              skillResults.push({ userSkillIndex: i, skillSimilarity });
+          });
+  
+          resolve(skillResults); // ส่งผลลัพธ์หลังคำนวณเสร็จ
+      });
+  }
     
     async function calculateExperienceSimilarity() {
         return new Promise((resolve) => {

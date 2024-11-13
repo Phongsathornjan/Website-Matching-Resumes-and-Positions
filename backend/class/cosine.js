@@ -63,8 +63,8 @@ class cosine {
     
 
     computeSimilarities(query, callback) {
-        // เช็คว่าถ้า query หรือเอกสารใน documents เป็น "-"
-        if (query === '-') {
+        // เช็คว่าถ้า query(จาก post)เป็น  "-"
+        if (query == '-') {
             // ส่งค่า similarity เป็น 100% ทันที
             this.documents.forEach((doc, docIndex) => {
                 callback(docIndex, 100); // ค่า similarity 100%
@@ -77,7 +77,7 @@ class cosine {
     
         // คำนวณ Cosine Similarity สำหรับแต่ละเอกสาร
         this.documents.forEach((doc, docIndex) => {
-            if (query === '-' && this.documents[docIndex]) {
+            if (doc === 'PostNoNeedExperience') {
                 const similarity = 1
                 results.push({ docIndex, similarity });
             }else{
