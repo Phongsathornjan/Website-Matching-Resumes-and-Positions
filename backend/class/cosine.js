@@ -22,18 +22,18 @@ class cosine {
             'with', 'won\'t', 'would', 'wouldn\'t', 'you', 'you\'d', 'you\'ll', 'you\'re', 'you\'ve', 'your', 'yours', 'yourself', 'yourselves'
             ]; // กำหนด stopwords ที่จะไม่ใช้ในการคำนวณ
     }
-
     tokenize(text) {
-    
         // ตรวจสอบว่า text เป็น string ก่อน tokenize
         if (typeof text !== 'string') {
             return [];
         }
+        // แปลงข้อความเป็นตัวอักษรเล็กทั้งหมด และแทนที่ / ด้วย , เพื่อให้แยกคำง่ายขึ้น
+        text = text.toLowerCase().replace(/[/,]/g, ' ');  // เปลี่ยน / และ , เป็นช่องว่าง
     
-        return text.toLowerCase()
-                   .match(/\b\w+\b/g)
-                   ?.filter(token => !this.stopwords.includes(token)) || [];
+        // ใช้ regular expression เพื่อแยกคำที่เป็นคำจริงๆ
+        return text.match(/\b\w+\b/g)?.filter(token => !this.stopwords.includes(token)) || [];
     }
+    
     
     
 
@@ -71,7 +71,6 @@ class cosine {
             });
             return; // ออกจากฟังก์ชันไม่ต้องคำนวณต่อ
         }
-    
         const queryVector = this.getWordVector(query);
         const results = [];
     
@@ -81,6 +80,8 @@ class cosine {
                 const similarity = 1
                 results.push({ docIndex, similarity });
             }else{
+                // console.log("postSkill => "+query)
+                // console.log("userSkill => "+doc)
                 const docVector = this.getWordVector(doc);
                 const similarity = this.cosineSimilarity(queryVector, docVector);
                 results.push({ docIndex, similarity });

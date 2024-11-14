@@ -77,44 +77,53 @@ const getMostMatchUser = async (req, res) => {
     const cosineDegree = new cosine();
     
     // เพิ่มข้อมูลลงใน tf-idf
-    userSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
     userExperiences.forEach((experience) => cosineExperiences.addDocument(experience));
     userDegree.forEach((degree) => cosineDegree.addDocument(degree));
     
     const results = [];
-    
+
     function filterUserSkillByPostSkill(userSkillArray, postSkill) {
-      // แปลง postSkill ให้เป็นอาร์เรย์ถ้ามีค่าเดียว
+      // แปลง postSkill ให้เป็นอาร์เรย์ของคำโดยการแยกตามเครื่องหมาย comma และแปลงเป็นตัวพิมพ์เล็ก
       const skillsArray = postSkill.split(',').map(skill => skill.trim().toLowerCase());
   
-      // กรองเฉพาะคำที่มีบางส่วนตรงกันใน postSkill
+      // กรองคำใน userSkillArray ที่ตรงกับคำใน skillsArray เท่านั้น
       return userSkillArray.filter((skill) =>
-          skillsArray.some((postSkillItem) =>
-              postSkillItem.toLowerCase().includes(skill.toLowerCase()) || skill.toLowerCase().includes(postSkillItem.toLowerCase())
-          )
+          skillsArray.some((postSkillItem) => {
+              const trimmedPostSkillItem = postSkillItem.trim().toLowerCase();
+              const trimmedSkill = skill.trim().toLowerCase();
+  
+              // ตรวจสอบว่ามีคำใน postSkill ที่ตรงกับคำใน userSkill หรือไม่
+              return trimmedPostSkillItem === trimmedSkill;
+          })
       );
   }
+  
+  
   
   async function calculateSkillSimilarity() {
       return new Promise((resolve) => {
           const skillResults = [];
   
           // กรองคำใน userSkill ที่ตรงกับ postSkill
-          const filteredUserSkills = userSkill.map(skill => {
+              const filteredUserSkills = userSkill.map(skill => {
               const userSkillArray = skill.split(',').map(skillItem => skillItem.trim().toLowerCase());
-              // console.log("postSkill => "+postSkill)
-              // console.log("userSkill => "+userSkillArray)
-              // console.log("filteredUserSkill => "+filterUserSkillByPostSkill(userSkillArray, postSkill).join(', '))
-              // console.log('---------------------------------------');
+              console.log("postSkill => "+postSkill)
+              console.log("userSkill => "+userSkillArray)
+              console.log("filteredUserSkill => "+filterUserSkillByPostSkill(userSkillArray, postSkill).join(', '))
+              console.log('---------------------------------------');
               return filterUserSkillByPostSkill(userSkillArray, postSkill);
           });
-  
-          // รวมทุกคำที่กรองแล้วมาเป็น string เดียว
-          const allFilteredSkills = filteredUserSkills.flat().join(', '); // รวมทุกคำที่กรองแล้วเป็น string
-  
+
+          filteredUserSkills.forEach((Skill) => {
+            // แปลงแต่ละ array ให้เป็น string ที่คั่นด้วย comma
+            const skillString = Skill.join(', ');  // ใช้ `, ` เพื่อคั่นคำแต่ละคำด้วย comma และช่องว่าง
+            cosineSkill.addDocument(skillString);
+        });
+
           // คำนวณ similarity สำหรับ allFilteredSkills
-          cosineSkill.computeSimilarities(allFilteredSkills, (i, skillSimilarity) => {
+          cosineSkill.computeSimilarities(postSkill.toLowerCase(), (i, skillSimilarity) => {
               skillResults.push({ userSkillIndex: i, skillSimilarity });
+              // console.log(skillSimilarity)
           });
   
           resolve(skillResults); // ส่งผลลัพธ์หลังคำนวณเสร็จ
