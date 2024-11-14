@@ -103,10 +103,10 @@ const getMostMatchFromOutPost = async (req, res) => {
           // กรองคำใน userSkill ที่ตรงกับ postSkill
           const filteredUserSkills = userSkill.map(skill => {
               const userSkillArray = skill.split(',').map(skillItem => skillItem.trim().toLowerCase());
-              console.log("postSkill => "+postSkill)
-              console.log("userSkill => "+userSkillArray)
-              console.log("filteredUserSkill => "+filterUserSkillByPostSkill(userSkillArray, postSkill).join(', '))
-              console.log('---------------------------------------');
+              // console.log("postSkill => "+postSkill)
+              // console.log("userSkill => "+userSkillArray)
+              // console.log("filteredUserSkill => "+filterUserSkillByPostSkill(userSkillArray, postSkill).join(', '))
+              // console.log('---------------------------------------');
               return filterUserSkillByPostSkill(userSkillArray, postSkill);
           });
   
