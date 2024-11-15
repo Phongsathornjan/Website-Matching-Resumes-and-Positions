@@ -1,7 +1,7 @@
 class cosine {
     constructor() {
         this.documents = [];
-        this.stopwords = [
+        this.stopwordsSet = new Set([
             'a', 'about', 'above', 'after', 'again', 'against', 'all', 'am', 'an', 'and', 'any', 'are', 'aren\'t', 'as', 'at', 
             'be', 'because', 'been', 'before', 'being', 'below', 'between', 'both', 'but', 'by', 
             'can\'t', 'cannot', 'could', 'couldn\'t', 
@@ -20,81 +20,66 @@ class cosine {
             'was', 'wasn\'t', 'we', 'we\'d', 'we\'ll', 'we\'re', 'we\'ve', 'were', 'weren\'t', 'what', 'what\'s', 'when', 'when\'s', 
             'where', 'where\'s', 'which', 'while', 'who', 'who\'s', 'whom', 'why', 'why\'s', 
             'with', 'won\'t', 'would', 'wouldn\'t', 'you', 'you\'d', 'you\'ll', 'you\'re', 'you\'ve', 'your', 'yours', 'yourself', 'yourselves'
-            ]; // กำหนด stopwords ที่จะไม่ใช้ในการคำนวณ
+        ]);
+        this.uniqueWords = [];
+        this.docVectors = [];
     }
+
     tokenize(text) {
-        // ตรวจสอบว่า text เป็น string ก่อน tokenize
         if (typeof text !== 'string') {
             return [];
         }
-        // แปลงข้อความเป็นตัวอักษรเล็กทั้งหมด และแทนที่ / ด้วย , เพื่อให้แยกคำง่ายขึ้น
-        text = text.toLowerCase().replace(/[/,]/g, ' ');  // เปลี่ยน / และ , เป็นช่องว่าง
-    
-        // ใช้ regular expression เพื่อแยกคำที่เป็นคำจริงๆ
-        return text.match(/\b\w+\b/g)?.filter(token => !this.stopwords.includes(token)) || [];
+        text = text.toLowerCase().replace(/[/,]/g, ' ');
+        return text.match(/\b\w+\b/g)?.filter(token => !this.stopwordsSet.has(token)) || [];
     }
-    
-    
-    
 
     addDocument(doc) {
         this.documents.push(doc);
+        this.updateCache();
+    }
+
+    updateCache() {
+        const allTokens = this.documents.flatMap(this.tokenize.bind(this));
+        this.uniqueWords = Array.from(new Set(allTokens));
+        this.docVectors = this.documents.map(doc => this.getWordVector(doc));
     }
 
     getWordVector(doc) {
         const tokens = this.tokenize(doc);
-        // console.log(tokens)
-        const uniqueWords = Array.from(new Set(this.documents.flatMap(this.tokenize.bind(this)))); // หาคำที่เป็นเอกลักษณ์ในทุกเอกสาร
-        return uniqueWords.map(uniqueWord => (tokens.includes(uniqueWord) ? 1 : 0));
+        const vector = new Array(this.uniqueWords.length).fill(0);
+        tokens.forEach(token => {
+            const index = this.uniqueWords.indexOf(token);
+            if (index !== -1) {
+                vector[index] = 1;
+            }
+        });
+        return vector;
     }
-    
 
     cosineSimilarity(vecA, vecB) {
         const dotProduct = vecA.reduce((sum, value, index) => sum + value * vecB[index], 0);
         const magnitudeA = Math.sqrt(vecA.reduce((sum, value) => sum + value * value, 0));
         const magnitudeB = Math.sqrt(vecB.reduce((sum, value) => sum + value * value, 0));
-    
-        // ตรวจสอบว่าค่ามากกว่า 0 ก่อนทำการหาร
-        if (magnitudeA === 0 || magnitudeB === 0) {
-            return 0; // เปลี่ยนเป็น 0 ถ้า magnitude เป็น 0
-        }
-    
-        return dotProduct / (magnitudeA * magnitudeB);
+
+        return (magnitudeA === 0 || magnitudeB === 0) ? 0 : dotProduct / (magnitudeA * magnitudeB);
     }
-    
 
     computeSimilarities(query, callback) {
-        // เช็คว่าถ้า query(จาก post)เป็น  "-"
-        if (query == '-') {
-            // ส่งค่า similarity เป็น 100% ทันที
+        if (query === '-') {
             this.documents.forEach((doc, docIndex) => {
-                callback(docIndex, 100); // ค่า similarity 100%
+                callback(docIndex, 100);
             });
-            return; // ออกจากฟังก์ชันไม่ต้องคำนวณต่อ
+            return;
         }
+
         const queryVector = this.getWordVector(query);
-        const results = [];
-    
-        // คำนวณ Cosine Similarity สำหรับแต่ละเอกสาร
-        this.documents.forEach((doc, docIndex) => {
-            if (doc === 'PostNoNeedExperience') {
-                const similarity = 1
-                results.push({ docIndex, similarity });
-            }else{
-                // console.log("postSkill => "+query)
-                // console.log("userSkill => "+doc)
-                const docVector = this.getWordVector(doc);
-                const similarity = this.cosineSimilarity(queryVector, docVector);
-                results.push({ docIndex, similarity });
-            }
-        });
-    
-        // ส่งผลลัพธ์โดยไม่ normalize
-        results.forEach(result => {
-            callback(result.docIndex, result.similarity * 100); // แสดงค่า similarity เป็นเปอร์เซ็นต์
+        this.docVectors.forEach((docVector, docIndex) => {
+            const similarity = this.documents[docIndex] === 'PostNoNeedExperience' 
+                ? 1 
+                : this.cosineSimilarity(queryVector, docVector);
+            callback(docIndex, similarity * 100);
         });
     }
-    
 }
 
 module.exports = cosine;

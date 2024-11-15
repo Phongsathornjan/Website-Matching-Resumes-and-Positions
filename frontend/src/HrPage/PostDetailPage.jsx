@@ -68,7 +68,6 @@ const PostDetailPage = () => {
                   <h4>
                     <strong>Position : {jobDetail.Position}</strong>
                   </h4>
-                  <p>สถานที่ทำงาน : </p>
                   <p>เงินเดือน : {jobDetail.Salary} </p>
                   <div className="mb-3">
                     <h5 style={{ fontWeight: "bold", color: "#3F4447" }}>
