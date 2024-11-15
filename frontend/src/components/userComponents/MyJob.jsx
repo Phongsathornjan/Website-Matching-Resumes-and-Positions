@@ -237,7 +237,7 @@ const MyJob = () => {
                 <h1>งานที่สมัครแล้ว</h1>
                 <div>
                   <img
-                    src="../../public/PleaseSelectFiled.png"
+                    src="/PleaseSelectFiled.png"
                     style={{ marginTop: "20px", width: "200px" }}
                   />
                 </div>

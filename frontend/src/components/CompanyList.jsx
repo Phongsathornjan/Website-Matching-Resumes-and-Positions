@@ -50,7 +50,7 @@ const CompanyList = () => {
         <center style={fade}>
           <div>
             <img
-              src="../../public/PleaseSelectFiled.png"
+              src="/PleaseSelectFiled.png"
               style={{ marginTop: "60px", width: "400px" }}
             />
           </div>

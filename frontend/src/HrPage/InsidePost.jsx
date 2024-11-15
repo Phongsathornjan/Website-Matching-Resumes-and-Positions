@@ -81,6 +81,7 @@ const InsidePost = (idPost) => {
         `http://localhost:4001/getMostMatchFromOutPost/${idPost.idPost}`
       );
       setCandidates(response.data);
+      console.log(response.data)
     } catch (e) {
       setIsLoading(false);
     } finally {
@@ -203,7 +204,7 @@ const InsidePost = (idPost) => {
                 <div>
                   <div>
                     <img
-                      src="../../public/PleaseSelectFiled.png"
+                      src="/PleaseSelectFiled.png"
                       style={{ width: "500px" }}
                     />
                   </div>
@@ -293,7 +294,7 @@ const InsidePost = (idPost) => {
                     >
                       <center style={PDFStyle}>
                         <img
-                          src={`../../public/Resume/${selectedCandidates.userId._id}-1.jpg`}
+                          src={`/Resume/${selectedCandidates.userId._id}-1.jpg`}
                           width={660}
                           height={932}
                         />

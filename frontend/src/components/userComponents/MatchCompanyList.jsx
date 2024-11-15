@@ -159,7 +159,7 @@ const MatchCompanyList = () => {
               <div style={{ marginTop: "10px" }}>
                 <div>
                   <img
-                    src="../../public/PleaseSelectFiled.png"
+                    src="/PleaseSelectFiled.png"
                     style={{ width: "300px" }}
                   />
                 </div>

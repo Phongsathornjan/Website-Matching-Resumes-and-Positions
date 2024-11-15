@@ -65,6 +65,10 @@ const getMostMatchFromOutPost = async (req, res) => {
       },
     });
 
+    if(userData[0].userId === null){
+      return res.status(200).json([])
+    }
+
     const userSkill = userData.map((data) => data.Skill);
     const userExperiences = userData.map((data) => data.Experience);
     const userDegree = userData.map((data) => data.Degree);

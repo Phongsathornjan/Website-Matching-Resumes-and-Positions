@@ -43,6 +43,7 @@ class cosine {
 
     getWordVector(doc) {
         const tokens = this.tokenize(doc);
+        // console.log(tokens)
         const uniqueWords = Array.from(new Set(this.documents.flatMap(this.tokenize.bind(this)))); // หาคำที่เป็นเอกลักษณ์ในทุกเอกสาร
         return uniqueWords.map(uniqueWord => (tokens.includes(uniqueWord) ? 1 : 0));
     }

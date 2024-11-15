@@ -174,7 +174,7 @@ const HrJobPost = () => {
                   คุณยังไม่มีโพสต์รับสมัคร สามารถสร้างได้เลยตอนนี้
                 </div>
                 <img
-                  src="../../../public/PleaseSelectFiled.png"
+                  src="/PleaseSelectFiled.png"
                   style={imgStyle}
                 />
               </div>

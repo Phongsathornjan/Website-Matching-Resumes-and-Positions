@@ -171,7 +171,7 @@ const ClosePost = () => {
                 >
                 </div>
                 <img
-                  src="../../../public/PleaseSelectFiled.png"
+                  src="/PleaseSelectFiled.png"
                   style={imgStyle}
                 />
               </div>

@@ -87,7 +87,7 @@ function IndexPage() {
           <SlidePage></SlidePage>
         </careerFileContext.Provider>
         <center>
-        <div><img src="../../public/PleaseSelectFiled.png" style={{marginTop: '60px'}}/></div>
+        <div><img src="/PleaseSelectFiled.png" style={{marginTop: '60px'}}/></div>
         <div style={{marginTop: '20px'}}><span style={{color: '#828282',fontSize: '48px'}}>&nbsp;&nbsp;&nbsp;&nbsp;กรุณาเลือกสายอาชีพ</span></div>
         </center>
         </>

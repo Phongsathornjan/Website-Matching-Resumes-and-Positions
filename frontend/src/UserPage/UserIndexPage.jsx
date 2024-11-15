@@ -100,16 +100,14 @@ const Userindexpage = () => {
 
   const checkResume = async () => {
     const userId = localStorage.getItem("id_user");
-    try{
-      const response = await axios.get(
-        `http://localhost:4001/checkValidResume/${userId}`
-      );
-      if (response.status == 200) {
+    try {
+      const response = await fetch(`/Resume/${userId}-1.jpg`);
+      if (response.ok && response.headers.get('content-type')?.includes('image')) {
         setIsResume(true);
       } else {
         setIsResume(false);
       }
-    }catch(e){
+    } catch (error) {
       setIsResume(false);
     }
   };
@@ -352,7 +350,7 @@ const Userindexpage = () => {
             <center>
               <div>
                 <img
-                  src="../../public/PleaseSelectFiled.png"
+                  src="/PleaseSelectFiled.png"
                   style={{ marginTop: "60px" }}
                 />
               </div>
