@@ -57,7 +57,7 @@ const SignInPage = () => {
     e.preventDefault(); // Prevent the default form submission behavior
     showLoadingAlert()
     try {
-      const response = await axios.post('http://localhost:4001/login', {
+      const response = await axios.post('http://54.206.5.161:4001/login', {
         email,
         password,
       });
