@@ -7,7 +7,7 @@ export default defineConfig({
     host: '0.0.0.0',  // ฟังการเชื่อมต่อจากทุก IP
     port: 5173,        // พอร์ตที่ใช้
     proxy: {
-      '/api': {
+      '/': {
         target: 'http://localhost:4001', // URL ของ backend ที่รันใน EC2 (ให้ใช้ localhost ถ้ารันบนเครื่องเดียวกัน)
         changeOrigin: true,
         secure: false,
