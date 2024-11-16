@@ -17,6 +17,7 @@ const getPostDetail = async (req, res) => {
             result.companyDetail = companyDetail.companyDetail
             return res.status(200).json(result)
         }else{
+            console.log(result)
             return res.status(400).json({
                 message: "Internal Server Error"
             });
