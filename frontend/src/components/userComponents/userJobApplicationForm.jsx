@@ -53,7 +53,7 @@ const userJobApplicationForm = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4001/getPostDetail/${idPost}`
+        `http://54.206.5.161:4001/getPostDetail/${idPost}`
       );
       setIsLoading(false);
       setJobDetail(response.data);
@@ -65,7 +65,7 @@ const userJobApplicationForm = () => {
   const ApplyJobButton = async () => {
     try {
       const response = await axios.patch(
-        `http://localhost:4001/applyPost/${idPost}/${id_User}`
+        `http://54.206.5.161:4001/applyPost/${idPost}/${id_User}`
       );
       swal({
         title: "OK!",

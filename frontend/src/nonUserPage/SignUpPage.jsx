@@ -18,7 +18,7 @@ const SignUpPage = () => {
 
   const verifyEmail = async () => {
     try{
-        const response = await axios.post('http://localhost:4001/handleRegister',{
+        const response = await axios.post('http://54.206.5.161:4001/handleRegister',{
         first_name: firstName,
         last_name: lastName,
         email: email,
@@ -54,7 +54,7 @@ const SignUpPage = () => {
 
   const sendOTP = async (email,otp) => {
     try{
-    const response = await axios.post('http://localhost:4001/sendOTP', {
+    const response = await axios.post('http://54.206.5.161:4001/sendOTP', {
       email,
       otp,
     });
@@ -117,7 +117,7 @@ const SignUpPage = () => {
   const submit = async () => {
     showLoadingRegister()
     try{
-      const response = await axios.post('http://localhost:4001/register',{
+      const response = await axios.post('http://54.206.5.161:4001/register',{
         first_name: firstName,
         last_name: lastName,
         email: email,

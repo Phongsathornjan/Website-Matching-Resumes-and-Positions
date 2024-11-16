@@ -20,7 +20,7 @@ const SelectJobField = () => {
     const userId = localStorage.getItem('id_user')
     try{
       const encodedJobField = encodeURIComponent(jobfield);
-      const response = await axios.patch(`http://localhost:4001/UpdateJobField/${userId}/${encodedJobField}`)
+      const response = await axios.patch(`http://54.206.5.161:4001/UpdateJobField/${userId}/${encodedJobField}`)
       swal({
         title: "OK!",
         text: "สมัครสมาชิกเรียบร้อย",

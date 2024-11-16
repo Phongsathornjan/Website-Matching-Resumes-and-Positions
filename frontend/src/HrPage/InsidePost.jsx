@@ -64,7 +64,7 @@ const InsidePost = (idPost) => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:4001/getMostMatchUser/${idPost.idPost}`
+        `http://54.206.5.161:4001/getMostMatchUser/${idPost.idPost}`
       );
       setCandidates(response.data);
     } catch (e) {
@@ -78,7 +78,7 @@ const InsidePost = (idPost) => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:4001/getMostMatchFromOutPost/${idPost.idPost}`
+        `http://54.206.5.161:4001/getMostMatchFromOutPost/${idPost.idPost}`
       );
       setCandidates(response.data);
       const filteredCandidates = response.data.filter(
@@ -126,7 +126,7 @@ const InsidePost = (idPost) => {
     try {
       const encodedTextSearch = encodeURIComponent(search);
       const response = await axios.get(
-        `http://localhost:4001/getUserInPostBySearch/${idPost.idPost}/${encodedTextSearch}`
+        `http://54.206.5.161:4001/getUserInPostBySearch/${idPost.idPost}/${encodedTextSearch}`
       );
       setCandidates(response.data);
     } catch (err) {

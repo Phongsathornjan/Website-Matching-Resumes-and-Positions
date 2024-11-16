@@ -20,7 +20,7 @@ const HrInformation = () => {
   const handleSubmit = async () => {
     const userId = localStorage.getItem("id_user");
     try{
-      const response = await axios.patch(`http://localhost:4001/updateInformation/${userId}`,{
+      const response = await axios.patch(`http://54.206.5.161:4001/updateInformation/${userId}`,{
         companyName,
         companyDetail,
       })
@@ -52,7 +52,7 @@ const HrInformation = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:4001/getInformation/${userId}`
+        `http://54.206.5.161:4001/getInformation/${userId}`
       );
       if (response.status == 200) {
         console.log(response)
@@ -80,7 +80,7 @@ const HrInformation = () => {
       try {
         const token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:4001/auth",
+          "http://54.206.5.161:4001/auth",
           {},
           {
             headers: {

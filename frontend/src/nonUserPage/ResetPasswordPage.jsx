@@ -40,7 +40,7 @@ const ResetPasswordPage = () => {
       return;
     }
     try{
-    const response = await axios.post('http://localhost:4001/sendOTP', {
+    const response = await axios.post('http://54.206.5.161:4001/sendOTP', {
       email,
       otp,
     });

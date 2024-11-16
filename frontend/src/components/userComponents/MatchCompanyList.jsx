@@ -58,7 +58,7 @@ const MatchCompanyList = () => {
       const userId = localStorage.getItem("id_user");
   
       axios
-        .get(`http://localhost:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`, {
+        .get(`http://54.206.5.161:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`, {
           signal,
         })
         .then((response) => {
@@ -87,7 +87,7 @@ const MatchCompanyList = () => {
     if (token) {
       try {
         const response = await axios.get(
-          `http://localhost:4001/tokenDecoder/${token}`
+          `http://54.206.5.161:4001/tokenDecoder/${token}`
         );
         setUserLocation(response.data.userData.location);
         setJobField(response.data.userData.jobField);

@@ -128,7 +128,7 @@ const Userindexpage = () => {
       const encodedLocation = encodeURIComponent(location);
       const encodedJobField = encodeURIComponent(jobfield);
       const response = await axios.get(
-        `http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`
+        `http://54.206.5.161:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`
       );
       Swal.close();
       setJobList(response.data);
@@ -165,7 +165,7 @@ const Userindexpage = () => {
       try {
         let token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:4001/auth",
+          "http://54.206.5.161:4001/auth",
           {},
           {
             headers: {

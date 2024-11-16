@@ -82,7 +82,7 @@ const NewCompanyList = () => {
       const userId = localStorage.getItem("id_user");
   
       try {
-        const response = await axios.get(`http://localhost:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`)
+        const response = await axios.get(`http://54.206.5.161:4001/getMostMatchPost/${encodedLocation}/${encodedJobField}/${userId}`)
   
         if (response.status === 200) {
           setJobList(
@@ -113,7 +113,7 @@ const NewCompanyList = () => {
     if (token) {
       try {
         const response = await axios.get(
-          `http://localhost:4001/tokenDecoder/${token}`
+          `http://54.206.5.161:4001/tokenDecoder/${token}`
         );
         setUserLocation(response.data.userData.location);
         setJobField(response.data.userData.jobField);

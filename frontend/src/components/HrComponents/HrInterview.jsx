@@ -47,7 +47,7 @@ function AppointmentsPage() {
       const userId = localStorage.getItem("id_user");
       if (userId) {
         const response = await axios.get(
-          `http://localhost:4001/getAppointmentById/${userId}`
+          `http://54.206.5.161:4001/getAppointmentById/${userId}`
         );
         setAppointments(response.data);
       }

@@ -25,7 +25,7 @@ function IndexPage() {
         const encodedTextSearch = encodeURIComponent(textSearch);
         const encodedLocation = encodeURIComponent(location);
         const encodedJobField = encodeURIComponent(jobField);  
-        const response = await axios.get(`http://localhost:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`)
+        const response = await axios.get(`http://54.206.5.161:4001/getPostBySearch/${encodedTextSearch}/${encodedLocation}/${encodedJobField}`)
         setJobList(response.data)
         console.log(response.data)
       }catch(e){

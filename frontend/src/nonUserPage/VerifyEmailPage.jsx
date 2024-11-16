@@ -58,7 +58,7 @@ const VerifyEmailPage = () => {
 
   const setPassword = async () => {
     //back end api
-    const response = await axios.patch('http://localhost:4001/resetPassword',{
+    const response = await axios.patch('http://54.206.5.161:4001/resetPassword',{
       email,
       newPassword
     });

@@ -17,7 +17,7 @@ const CreatePostPage = () => {
       try {
         let token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:4001/auth",
+          "http://54.206.5.161:4001/auth",
           {},
           {
             headers: {
@@ -66,7 +66,7 @@ const CreatePostPage = () => {
     }
     setIsLoading(true);
     try {
-      const response = await axios.post("http://localhost:4001/createPost", {
+      const response = await axios.post("http://54.206.5.161:4001/createPost", {
         userId: userId,
         Position: Position,
         Salary: Salary,

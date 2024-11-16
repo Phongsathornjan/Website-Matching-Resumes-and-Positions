@@ -34,7 +34,7 @@ const HrJobPost = () => {
     const userId = localStorage.getItem("id_user");
     try {
       const response = await axios.get(
-        `http://localhost:4001/getPost/${userId}`
+        `http://54.206.5.161:4001/getPost/${userId}`
       );
       setJobList(response.data);
       setIsLoading(false)
@@ -71,7 +71,7 @@ const HrJobPost = () => {
       if (willDelete) {
         try {
           const response = await axios.delete(
-            `http://localhost:4001/deletePost/${idPost}`
+            `http://54.206.5.161:4001/deletePost/${idPost}`
           );
           swal({
             title: "OK!",
@@ -115,7 +115,7 @@ const HrJobPost = () => {
     .then(async (willClose) => {
       if (willClose) {
         try {
-          const response = await axios.patch(`http://localhost:4001/closePost/${idPost}`);
+          const response = await axios.patch(`http://54.206.5.161:4001/closePost/${idPost}`);
           swal({
             title: "OK!",
             text: "ปิดรับสมัครเรียบร้อย",

@@ -20,7 +20,7 @@ const SendEmailPage = () => {
       const HrId = localStorage.getItem("id_user");
       if (HrId) {
         const response = await axios.get(
-          `http://localhost:4001/getAppointmentById/${HrId}`
+          `http://54.206.5.161:4001/getAppointmentById/${HrId}`
         );
         setInterviewData(response.data);
       }
@@ -59,7 +59,7 @@ const SendEmailPage = () => {
       try {
         let token = localStorage.getItem("token");
         const response = await axios.post(
-          "http://localhost:4001/auth",
+          "http://54.206.5.161:4001/auth",
           {},
           {
             headers: {
@@ -135,7 +135,7 @@ const SendEmailPage = () => {
         swal("Oops!", "กรุณากรอกข้อมูลให้ครบ", "error");
       } else {
         const response = await axios.post(
-          `http://localhost:4001/makeAppointment/${userId}/${PostId}`,
+          `http://54.206.5.161:4001/makeAppointment/${userId}/${PostId}`,
           {
             Date1: new Date(selectedDate1).toLocaleDateString("en-GB", {
               day: "2-digit",

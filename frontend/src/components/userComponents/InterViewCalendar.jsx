@@ -17,7 +17,7 @@ const MyCalendar = () => {
     try{
       const userId = localStorage.getItem('id_user')
       if(userId){
-        const response = await axios.get(`http://localhost:4001/getAppointmentById/${userId}`)
+        const response = await axios.get(`http://54.206.5.161:4001/getAppointmentById/${userId}`)
         setInterviewData(response.data)
       }
     }catch(err){

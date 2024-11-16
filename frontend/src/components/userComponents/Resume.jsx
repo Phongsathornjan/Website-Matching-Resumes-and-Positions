@@ -63,7 +63,7 @@ const Resume = () => {
     setIsLoading(true);
     try {
       const response = await axios.post(
-        "http://localhost:4001/uploadPDF",
+        "http://54.206.5.161:4001/uploadPDF",
         formData,
         {
           headers: {

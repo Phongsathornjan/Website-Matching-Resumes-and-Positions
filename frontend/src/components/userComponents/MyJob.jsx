@@ -140,7 +140,7 @@ const MyJob = () => {
     try {
       setIsLoading(true);
       const response = await axios.get(
-        `http://localhost:4001/getAppliedJob/${userId}`
+        `http://54.206.5.161:4001/getAppliedJob/${userId}`
       );
       setJobApplyList(response.data);
       setIsLoading(false);
@@ -191,7 +191,7 @@ const MyJob = () => {
     console.log(applicant);
     try {
       const response = await axios.post(
-        "http://localhost:4001/CreateInterviewAppointment",
+        "http://54.206.5.161:4001/CreateInterviewAppointment",
         applicant
       );
       swal("สำเร็จ", "นัดสัมภาษณ์เรียบร้อย!", "success");

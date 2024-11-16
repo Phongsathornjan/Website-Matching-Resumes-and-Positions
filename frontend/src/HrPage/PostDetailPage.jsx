@@ -35,7 +35,7 @@ const PostDetailPage = () => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `http://localhost:4001/getPostDetail/${idPost}`
+        `http://54.206.5.161:4001/getPostDetail/${idPost}`
       );
       setIsLoading(false);
       setJobDetail(response.data);
