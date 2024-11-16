@@ -50,12 +50,12 @@ const sendOTP = require('./services/email/sendOTP');
 const path = require('path');
 const app = express();
 
-const corsOptions = {
-    origin: 'http://localhost:5173', 
-    optionsSuccessStatus: 200
-  };
+  app.use(cors({
+    origin: 'http://54.206.5.161:5173',  // แทนที่ <Public_IP_of_Frontend> ด้วย IP หรือ URL ที่ถูกต้อง
+    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    credentials: true,
+  }));
 
-app.use(cors(corsOptions));
 app.use(express.json());
 app.use('/images', express.static(path.join(__dirname, 'Resume')));
 
