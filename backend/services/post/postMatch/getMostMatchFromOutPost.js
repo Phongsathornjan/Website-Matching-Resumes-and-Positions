@@ -1,6 +1,7 @@
 const Post = require("../../../model/post");
 const Resume = require("../../../model/resume");
 const mongoose = require("mongoose");
+const User = require('../../../model/user');
 
 const cosine = require("../../../class/cosine");
 
@@ -53,16 +54,20 @@ const getMostMatchFromOutPost = async (req, res) => {
     // หารายชื่อ userId ที่ไม่อยู่ใน applicant.userId
     const applicantUserIds = posts[0]?.applicantUserIds || [];
 
+    const userDataId = await User.find({
+      _id: { $nin: applicantUserIds }, // userId ที่ไม่อยู่ใน applicantUserIds
+      location: posts[0].Location,    // location ตรงกับ posts[0].Location
+      jobField: posts[0].WorkField,   // jobField ตรงกับ posts[0].WorkField
+    }).select("_id"); // เลือกเฉพาะ _id
+    
+    const userIds = userDataId.map((user) => user._id); 
+
     const userData = await Resume.find({
-      userId: { $nin: applicantUserIds }, // userId ที่ไม่อยู่ใน applicantUserIds
+      userId: { $in: userIds }, // หา Resume ที่ userId อยู่ใน userIds
     }).populate({
       path: "userId",
       select:
-        "-companyDetail -companyName -password -role -appliedJobs -postedJobs -jobField",
-      match: {
-        location: posts[0].Location,
-        jobField: posts[0].WorkField,
-      },
+        "-companyDetail -companyName -password -role -appliedJobs -postedJobs -jobField"
     });
 
     if(userData[0].userId === null){

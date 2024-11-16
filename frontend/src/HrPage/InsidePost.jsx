@@ -81,7 +81,11 @@ const InsidePost = (idPost) => {
         `http://localhost:4001/getMostMatchFromOutPost/${idPost.idPost}`
       );
       setCandidates(response.data);
-      console.log(response.data)
+      const filteredCandidates = response.data.filter(
+        (candidate) => candidate.matchPercentage >= 60
+      );
+  
+      setCandidates(filteredCandidates)
     } catch (e) {
       setIsLoading(false);
     } finally {
