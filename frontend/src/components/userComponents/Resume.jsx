@@ -84,7 +84,7 @@ const Resume = () => {
 
         swal({
           title: "Oops!",
-          text: "ดูเหมือนว่าคุณจะอัพโหลดไฟล์ที่ไม่ใช่ Resume กรุณาอัพโหลดใหม่อีกครั้ง",
+          text: "คุณอัพโหลดไฟล์ที่ไม่ใช่ Resume กรุณาลองใหม่อีกครั้ง",
           icon: "error",
         }).then(() => {
           window.location.reload();
