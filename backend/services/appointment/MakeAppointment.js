@@ -3,10 +3,13 @@ const nodemailer = require("nodemailer");
 
 const Post = require("../../model/post");
 const User = require("../../model/user");
+const applyJobPost = require('../post/applyJobPost')
 
 const MakeAppointment = async (req, res) => {
   try {
     const { userId, idPost } = req.params;
+    req.params.idUser = userId;
+    await applyJobPost(req,res)
     const {
       Date1,
       Date2,

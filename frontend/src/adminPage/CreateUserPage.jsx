@@ -28,43 +28,9 @@ const navigate = useNavigate();
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
-  useEffect(() => {
-    async function authentication() {
-      try{
-        let token = localStorage.getItem('token');
-        const response = await axios.post('http://localhost:4001/auth', {} ,{
-          headers: {
-            'x-access-token': token
-          }
-        })
-
-        if(response.status == 200){
-          if(response.data.userData.role != "admin"){
-            navigate('/SignIn');
-          }
-        }
-
-      } catch(err){
-        console.log(err)
-      }
-    }
-   
-    authentication();
-
-    const styleSheet = document.createElement("style");
-    styleSheet.type = "text/css";
-    styleSheet.innerText = globalStyle;
-    document.head.appendChild(styleSheet);
-
-    // Cleanup on component unmount
-    return () => {
-      document.head.removeChild(styleSheet);
-    };
-  }, []);
-
   const submit = async () => {
     try{
-      const response = await axios.post('http://localhost:4001/register',{
+      const response = await axios.post('http://54.206.5.161:4001/register',{
         first_name: firstName,
         last_name: lastName,
         email: email,
