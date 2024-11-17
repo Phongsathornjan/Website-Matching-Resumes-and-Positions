@@ -89,14 +89,15 @@ const Resume = () => {
         }).then(() => {
           window.location.reload();
         });
+      }else{
+        swal({
+          title: "Oops!",
+          text: "มีบางอย่างผิดพลาด",
+          icon: "error",
+        }).then(() => {
+          window.location.reload();
+        });
       }
-      swal({
-        title: "Oops!",
-        text: "มีบางอย่างผิดพลาด",
-        icon: "error",
-      }).then(() => {
-        window.location.reload();
-      });
       console.log(err);
     }
   };
