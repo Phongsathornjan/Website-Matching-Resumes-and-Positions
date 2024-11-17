@@ -120,7 +120,11 @@ app.post("/uploadPDF", upload.single('file'),async (req, res) => {
         await uploadPDF2mongo(userId);
         return res.status(200).json({ message: 'File uploaded successfully!', file: req.file,userId});
     } catch (error) {
-        return res.status(500).json({ message: 'Failed to upload file.', error: error.message });
+        if(error.response.status == 400){
+            return res.status(400).json({ message: 'This file is not Resume'});
+        }else{
+            return res.status(500).json({ message: 'Failed to upload file.', error: error.message });
+        }
     }
 })
 
