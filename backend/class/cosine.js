@@ -70,11 +70,6 @@ class cosine {
                 callback(docIndex, 100);
             });
             return;
-        }else if (query === 'null') {
-            this.documents.forEach((doc, docIndex) => {
-                callback(docIndex, 0);
-            });
-            return;
         }
 
         const queryVector = this.getWordVector(query);

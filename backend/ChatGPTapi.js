@@ -20,7 +20,6 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                             You are my assistant. I will send base64 from a Resume (JPG file) to you. 
                             Your task is to extract Skill, Degree, and Work Experience from Resume following my instructions. 
                             I will use your response to match between Job requirements and user data, to recommend the most relevant job.
-                            - If my base64 is not look like Resume response "null" in field Experience,Skill,Degree 
                         
                             ***Key information***
                             1. "Skill": (Get all types of skills like hard skills, soft skills, technical skills, and tools used in the job).
@@ -41,7 +40,6 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                                 By converting to pivot first and then converting to years, such as Data Engineer (Jan 2023 - Dec 2023) = 12 Month = 1 Year 
                                 and Data Engineer (Jan 2024 - May 2024) = 3 Month = 0.25 Year, so it will be 1.25 Year, wanting Response in this format (Example : 1.25 Year in Data Engineer)
                             - Combine all experiences into a single string for "Experience", all skills into a single string for "Skills", and all degrees into a single string for "Degree."
-                            - If my base64 is not look like Resume response "null" in field Experience,Skill,Degree 
 
                             ***Rules***
                             1. Only respond based on what you see in the document.
@@ -58,7 +56,7 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                                     ]
                                 }
                             5. Respond only in English even if the input is in another language.
-                            6. If my base64 is not look like Resume response "null" in field Experience,Skill,Degree 
+                            6. If my file is not look like Resume response "-" in field Experience,Skill,Degree 
                         `
                       },{
                         type: "image_url",

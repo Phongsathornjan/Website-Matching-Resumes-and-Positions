@@ -60,7 +60,22 @@ const main = async (userId) => {
     await convertPDF2jpg(userId);
     await new Promise(resolve => setTimeout(resolve, 2000));
     const Data = await ChatGPTapi(userId);
-    if(Data.Output[0].Experience === 'null' && Data.Output[0].Skill === "null" && Data.Output[0].Degree === "null"){
+    if(Data.Output[0].Experience === '-' && Data.Output[0].Skill === "-" && Data.Output[0].Degree === "-"){
+        try{
+            const Validate = await Resume.findOneAndUpdate(
+                { userId: userId },
+                { $set: {
+                    Experience:  "null",
+                    Skill:       "null",
+                    Degree:      "null",
+                    
+                    userId:      userId,
+                } },
+                { new: true, upsert: true }
+              );
+        }catch(err){
+            console.log(err);
+        }
         return res.status(400).json({ message: 'This file is not Resume'});
     }
     uploadData2Mongo(userId,Data);
