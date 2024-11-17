@@ -81,23 +81,15 @@ const Resume = () => {
         });
       }
     } catch (err) {
-      if(err.response.status == 400){
+
         swal({
           title: "Oops!",
-          text: "ดูเหมือนว่าไฟล์คุณไม่ใช่ Resume โปรดอัพโหลดอีกรอบ",
+          text: "ดูเหมือนว่าคุณจะอัพโหลดไฟล์ที่ไม่ใช่ Resume กรุณาอัพโหลดใหม่อีกครั้ง",
           icon: "error",
         }).then(() => {
           window.location.reload();
         });
-      }else{
-        swal({
-          title: "Oops!",
-          text: "มีบางอย่างผิดพลาด",
-          icon: "error",
-        }).then(() => {
-          window.location.reload();
-        });
-      }
+      
       console.log(err);
     }
   };
