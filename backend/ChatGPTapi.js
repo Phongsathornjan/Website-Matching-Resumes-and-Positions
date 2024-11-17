@@ -56,6 +56,7 @@ const sendImageToChatGPT = async (imagePath, apiEndpoint, apiKey) => {
                                     ]
                                 }
                             5. Respond only in English even if the input is in another language.
+                            6. If my file is not look like Resume response "-" in field Experience,Skill,Degree 
                         `
                       },{
                         type: "image_url",
