@@ -77,8 +77,9 @@ const main = async (userId) => {
             console.log(err);
         }
         return res.status(400).json({ message: 'This file is not Resume'});
+    }else{
+        uploadData2Mongo(userId,Data);
     }
-    uploadData2Mongo(userId,Data);
 }
 
 module.exports = main;
