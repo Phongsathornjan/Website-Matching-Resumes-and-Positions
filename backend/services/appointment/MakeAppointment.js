@@ -122,15 +122,10 @@ const MakeAppointment = async (req, res) => {
     // ส่งอีเมล
     await transporter.sendMail(mailOptions)
 
-    return res.json({
-      message: "Appointment updated successfully",
-      post: updatedPost,
-    });
+ 
   } catch (err) {
     console.log(err);
-    return res.status(500).json({
-      message: "Internal Server Error",
-    });
+
   }
 };
 
