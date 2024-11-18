@@ -120,18 +120,7 @@ const MakeAppointment = async (req, res) => {
     };
 
     // ส่งอีเมล
-    transporter.sendMail(mailOptions, (error, info) => {
-      if (error) {
-        console.log(error);
-        return res.status(400).json({
-          message: "Error to sending email",
-        });
-      } else {
-        return res.status(200).json({
-          message: "Success",
-        });
-      }
-    });
+    await transporter.sendMail(mailOptions)
 
     return res.json({
       message: "Appointment updated successfully",
