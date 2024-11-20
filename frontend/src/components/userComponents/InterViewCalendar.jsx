@@ -101,7 +101,7 @@ const MyCalendar = () => {
                 )}{" "}
                 เวลา: {interview.Time}
               </p>
-              <p>Meeting Link : {interview.MeetingLink}</p>
+              <p>Meeting Link / ที่อยู่บริษัท : {interview.MeetingLink}</p>
             </div>
           ))
         ) : (
