@@ -73,11 +73,13 @@ const main = async (userId) => {
                 } },
                 { new: true, upsert: true }
               );
+              console.log('-')
         }catch(err){
             console.log(err);
         }
         return res.status(400).json({ message: 'This file is not Resume'});
     }else{
+        console.log('1')
         uploadData2Mongo(userId,Data);
     }
 }

@@ -130,7 +130,7 @@ const getMostMatchPost = async (req, res) => {
     const results = posts.map((_, index) => {
       const weightedSimilarity =
         skillResults[index] * 0.4 + experienceResults[index] * 0.4 + degreeResults[index] * 0.2;
-        console.log("post = "+posts[index].Position + " skill = " +skillResults[index]+ " Ex = " +experienceResults[index]+ " degree = " +degreeResults[index] + " รวม = "+weightedSimilarity)
+        // console.log("post = "+posts[index].Position + " skill = " +skillResults[index]+ " Ex = " +experienceResults[index]+ " degree = " +degreeResults[index] + " รวม = "+weightedSimilarity)
 
       return {
         postSkillIndex: index,
