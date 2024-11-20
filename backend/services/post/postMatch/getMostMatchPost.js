@@ -43,7 +43,7 @@ const getMostMatchPost = async (req, res) => {
     const cosineDegree = new cosine();
 
     // เพิ่มข้อมูลสำหรับการคำนวณ similarity
-    postSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
+    // postSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
     postExperience.forEach((experience) => {
       if (experience == "-") {
         cosineExperiences.addDocument("PostNoNeedExperience");
@@ -72,24 +72,27 @@ const getMostMatchPost = async (req, res) => {
     }
 
     async function computeSkillSimilarity() {
-      const skillResults = await Promise.all(
-        postSkill.map((_, index) => {
+      const skillResults = await Promise.all( () => {
           // แยก postSkill[index] ที่เป็นสตริงออกเป็นอาร์เรย์ของคำทักษะ
-          const postSkillArray = postSkill[index].split(",").map((skill) => skill.trim().toLowerCase());
+          const filteredUserSkill = postSkill.map(skill => {
+            postSkillArray.split(",").map((skill) => skill.trim().toLowerCase());
            // กรองทักษะจาก userSkill ที่ตรงกับ postSkill
-          const filteredUserSkill = filterUserSkillByPostSkill(postSkillArray, userSkill);
-          console.log("userSkill => " + userSkill);
-          console.log("filteredUserSkill => " + filteredUserSkill);
-          console.log("postSkill => " + postSkillArray);
-          console.log('---------------------------------------');
+            filterUserSkillByPostSkill(postSkillArray, userSkill);
+          })
+          // console.log("userSkill => " + userSkill);
+          // console.log("filteredUserSkill => " + filteredUserSkill);
+          // console.log("postSkill => " + postSkillArray);
+          // console.log('---------------------------------------');
+          filteredUserSkill.forEach((skill => {
+            console.log(skill)
+            cosineSkill.addDocument(skill)
+          }))
           return new Promise((resolve) => {
-            cosineSkill.computeSimilarities(filteredUserSkill.join(", "), (i, SkillSimilarity) => {
-              if (i === index) {
+            cosineSkill.computeSimilarities(userSkill.toLowerCase(), (i, SkillSimilarity) => {
                 resolve(SkillSimilarity);
-              }
             });
           });
-        })
+        }
       );
       return skillResults;
     }
