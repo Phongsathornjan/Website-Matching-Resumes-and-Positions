@@ -43,7 +43,7 @@ const getMostMatchPost = async (req, res) => {
     const cosineDegree = new cosine();
 
     // เพิ่มข้อมูลสำหรับการคำนวณ similarity
-    // postSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
+    postSkill.forEach((Skill) => cosineSkill.addDocument(Skill));
     postExperience.forEach((experience) => {
       if (experience == "-") {
         cosineExperiences.addDocument("PostNoNeedExperience");
@@ -72,27 +72,24 @@ const getMostMatchPost = async (req, res) => {
     }
 
     async function computeSkillSimilarity() {
-      const skillResults = await Promise.all( () => {
+      const skillResults = await Promise.all(
+        postSkill.map((_, index) => {
           // แยก postSkill[index] ที่เป็นสตริงออกเป็นอาร์เรย์ของคำทักษะ
-          const filteredUserSkill = postSkill.map(skill => {
-            postSkillArray.split(",").map((skill) => skill.trim().toLowerCase());
+          const postSkillArray = postSkill[index].split(",").map((skill) => skill.trim().toLowerCase());
            // กรองทักษะจาก userSkill ที่ตรงกับ postSkill
-            filterUserSkillByPostSkill(postSkillArray, userSkill);
-          })
+          const filteredUserSkill = filterUserSkillByPostSkill(postSkillArray, userSkill);
           // console.log("userSkill => " + userSkill);
           // console.log("filteredUserSkill => " + filteredUserSkill);
           // console.log("postSkill => " + postSkillArray);
           // console.log('---------------------------------------');
-          filteredUserSkill.forEach((skill => {
-            console.log(skill)
-            cosineSkill.addDocument(skill)
-          }))
           return new Promise((resolve) => {
-            cosineSkill.computeSimilarities(userSkill.toLowerCase(), (i, SkillSimilarity) => {
+            cosineSkill.computeSimilarities(filteredUserSkill.join(", "), (i, SkillSimilarity) => {
+              if (i === index) {
                 resolve(SkillSimilarity);
+              }
             });
           });
-        }
+        })
       );
       return skillResults;
     }
@@ -138,7 +135,7 @@ const getMostMatchPost = async (req, res) => {
     const results = posts.map((_, index) => {
       const weightedSimilarity =
         skillResults[index] * 0.4 + experienceResults[index] * 0.4 + degreeResults[index] * 0.2;
-
+      console.log("post = "+posts[index] + " skill = " +skillResults+ " Ex = " +experienceResults+ " degree = " +degreeResults)
       return {
         postSkillIndex: index,
         similarity: weightedSimilarity,
