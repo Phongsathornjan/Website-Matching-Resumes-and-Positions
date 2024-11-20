@@ -182,10 +182,10 @@ const SendEmailPage = () => {
           <div style={formStyle}>
             <div style={fullRowStyle}>
               <div style={inputWrapperStyle}>
-                <label style={labelStyle}>Meeting link :</label>
+                <label style={labelStyle}>Meeting Link / ที่อยู่บริษัท :</label>
                 <input
                   type="text"
-                  placeholder="Enter the meeting link"
+                  placeholder="Enter the Meeting Link or More Detail for Onsite"
                   style={inputStyle}
                   onChange={(e) => {
                     setMeetingLink(e.target.value);
