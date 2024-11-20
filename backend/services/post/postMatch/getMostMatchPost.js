@@ -54,17 +54,16 @@ const getMostMatchPost = async (req, res) => {
     postDegree.forEach((degree) => cosineDegree.addDocument(degree));
 
     function filterUserSkillByPostSkill(postSkillArray, userSkill) {
-      // แปลง userSkill ให้เป็นอาร์เรย์ถ้ามีค่าเดียว
-      const skillsArray = userSkill.split(",").map((skill) => skill.trim().toLowerCase());
-
+      // แปลง userSkill ให้เป็นอาร์เรย์ถ้ามีค่าเดียว และ normalize
+      const skillsArray = userSkill
+        .split(",")
+        .map((skill) => skill.trim().toLowerCase().replace(/\s+/g, ""));
+    
       // กรองเฉพาะคำที่มีบางส่วนตรงกันใน postSkillArray
-      return skillsArray.filter(
-        (skill) =>
-          postSkillArray.some(
-            (postSkillItem) =>
-              postSkillItem.toLowerCase().includes(skill) || skill.includes(postSkillItem.toLowerCase())
-          )
-      );
+      return postSkillArray.filter((skill) => {
+        const normalizedSkill = skill.trim().toLowerCase().replace(/\s+/g, ""); // Normalize postSkill
+        return skillsArray.some((userSkillItem) => userSkillItem === normalizedSkill);
+      });
     }
 
     async function computeSkillSimilarity() {
