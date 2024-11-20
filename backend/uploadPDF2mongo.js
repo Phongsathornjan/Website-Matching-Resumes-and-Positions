@@ -58,7 +58,7 @@ const uploadData2Mongo = async (userId,data) =>{
 
 const main = async (userId) => {
     await convertPDF2jpg(userId);
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    await new Promise(resolve => setTimeout(resolve, 4000));
     const Data = await ChatGPTapi(userId);
     if(Data.Output[0].Experience === '-' && Data.Output[0].Skill === "-" && Data.Output[0].Degree === "-"){
         try{
