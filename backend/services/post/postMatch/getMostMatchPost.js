@@ -58,11 +58,15 @@ const getMostMatchPost = async (req, res) => {
       const skillsArray = userSkill.split(",").map((skill) => skill.trim().toLowerCase());
 
       // กรองเฉพาะคำที่มีบางส่วนตรงกันใน postSkillArray
-      return skillsArray.filter(
+      return postSkillArray.filter(
         (skill) =>
-          postSkillArray.some(
-            (postSkillItem) =>
-              postSkillItem.toLowerCase().includes(skill) || skill.includes(postSkillItem.toLowerCase())
+          skillsArray.some(
+            (userSkillItem) =>
+            {
+              const trimmedUserSkillItem = userSkillItem.trim().toLowerCase();
+              const trimmedSkill = skill.trim().toLowerCase();
+              return trimmedUserSkillItem === trimmedSkill;
+            }
           )
       );
     }
@@ -74,10 +78,10 @@ const getMostMatchPost = async (req, res) => {
           const postSkillArray = postSkill[index].split(",").map((skill) => skill.trim().toLowerCase());
            // กรองทักษะจาก userSkill ที่ตรงกับ postSkill
           const filteredUserSkill = filterUserSkillByPostSkill(postSkillArray, userSkill);
-          // console.log("userSkill => " + userSkill);
-          // console.log("filteredUserSkill => " + filteredUserSkill);
-          // console.log("postSkill => " + postSkillArray);
-          // console.log('---------------------------------------');
+          console.log("userSkill => " + userSkill);
+          console.log("filteredUserSkill => " + filteredUserSkill);
+          console.log("postSkill => " + postSkillArray);
+          console.log('---------------------------------------');
           return new Promise((resolve) => {
             cosineSkill.computeSimilarities(filteredUserSkill.join(", "), (i, SkillSimilarity) => {
               if (i === index) {
