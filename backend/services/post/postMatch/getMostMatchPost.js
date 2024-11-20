@@ -54,28 +54,34 @@ const getMostMatchPost = async (req, res) => {
     postDegree.forEach((degree) => cosineDegree.addDocument(degree));
 
     function filterUserSkillByPostSkill(postSkillArray, userSkill) {
-      const skillsArray = userSkill
-        .split(",")
-        .map((skill) => skill.trim().toLowerCase().replace(/\s+/g, ""));
-    
-      return postSkillArray.filter((skill) => {
-        const normalizedSkill = skill.trim().toLowerCase().replace(/\s+/g, "");
-        return skillsArray.some((userSkillItem) => userSkillItem === normalizedSkill);
-      });
+      // แปลง userSkill ให้เป็นอาร์เรย์ถ้ามีค่าเดียว
+      const skillsArray = userSkill.split(",").map((skill) => skill.trim().toLowerCase());
+
+      // กรองเฉพาะคำที่มีบางส่วนตรงกันใน postSkillArray
+      return postSkillArray.filter(
+        (skill) =>
+          skillsArray.some(
+            (userSkillItem) =>
+            {
+              const trimmedUserSkillItem = userSkillItem.trim().toLowerCase();
+              const trimmedSkill = skill.trim().toLowerCase();
+              return trimmedUserSkillItem === trimmedSkill;
+            }
+          )
+      );
     }
-    
+
     async function computeSkillSimilarity() {
-      const postSkillArray = postSkill.split(",").map((skill) => skill.trim().toLowerCase()); // แยกคำใน postSkill
-      
       const skillResults = await Promise.all(
-        postSkillArray.map((skill, index) => {
-          // กรองทักษะจาก userSkill ที่ตรงกับ postSkillArray
-          const filteredUserSkill = filterUserSkillByPostSkill([skill], userSkill);
+        postSkill.map((_, index) => {
+          // แยก postSkill[index] ที่เป็นสตริงออกเป็นอาร์เรย์ของคำทักษะ
+          const postSkillArray = postSkill[index].split(",").map((skill) => skill.trim().toLowerCase());
+           // กรองทักษะจาก userSkill ที่ตรงกับ postSkill
+          const filteredUserSkill = filterUserSkillByPostSkill(postSkillArray, userSkill);
           console.log("userSkill => " + userSkill);
           console.log("filteredUserSkill => " + filteredUserSkill);
-          console.log("postSkill => " + skill);
-          console.log("---------------------------------------");
-    
+          console.log("postSkill => " + postSkillArray);
+          console.log('---------------------------------------');
           return new Promise((resolve) => {
             cosineSkill.computeSimilarities(filteredUserSkill.join(", "), (i, SkillSimilarity) => {
               if (i === index) {
@@ -85,7 +91,7 @@ const getMostMatchPost = async (req, res) => {
           });
         })
       );
-      return skillResults
+      return skillResults;
     }
 
     async function computeExperienceSimilarity() {
