@@ -58,15 +58,11 @@ const getMostMatchPost = async (req, res) => {
       const skillsArray = userSkill.split(",").map((skill) => skill.trim().toLowerCase());
 
       // กรองเฉพาะคำที่มีบางส่วนตรงกันใน postSkillArray
-      return postSkillArray.filter(
+      return skillsArray.filter(
         (skill) =>
-          skillsArray.some(
-            (userSkillItem) =>
-            {
-              const trimmedUserSkillItem = userSkillItem.trim().toLowerCase();
-              const trimmedSkill = skill.trim().toLowerCase();
-              return trimmedUserSkillItem === trimmedSkill;
-            }
+          postSkillArray.some(
+            (postSkillItem) =>
+              postSkillItem.toLowerCase().includes(skill) || skill.includes(postSkillItem.toLowerCase())
           )
       );
     }
@@ -135,7 +131,8 @@ const getMostMatchPost = async (req, res) => {
     const results = posts.map((_, index) => {
       const weightedSimilarity =
         skillResults[index] * 0.4 + experienceResults[index] * 0.4 + degreeResults[index] * 0.2;
-      console.log("post = "+posts[index].Position + " skill = " +skillResults[index]+ " Ex = " +experienceResults[index]+ " degree = " +degreeResults[index] + " รวม = "+weightedSimilarity)
+        console.log("post = "+posts[index].Position + " skill = " +skillResults[index]+ " Ex = " +experienceResults[index]+ " degree = " +degreeResults[index] + " รวม = "+weightedSimilarity)
+
       return {
         postSkillIndex: index,
         similarity: weightedSimilarity,
