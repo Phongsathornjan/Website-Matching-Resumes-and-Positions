@@ -99,7 +99,7 @@ function AppointmentsPage() {
               </Card.Text>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <Card.Text style={ellipsisStyle}>
-                  Meeting Link : {appointments.MeetingLink}
+                  Meeting Link / ที่อยู่บริษัท : {appointments.MeetingLink}
                 </Card.Text>
                   <Button variant="primary" style={ButtonStyle} onClick={()=>openResumePage(appointments.userId._id)}>
                     Resume
